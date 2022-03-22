@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wifi_led_esp8266/local_home_page.dart';
+import 'package:wifi_led_esp8266/pages/local_home_page.dart';
 import 'package:wifi_led_esp8266/utils/custom_clippers.dart';
 import 'package:wifi_led_esp8266/utils/utils.dart';
 import 'dart:math';

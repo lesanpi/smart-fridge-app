@@ -9,30 +9,21 @@ const lightPurple = Color(0xFFC69CF4);
 const purple = Color(0xFF8930E8);
 const pink = Color(0xFFF49CC8);
 const darkGreen = Color(0xFF089082);
+const lightGreen = Color.fromARGB(255, 12, 224, 203);
 
-/*
+const Gradient primaryGradient = LinearGradient(colors: [
+  lightColor,
+  lightColor,
+  // lightPurple,
+  lightGreen,
+  // salmon,
+  // pink,
+  darkGreen,
+  darkGreen,
+  lightColor,
 
-Container(
-                    child: ledstatus ? Text("LED IS: ON") : Text("LED IS: OFF"),
-                  ),
-                  ElevatedButton(
-                    //button to start scanning
-                    onPressed: () {
-                      //on button press
-                      if (ledstatus) {
-                        //if ledstatus is true, then turn off the led
-                        //if led is on, turn off
-                        sendcmd("poweroff");
-                        ledstatus = false;
-                      } else {
-                        //if ledstatus is false, then turn on the led
-                        //if led is off, turn on
-                        sendcmd("poweron");
-                        ledstatus = true;
-                      }
-                      setState(() {});
-                    },
-                    child:
-                        ledstatus ? Text("TURN LED OFF") : Text("TURN LED ON"),
-                  ),
-*/
+  // lightYellow,
+  // lightYellow,
+  // lightPurple,
+  lightGreen
+]);

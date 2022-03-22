@@ -51,7 +51,7 @@ class FridgeCard extends StatelessWidget {
                   Spacer(),
                   Text(
                     "${fridge.temperature}°C",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       color: Colors.black87,
                       fontSize: 30,

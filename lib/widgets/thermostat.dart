@@ -15,24 +15,16 @@ class Thermostat extends StatelessWidget {
       width: containerSize,
       height: containerSize,
       decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.2),
-              blurRadius: 35,
-              offset: const Offset(0, 15),
-            )
-          ],
-          gradient: LinearGradient(colors: [
-            lightColor,
-            lightColor,
-            lightPurple,
-            salmon,
-            pink,
-            lightYellow,
-            lightYellow,
-            lightPurple,
-          ])),
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.2),
+            blurRadius: 35,
+            offset: const Offset(0, 15),
+          )
+        ],
+        gradient: primaryGradient,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(30),
         child: Container(
