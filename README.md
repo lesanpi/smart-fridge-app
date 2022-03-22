@@ -1,4 +1,4 @@
-# wifi_led_esp8266
+# smart-fridge
 
 A new Flutter project.
 
