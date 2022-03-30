@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:wifi_led_esp8266/model/fridge.dart';
 
-class AppBLoC {
+class LocalBLoC {
   final localFridgeList = ValueNotifier<List<Fridge>>([]);
   final localIdsRegistered = ValueNotifier<List<String>>([]);
   final localFridgeSelected = ValueNotifier<Fridge>(Fridge.empty());
@@ -103,7 +103,7 @@ class AppBLoC {
 }
 
 class AppProvider extends InheritedWidget {
-  final AppBLoC bloc;
+  final LocalBLoC bloc;
 
   AppProvider({required this.bloc, required Widget child})
       : super(child: child);

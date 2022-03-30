@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:wifi_led_esp8266/bloc/app_bloc.dart';
+import 'package:wifi_led_esp8266/bloc/local_bloc.dart';
 import 'package:wifi_led_esp8266/pages/fridge_details_page.dart';
 import 'package:wifi_led_esp8266/model/fridge.dart';
 import 'package:wifi_led_esp8266/widgets/fridge_card.dart';
@@ -16,7 +16,7 @@ class LocalHomePage extends StatefulWidget {
 }
 
 class _LocalHomePageState extends State<LocalHomePage> {
-  final bloc = AppBLoC();
+  final bloc = LocalBLoC();
 
   // bool ledstatus = false; //boolean value to track LED status, if its ON or OFF
   // late IOWebSocketChannel channel;
