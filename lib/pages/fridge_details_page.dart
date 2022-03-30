@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:wifi_led_esp8266/bloc/app_bloc.dart';
+import 'package:wifi_led_esp8266/bloc/local_bloc.dart';
 import 'package:wifi_led_esp8266/model/fridge.dart';
 import 'package:wifi_led_esp8266/utils/utils.dart';
 import 'package:wifi_led_esp8266/widgets/thermostat.dart';

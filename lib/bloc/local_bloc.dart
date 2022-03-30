@@ -35,7 +35,8 @@ class AppBLoC {
       channel.stream.listen(
         (message) {
           if (message == "connected") {
-            localConnected.value = true; //message is "connected" from NodeMCU
+            localConnected.value = true;
+            //message is "connected" from NodeMCU
 
           } else if (message == "poweron:success") {
             // TODO: Turn on Led.
