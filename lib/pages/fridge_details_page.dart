@@ -11,7 +11,7 @@ import 'package:wifi_led_esp8266/widgets/connection_status.dart';
 
 class FridgeDetailsPage extends StatefulWidget {
   final Fridge fridge;
-  final AppBLoC bloc;
+  final LocalBLoC bloc;
   const FridgeDetailsPage({Key? key, required this.bloc, required this.fridge})
       : super(key: key);
 
