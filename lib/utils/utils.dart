@@ -11,19 +11,28 @@ const pink = Color(0xFFF49CC8);
 const darkGreen = Color(0xFF089082);
 const lightGreen = Color.fromARGB(255, 12, 224, 203);
 
-const Gradient primaryGradient = LinearGradient(colors: [
-  lightColor,
-  lightColor,
-  // lightPurple,
-  lightGreen,
-  // salmon,
-  // pink,
-  darkGreen,
-  darkGreen,
-  lightColor,
+// const Gradient primaryGradient = LinearGradient(colors: [
+//   lightColor,
+//   lightColor,
+//   // lightPurple,
+//   lightGreen,
+//   // salmon,
+//   // pink,
+//   darkGreen,
+//   darkGreen,
+//   lightColor,
 
-  // lightYellow,
-  // lightYellow,
-  // lightPurple,
-  lightGreen
+//   // lightYellow,
+//   // lightYellow,
+//   // lightPurple,
+//   lightGreen
+// ]);
+
+const Gradient primaryGradient = LinearGradient(colors: [
+  Colors.blue,
+  Color.fromARGB(255, 144, 201, 247),
+  Color.fromARGB(255, 27, 86, 187),
+  Color.fromARGB(255, 85, 138, 230),
+  Color.fromARGB(255, 144, 201, 247),
+  Color.fromARGB(255, 27, 86, 187),
 ]);

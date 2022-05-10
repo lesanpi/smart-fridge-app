@@ -16,25 +16,30 @@ class ButtonAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: 60,
-        height: 60,
-        child: Icon(
-          iconData,
-          color: selected ? Colors.white : darkGreen,
-          size: 30,
+      child: PhysicalModel(
+        color: Colors.black12,
+        shape: BoxShape.circle,
+        elevation: 3,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: 60,
+          height: 60,
+          child: Icon(
+            iconData,
+            color: selected ? Colors.white : Colors.blue,
+            size: 30,
+          ),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Color.fromRGBO(0, 0, 0, 0.2),
+              //     blurRadius: 35,
+              //     offset: const Offset(0, 15),
+              //   ),
+              // ],
+              color: selected ? Colors.blue : Colors.white),
         ),
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.2),
-                blurRadius: 35,
-                offset: const Offset(0, 15),
-              ),
-            ],
-            color: selected ? darkGreen : Colors.white),
       ),
     );
   }
