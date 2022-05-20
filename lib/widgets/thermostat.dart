@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/utils/utils.dart';
 
 class Thermostat extends StatelessWidget {
@@ -18,7 +19,7 @@ class Thermostat extends StatelessWidget {
       child: Container(
         width: containerSize,
         height: containerSize,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
           // boxShadow: [
           //   BoxShadow(
@@ -27,7 +28,14 @@ class Thermostat extends StatelessWidget {
           //     offset: const Offset(0, 15),
           //   )
           // ],
-          gradient: primaryGradient,
+          gradient: LinearGradient(colors: [
+            Consts.primary,
+            Consts.primary.shade100,
+            Consts.primary.shade700,
+            Consts.primary.shade500,
+            Consts.primary,
+            Consts.primary.shade200,
+          ]),
         ),
         child: Padding(
           padding: const EdgeInsets.all(30),

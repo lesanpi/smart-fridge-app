@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/model/connection_info.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
 import 'package:wifi_led_esp8266/pages/fridge_details_page.dart';
@@ -11,6 +12,7 @@ import 'package:wifi_led_esp8266/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/widgets/button_action.dart';
 import 'package:wifi_led_esp8266/widgets/fridge_card.dart';
 import 'package:wifi_led_esp8266/widgets/thermostat.dart';
+import 'package:wifi_led_esp8266/widgets/fridge_widget.dart';
 
 class LocalHomePage extends StatefulWidget {
   const LocalHomePage({Key? key}) : super(key: key);
@@ -26,6 +28,8 @@ class _LocalHomePageState extends State<LocalHomePage> {
   // List<Fridge> fridgeList = [];
   late LocalRepository localRepository =
       RepositoryProvider.of<LocalRepository>(context);
+  late final double _screenW = MediaQuery.of(context).size.width;
+  late final double _screenH = MediaQuery.of(context).size.height;
 
   @override
   void initState() {
@@ -41,63 +45,53 @@ class _LocalHomePageState extends State<LocalHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double _screenW = MediaQuery.of(context).size.width;
-    final double _screenH = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: StreamBuilder<ConnectionInfo?>(
-          stream: localRepository.connectionInfoStream,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Text(
-                "Desconectado",
-                style: TextStyle(
-                  color: Colors.blueAccent,
+        title: Center(
+          child: StreamBuilder<ConnectionInfo?>(
+            stream: localRepository.connectionInfoStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Text(
+                  "Desconectado",
+                  style: TextStyle(
+                    color: Consts.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
+
+              final ConnectionInfo connectionInfo = snapshot.data!;
+
+              if (connectionInfo == null) {
+                return const Text(
+                  "Desconectado",
+                  style: TextStyle(
+                    color: Consts.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
+
+              return Text(
+                connectionInfo.ssid,
+                style: const TextStyle(
+                  color: Consts.primary,
                   fontWeight: FontWeight.bold,
                 ),
               );
-            }
-
-            final ConnectionInfo connectionInfo = snapshot.data!;
-
-            if (connectionInfo == null) {
-              return const Text(
-                "Desconectado",
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            }
-
-            return Text(
-              connectionInfo.ssid,
-              style: const TextStyle(
-                color: Colors.blueAccent,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
+            },
+          ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              CupertinoIcons.refresh,
-              color: Colors.black87,
-            ),
-          )
-        ],
+        actions: [],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 20,
-          ),
+          padding: const EdgeInsets.only(),
           child: LayoutBuilder(builder: (context, constraints) {
             final h = constraints.maxHeight;
             final w = constraints.maxWidth;
@@ -110,16 +104,15 @@ class _LocalHomePageState extends State<LocalHomePage> {
                 stream: localRepository.connectedStream,
                 builder: (_, locallyConnectedSnapshot) {
                   if (!locallyConnectedSnapshot.hasData) {
-                    return const SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: CircularProgressIndicator(),
-                    );
+                    return disconnectedMessage();
                   }
                   final locallyConnected = locallyConnectedSnapshot.data!;
                   print(locallyConnected);
                   // return Text(snapshot.data!.toString());
-                  return getContent(locallyConnected);
+                  return AnimatedSwitcher(
+                    duration: Duration(milliseconds: 500),
+                    child: getContent(locallyConnected),
+                  );
                 },
               ),
             );
@@ -144,186 +137,34 @@ class _LocalHomePageState extends State<LocalHomePage> {
           return noDataMessage();
         }
 
-        return StreamBuilder<List<FridgeState>>(
-          stream: localRepository.fridgesStateStream,
-          builder: (_, fridgesStateSnapshot) {
-            final ConnectionInfo connectionInfo = connectionSnapshot.data!;
+        return AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          child: StreamBuilder<List<FridgeState>>(
+            stream: localRepository.fridgesStateStream,
+            builder: (_, fridgesStateSnapshot) {
+              final ConnectionInfo connectionInfo = connectionSnapshot.data!;
 
-            if (!fridgesStateSnapshot.hasData) {
-              return noDataButConnectedMessage(connectionInfo);
-            }
+              if (!fridgesStateSnapshot.hasData) {
+                return noDataButConnectedMessage(connectionInfo);
+              }
 
-            final List<FridgeState> fridgesState = fridgesStateSnapshot.data!;
-            if (connectionInfo.standalone && fridgesState.isNotEmpty) {
-              final fridgeState = fridgesState[0];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Thermostat(temperature: fridgeState.temperature),
-                      const SizedBox(height: 50),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ButtonAction(
-                            onTap: () {},
-                            selected: fridgeState.light,
-                            iconData: Icons.lightbulb,
-                          ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          ButtonAction(
-                            onTap: () {},
-                            selected: fridgeState.compressor,
-                            iconData: Icons.ac_unit_outlined,
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Temperatura mínima",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  fridgeState.minTemperature.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Slider(
-                                    min: -20,
-                                    max: 30,
-                                    value:
-                                        fridgeState.minTemperature.toDouble(),
-                                    onChanged: (value) {
-                                      print("new value ${value}");
-                                    },
-                                  ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  child: Text("Guardar"),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Temperatura máxima",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  fridgeState.maxTemperature.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Slider(
-                                    min: -20,
-                                    max: 30,
-                                    value:
-                                        fridgeState.maxTemperature.toDouble(),
-                                    onChanged: (value) {
-                                      print("new value ${value}");
-                                    },
-                                  ),
-                                ),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  child: Text("Guardar"),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      TextButton(
-                        onPressed: () {
-                          localRepository.client.disconnect();
-                        },
-                        child: const Text(
-                          "Desconectarse",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 20,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }
-            return Text("Coordinado");
-          },
+              final List<FridgeState> fridgesState = fridgesStateSnapshot.data!;
+
+              if (connectionInfo.standalone && fridgesState.isNotEmpty) {
+                final fridgeState = fridgesState[0];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SingleChildScrollView(
+                      child: FridgeWidget(fridgeState: fridgeState)),
+                );
+              }
+
+              return Text("Coordinado");
+            },
+          ),
         );
       },
     );
-
-    // return ListView.builder(
-    //   itemCount: localRepository.fridgesId.length,
-    //   scrollDirection: Axis.vertical,
-    //   // clipBehavior: Clip.none,
-    //   itemBuilder: (context, index) {
-    //     final Fridge _fridge = Fridge.empty();
-    //     return FridgeCard(
-    //       fridge: _fridge,
-    //       onTap: () {
-    //         Navigator.of(context).push(
-    //           PageRouteBuilder(
-    //             pageBuilder: (_, __, ___) => LocalHomePage(),
-    //             transitionDuration: Duration(milliseconds: 500),
-    //             transitionsBuilder:
-    //                 (context, animation, secondaryAnimation, child) {
-    //               const begin = Offset(1.0, 0.0);
-    //               const end = Offset.zero;
-    //               final tween = Tween(begin: begin, end: end);
-    //               final offsetAnimation = animation.drive(tween);
-    //               return SlideTransition(
-    //                 position: offsetAnimation,
-    //                 child: child,
-    //               );
-    //             },
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
   }
 
   Widget disconnectedMessage() {
@@ -345,6 +186,7 @@ class _LocalHomePageState extends State<LocalHomePage> {
               color: Colors.black38,
             ),
           ),
+          Text("Verifica si estas conectado correctamente"),
           TextButton(
             onPressed: () {
               localRepository.connect();
@@ -411,7 +253,8 @@ class _LocalHomePageState extends State<LocalHomePage> {
             Text("Estas conectado a "),
             Text(
               connectionInfo.ssid,
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Consts.primary, fontWeight: FontWeight.bold),
             )
           ],
         ),
@@ -426,3 +269,34 @@ class _LocalHomePageState extends State<LocalHomePage> {
     );
   }
 }
+
+// return ListView.builder(
+//   itemCount: localRepository.fridgesId.length,
+//   scrollDirection: Axis.vertical,
+//   // clipBehavior: Clip.none,
+//   itemBuilder: (context, index) {
+//     final Fridge _fridge = Fridge.empty();
+//     return FridgeCard(
+//       fridge: _fridge,
+//       onTap: () {
+//         Navigator.of(context).push(
+//           PageRouteBuilder(
+//             pageBuilder: (_, __, ___) => LocalHomePage(),
+//             transitionDuration: Duration(milliseconds: 500),
+//             transitionsBuilder:
+//                 (context, animation, secondaryAnimation, child) {
+//               const begin = Offset(1.0, 0.0);
+//               const end = Offset.zero;
+//               final tween = Tween(begin: begin, end: end);
+//               final offsetAnimation = animation.drive(tween);
+//               return SlideTransition(
+//                 position: offsetAnimation,
+//                 child: child,
+//               );
+//             },
+//           ),
+//         );
+//       },
+//     );
+//   },
+// );
