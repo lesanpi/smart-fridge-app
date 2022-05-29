@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wifi_led_esp8266/model/fridge.dart';
+import 'package:wifi_led_esp8266/model/fridge_info.dart';
 
 class FridgeCard extends StatelessWidget {
   const FridgeCard({
@@ -8,7 +8,7 @@ class FridgeCard extends StatelessWidget {
     required this.fridge,
   }) : super(key: key);
 
-  final Fridge fridge;
+  final FridgeInfo fridge;
   final VoidCallback onTap;
 
   @override
@@ -39,25 +39,20 @@ class FridgeCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "#${fridge.id}",
+                "#${fridge.deviceId}",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: Colors.grey.shade400,
                   fontSize: 20,
                 ),
               ),
-              Row(
-                children: [
-                  Spacer(),
-                  Text(
-                    "${fridge.temperature}°C",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black87,
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
+              Text(
+                fridge.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black87,
+                  fontSize: 30,
+                ),
               )
             ],
           ),

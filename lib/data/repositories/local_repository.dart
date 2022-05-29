@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/model/connection_info.dart';
-import 'package:wifi_led_esp8266/model/fridge.dart';
+import 'package:wifi_led_esp8266/model/fridge_info.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
 
 class LocalRepository {
@@ -97,7 +97,7 @@ class LocalRepository {
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
       final jsonDecoded = json.decode(payload);
-      print("Received $topic " + "Payload $payload");
+      // print("Received $topic " + "Payload $payload");
 
       /// The information of the connection was updated
       if (topic == "information") onInformationUpdate(jsonDecoded);
@@ -135,5 +135,75 @@ class LocalRepository {
     // print("ssid ${json["ssid"]} ${json["id"]}");
     _connectionInfo = ConnectionInfo.fromJson(json);
     _connectionInfoStreamController.add(_connectionInfo);
+  }
+
+  void toggleLight(String fridgeId) {
+    dynamic data = jsonEncode({
+      'action': 'toggleLight',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setMaxTemperature(String fridgeId, int maxTemperature) {
+    final data = jsonEncode({
+      'action': 'setMaxTemperature',
+      'maxTemperature': maxTemperature,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setMinTemperature(String fridgeId, int minTemperature) {
+    final data = jsonEncode({
+      'action': 'setMinTemperature',
+      'minTemperature': minTemperature,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setStandaloneMode(String fridgeId, String ssid) {
+    final data = jsonEncode({
+      'action': 'setStandaloneMode',
+      'ssid': ssid,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setCoordinatorMode(String fridgeId, String ssid, String password) {
+    final data = jsonEncode({
+      'action': 'setCoordinatorMode',
+      'ssid': ssid,
+      'password': password,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
   }
 }

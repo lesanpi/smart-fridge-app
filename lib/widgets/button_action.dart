@@ -17,7 +17,7 @@ class ButtonAction extends StatelessWidget {
   final String description;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Column(
         children: [

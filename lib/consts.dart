@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 
 class Consts {
 /* ------------------------- Application parameters ------------------------- */
-  // static const httpLink = "http://localhost:5555/graphql";
+  static const httpLink = "http://192.168.18.3:3001";
   // static const algoliaAppId = "TYPWAL4JZU";
   // static const algoliaApiKey = "858e43b0d195cc08b91edbbc6222f4f8";
+  static const Map<String, String> headers = {
+    'Content-type': 'application/json',
+    'Accept': 'application/json',
+  };
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------- Algolia Search Indexes ------------------------- */
@@ -30,16 +34,18 @@ class Consts {
     900: Color(0xFF006064),
   });
 
-  static const int _kSecondaryPrim = 0xFFC19439;
-  static const MaterialColor secondary = MaterialColor(_kSecondaryPrim, {
-    50: Color(0xFFF9D387),
-    100: Color(0xFFECBF64),
-    200: Color(0xFFD3A74E),
-    300: Color(_kSecondaryPrim),
-    400: Color(0xFFAE8126),
-    500: Color(0xFF9F741D),
-    600: Color(0xFF866014),
-    700: Color(0xFF724F0B),
+  static const int _kSecondaryPrim = 0xFF4dd0e1;
+  static const MaterialColor secondary = MaterialColor(_kPrimaryPrim, {
+    50: Color(0xFFe0f7fa),
+    100: Color(0xFFb2ebf2),
+    200: Color(0xFF80deea),
+    300: Color(_kPrimaryPrim),
+    400: Color(0xFF26c6da),
+    500: Color(0xFF00bcd4),
+    600: Color(0xFF00acc1),
+    700: Color(0xFF0097a7),
+    800: Color(0xFF00838f),
+    900: Color(0xFF006064),
   });
 
   static const int _kNeutralPrim = 0xFFF7F8F9;
@@ -82,6 +88,12 @@ class Consts {
     100: Color(0xFFFFFFFF),
     200: Color(0xFFF7F8F9),
     300: Color(0xFFE8EBED),
+  });
+
+  static const MaterialColor darkSystem = MaterialColor(0xFFF7F8F9, {
+    100: Color(0xFF454C53),
+    200: Color(0xFF2F3136),
+    300: Color(0xFF26282B),
   });
 
 // Text colors

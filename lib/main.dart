@@ -1,25 +1,23 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:wifi_led_esp8266/pages/splash_screen.dart';
-import 'package:wifi_led_esp8266/repositories/local_repository.dart';
+import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
+import 'package:wifi_led_esp8266/data/use_cases/uses_cases.dart';
 import 'package:wifi_led_esp8266/theme.dart';
-import 'utils/utils.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
-import 'dart:convert';
+import 'package:wifi_led_esp8266/ui/splash/splash.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SmartFridgeApp());
 }
 
 void setSystemUI() {
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
+    SystemUiOverlayStyle(
+      // systemNavigationBarColor: Colors.white,
+      systemNavigationBarColor: Consts.darkSystem.shade300,
+      // systemNavigationBarIconBrightness: Brightness.dark,
+      systemNavigationBarIconBrightness: Brightness.light,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
@@ -27,8 +25,8 @@ void setSystemUI() {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SmartFridgeApp extends StatelessWidget {
+  const SmartFridgeApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +35,16 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (_) => LocalRepository()),
+        RepositoryProvider(create: (_) => AuthRepository()),
+        RepositoryProvider(create: (_) => PersistentStorageRepository()),
+        RepositoryProvider(
+            create: (context) => AuthUseCase(context.read(), context.read())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: CustomTheme.mainTheme,
-        home: SplashScreen(),
+        home: const SplashPage(),
       ),
     );
   }

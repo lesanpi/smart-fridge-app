@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wifi_led_esp8266/repositories/local_repository.dart';
+import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/widgets/button_action.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/thermostat.dart';
@@ -53,7 +53,9 @@ class _FridgeWidgetState extends State<FridgeWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ButtonAction(
-                onTap: () {},
+                onTap: () {
+                  localRepository.toggleLight(widget.fridgeState.id);
+                },
                 selected: widget.fridgeState.light,
                 iconData: Icons.lightbulb,
                 description: 'Luz',
@@ -103,7 +105,12 @@ class _FridgeWidgetState extends State<FridgeWidget> {
                   ElevatedButton(
                     onPressed: _minTemperatureSelected.toInt() !=
                             widget.fridgeState.minTemperature
-                        ? () {}
+                        ? () {
+                            localRepository.setMinTemperature(
+                              widget.fridgeState.id,
+                              _minTemperatureSelected.toInt(),
+                            );
+                          }
                         : null,
                     child: Text("Guardar"),
                   ),
@@ -153,7 +160,12 @@ class _FridgeWidgetState extends State<FridgeWidget> {
                   ElevatedButton(
                     onPressed: _maxTemperatureSelected.toInt() !=
                             widget.fridgeState.maxTemperature
-                        ? () {}
+                        ? () {
+                            localRepository.setMaxTemperature(
+                              widget.fridgeState.id,
+                              _maxTemperatureSelected.toInt(),
+                            );
+                          }
                         : null,
                     child: Text("Guardar"),
                   ),
@@ -257,10 +269,7 @@ class _FridgeWidgetState extends State<FridgeWidget> {
                 ),
               const SizedBox(height: 25 / 2),
               ElevatedButton(
-                onPressed: _minTemperatureSelected.toInt() !=
-                        widget.fridgeState.minTemperature
-                    ? () {}
-                    : null,
+                onPressed: _ssidOnTap(),
                 child: Text("EJECUTAR CAMBIOS"),
               ),
             ],
@@ -282,5 +291,30 @@ class _FridgeWidgetState extends State<FridgeWidget> {
         ],
       ),
     );
+  }
+
+  Function()? _ssidOnTap() {
+    if (!_coordinatorMode) {
+      if (ssidStandaloneController.text == widget.fridgeState.ssid &&
+          ssidStandaloneController.text.isNotEmpty) {
+        return null;
+      }
+
+      return _setStandaloneMode;
+    }
+
+    if (ssidCoordinatorController.text.isNotEmpty) return _setCoordinatorMode;
+
+    return null;
+  }
+
+  void _setStandaloneMode() {
+    localRepository.setStandaloneMode(
+        widget.fridgeState.id, ssidStandaloneController.text);
+  }
+
+  void _setCoordinatorMode() {
+    localRepository.setCoordinatorMode(widget.fridgeState.id,
+        ssidCoordinatorController.text, coordinatorPasswordController.text);
   }
 }
