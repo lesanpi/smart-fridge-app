@@ -21,6 +21,7 @@ class SignInCubit extends Cubit<SignInState> {
         return null;
       }
 
+      print('not user in sign in');
       return 'Error al iniciar sesión';
     } on AuthException catch (e) {
       if (e.error == AuthErrorCode.notAuth) {

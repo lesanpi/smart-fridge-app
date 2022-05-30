@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/auth_cubit.dart';
@@ -7,6 +8,8 @@ import 'package:wifi_led_esp8266/ui/auth/cubit/sign_up_cubit.dart';
 import 'package:wifi_led_esp8266/ui/auth/widgets/back_to_sign_in_button.dart';
 import 'package:wifi_led_esp8266/ui/home/home.dart';
 import 'package:wifi_led_esp8266/utils/validators.dart';
+import 'package:wifi_led_esp8266/utils/venezuela.dart';
+import 'package:wifi_led_esp8266/widgets/form_dropdown_with_text.dart';
 import 'package:wifi_led_esp8266/widgets/form_input.dart';
 import 'package:wifi_led_esp8266/widgets/future_loading_indicator.dart';
 
@@ -28,6 +31,11 @@ class _SignUpViewState extends State<SignUpView> {
   /// Email input controller.
   final nameController = TextEditingController();
   get name => nameController.text;
+
+  // Phone Number
+  final phoneNumberController = TextEditingController();
+  get phoneNumber => phoneNumberController.text;
+  String prefixPhoneNumberSelected = Venezuela.phoneNumberPrefixes.first;
 
   /// Password input controller.
   final passwordController = TextEditingController();
@@ -87,6 +95,8 @@ class _SignUpViewState extends State<SignUpView> {
                           const SizedBox(height: Consts.defaultPadding),
                           nameInput(),
                           const SizedBox(height: Consts.defaultPadding),
+                          phoneNumberInput(),
+                          const SizedBox(height: Consts.defaultPadding),
                           passwordInput(),
                           const SizedBox(height: Consts.defaultPadding),
                           confirmPasswordInput(),
@@ -135,13 +145,18 @@ class _SignUpViewState extends State<SignUpView> {
     };
   }
 
-  void _signUp(BuildContext context) {
-    futureLoadingIndicator(
+  void _signUp(BuildContext context) async {
+    await futureLoadingIndicator(
       context,
-      context
-          .read<SignUpCubit>()
-          .signUp(email: email, password: password, name: name),
+      context.read<SignUpCubit>().signUp(
+            email: email,
+            password: password,
+            name: name,
+            phone: prefixPhoneNumberSelected + phoneNumber,
+          ),
+      // timeoutAt: const Duration(seconds: 20),
     ).then((_errorMessage) async {
+      print('error message $_errorMessage');
       if (_errorMessage != null) {
         await onDialogMessage(
           context: context,
@@ -153,7 +168,12 @@ class _SignUpViewState extends State<SignUpView> {
           },
         );
       } else {
-        context.read<AuthCubit>().goTo(AuthState.SIGNIN);
+        await onDialogMessage(
+          context: context,
+          title: '¡Registro exitoso!',
+          message: 'Ahora puedes iniciar sesión',
+        );
+        // context.read<AuthCubit>().goTo(AuthState.SIGNIN);
       }
     });
   }
@@ -193,6 +213,31 @@ class _SignUpViewState extends State<SignUpView> {
       keyboardType: TextInputType.emailAddress,
       validator: Validators.validateEmpty,
       onChanged: (_) => setState(() => {}),
+    );
+  }
+
+  Widget phoneNumberInput() {
+    return FormDropdownWithText(
+      controller: phoneNumberController,
+      value: prefixPhoneNumberSelected,
+      itemOptions: Venezuela.phoneNumberPrefixes,
+      dropdownDecoration: const InputDecoration(hintText: "-"),
+      textInputDecoration: const InputDecoration(
+        hintText: 'Ingrese su número celular',
+      ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9+]')),
+        LengthLimitingTextInputFormatter(7),
+      ],
+      title: "Número celular",
+      onChanged: (value) {
+        setState(() {
+          prefixPhoneNumberSelected = value ?? "V";
+        });
+      },
+      onChangedText: (_) => setState(() {}),
+      keyboardType: TextInputType.phone,
+      validator: Validators.validatePhone,
     );
   }
 

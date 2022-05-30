@@ -123,8 +123,8 @@ class _SignInViewState extends State<SignInView> {
     };
   }
 
-  void _signIn(BuildContext context) {
-    futureLoadingIndicator(
+  void _signIn(BuildContext context) async {
+    await futureLoadingIndicator(
       context,
       context.read<SignInCubit>().signIn(email: email, password: password),
     ).then((_errorMessage) async {

@@ -14,14 +14,17 @@ class AuthRepository {
   /// Verify with the backend the current user,
   /// using the [token] in the persistent storage
   Future<AuthUser?> getCurrentUser(String? token) async {
-    /// TODO: call the backend using the token
     if (token != null) {
-      currentUser = AuthUser(
-        id: "090399",
-        name: "Luis",
-        email: "luis@luis.com",
-        fridges: [],
-      );
+      final url = Uri.parse(Consts.httpLink + '/api/user');
+      final Map<String, String> headers = {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token}',
+      };
+      final response = await http.post(url, headers: headers);
+
+      print(response.body);
+      currentUser = authUserFromJson(response.body);
       return currentUser;
     }
 
@@ -33,63 +36,63 @@ class AuthRepository {
   /// in other case, throws a [AuthException]
   Future<String?> signInWithEmailAndPassword(
       {required String email, required String password}) async {
-    try {
-      final url = Uri.parse(Consts.httpLink + '/api/login');
+    final url = Uri.parse(Consts.httpLink + '/api/login');
 
-      final jsonData = jsonEncode({'email': email, 'password': password});
-      final response =
-          await http.post(url, body: jsonData, headers: Consts.headers);
+    final jsonData = jsonEncode({'email': email, 'password': password});
+    final response =
+        await http.post(url, body: jsonData, headers: Consts.headers);
 
-      final body = jsonDecode(response.body);
-      final statusCode = response.statusCode;
+    final body = jsonDecode(response.body);
+    final statusCode = response.statusCode;
 
-      if (statusCode != 200) {
-        throw AuthException(
-            error: AuthErrorCode.notAuth, message: body["error"]);
-      }
-
-      final _token = body["token"];
-      return _token;
-    } catch (e) {
-      throw AuthException(
-        error: AuthErrorCode.connection,
-        message: 'No se pudo completar la petición',
-      );
+    if (statusCode != 200) {
+      print('error sign in not 200 status');
+      throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
     }
+
+    final _token = body["token"];
+    await getCurrentUser(_token);
+
+    return _token;
   }
 
   Future<void> signUp({
     required String email,
     required String password,
+    required String phone,
     required String name,
   }) async {
     String? error;
     // TODO: sign up
-    try {
-      print('sign up repository');
 
-      final url = Uri.parse(Consts.httpLink + '/api/users');
-      final jsonData = jsonEncode({
-        'email': email,
-        'name': name,
-        'password': password,
-      });
-      final response = await http.post(url, body: jsonData);
+    print('sign up repository');
 
-      final body = jsonDecode(response.body);
-      final statusCode = response.statusCode;
-      print(statusCode);
-      print(body);
+    final url = Uri.parse(Consts.httpLink + '/api/users');
+    final jsonData = jsonEncode({
+      'email': email,
+      'name': name,
+      'phone': phone,
+      'password': password,
+    });
+    print('await response');
 
-      if (statusCode != 200) {
-        throw AuthException(
-            error: AuthErrorCode.notAuth, message: body["error"]);
-      }
-    } catch (e) {
-      throw AuthException(
-        error: AuthErrorCode.connection,
-        message: 'No se pudo completar la petición',
-      );
+    final response = await http.post(
+      url,
+      body: jsonData,
+      headers: Consts.headers,
+    );
+    print('response $response');
+
+    final body = jsonDecode(response.body);
+    final statusCode = response.statusCode;
+
+    print('status');
+    print(statusCode);
+    print(body);
+
+    if (statusCode != 200) {
+      print('error repository not statusCode 200');
+      throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
     }
   }
 

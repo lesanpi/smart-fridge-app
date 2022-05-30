@@ -11,20 +11,31 @@ class SignUpCubit extends Cubit<SignUpFormState> {
   Future<String?> signUp({
     required String email,
     required String password,
+    required String phone,
     required String name,
   }) async {
-    await Future.delayed(const Duration(seconds: 1));
+    print("Haciendo el sign up");
+    // await Future.delayed(const Duration(seconds: 1));
     try {
-      _authRepository.signUp(
+      print('sign up');
+      await _authRepository.signUp(
         email: email,
         password: password,
+        phone: phone,
         name: name,
       );
       return null;
+      print('salio del sign up');
     } on AuthException catch (e) {
-      print("error");
+      print('auth exception cubit');
+
       return e.message;
+    } catch (e) {
+      print('exception cubit');
+      print(e.runtimeType);
+      print('e');
+
+      return "No se pudo completar tu registro";
     }
-    return "No se pudo completar tu registro";
   }
 }
