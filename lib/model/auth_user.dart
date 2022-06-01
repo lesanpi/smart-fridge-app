@@ -8,20 +8,20 @@ String authUserToJson(AuthUser data) => json.encode(data.toJson());
 
 class AuthUser {
   AuthUser({
-    // required this.id,
+    required this.id,
     required this.email,
     required this.name,
     required this.phone,
     required this.fridges,
   });
-  // final String id;
+  final String id;
   final String email;
   final String phone;
   final String name;
   final List<FridgeInfo> fridges;
 
   factory AuthUser.fromJson(Map<String, dynamic> json) => AuthUser(
-        // id: json["id"],
+        id: json["id"],
         email: json["email"],
         name: json["name"],
         phone: json["phone"],
@@ -30,7 +30,7 @@ class AuthUser {
       );
 
   Map<String, dynamic> toJson() => {
-        // "id": id,
+        "id": id,
         "email": email,
         "name": name,
         "phone": phone,

@@ -36,7 +36,7 @@ class ElevatedMenuItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: Consts.defaultPadding,
-            horizontal: Consts.defaultPadding,
+            horizontal: Consts.defaultPadding / 2,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -49,13 +49,14 @@ class ElevatedMenuItem extends StatelessWidget {
                 style: textTheme.headline4?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
+                  // fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
               ),
               if (description.isNotEmpty)
                 Text(
                   description,
-                  style: textTheme.bodySmall?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),
@@ -100,7 +101,7 @@ class OutlinedMenuItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: Consts.defaultPadding,
-          horizontal: Consts.defaultPadding,
+          horizontal: Consts.defaultPadding / 2,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -119,7 +120,7 @@ class OutlinedMenuItem extends StatelessWidget {
             if (description.isNotEmpty)
               Text(
                 description,
-                style: textTheme.bodySmall?.copyWith(
+                style: textTheme.bodyMedium?.copyWith(
                   color: Consts.primary,
                   fontWeight: FontWeight.w600,
                 ),

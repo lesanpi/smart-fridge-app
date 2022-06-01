@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
+import 'package:wifi_led_esp8266/data/use_cases/auth_use_case.dart';
 import 'package:wifi_led_esp8266/ui/auth/auth.dart';
 import 'package:wifi_led_esp8266/ui/home/cubit/sign_out_cubit.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/menu_item.dart';
+import 'package:wifi_led_esp8266/ui/local/view/local_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -90,7 +92,7 @@ class LocalFridgesButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => AuthPage(),
+            pageBuilder: (_, __, ___) => const LocalView(),
             transitionDuration: const Duration(milliseconds: 500),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
@@ -164,7 +166,7 @@ class HelloMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = RepositoryProvider.of<AuthRepository>(context).currentUser;
+    final authUser = RepositoryProvider.of<AuthUseCase>(context).currentUser;
     final textTheme = Theme.of(context).textTheme;
 
     return Column(

@@ -139,7 +139,7 @@ class _LocalHomePageState extends State<LocalHomePage> {
 
         return AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
-          child: StreamBuilder<List<FridgeState>>(
+          child: StreamBuilder<List<FridgeState?>>(
             stream: localRepository.fridgesStateStream,
             builder: (_, fridgesStateSnapshot) {
               final ConnectionInfo connectionInfo = connectionSnapshot.data!;
@@ -148,14 +148,15 @@ class _LocalHomePageState extends State<LocalHomePage> {
                 return noDataButConnectedMessage(connectionInfo);
               }
 
-              final List<FridgeState> fridgesState = fridgesStateSnapshot.data!;
+              final List<FridgeState?> fridgesState =
+                  fridgesStateSnapshot.data!;
 
               if (connectionInfo.standalone && fridgesState.isNotEmpty) {
                 final fridgeState = fridgesState[0];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
-                      child: FridgeWidget(fridgeState: fridgeState)),
+                      child: FridgeWidget(fridgeState: fridgeState!)),
                 );
               }
 
@@ -189,7 +190,7 @@ class _LocalHomePageState extends State<LocalHomePage> {
           Text("Verifica si estas conectado correctamente"),
           TextButton(
             onPressed: () {
-              localRepository.connect();
+              // localRepository.connect();
             },
             child: Text("Volver a intentar"),
           )

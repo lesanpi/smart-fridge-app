@@ -15,9 +15,10 @@ void setSystemUI() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       // systemNavigationBarColor: Colors.white,
-      systemNavigationBarColor: Consts.darkSystem.shade300,
-      // systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarIconBrightness: Brightness.light,
+      // systemNavigationBarColor: Consts.darkSystem.shade300,
+      systemNavigationBarColor: Consts.lightSystem.shade300,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      // systemNavigationBarIconBrightness: Brightness.light,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.light,
@@ -34,7 +35,10 @@ class SmartFridgeApp extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => LocalRepository()),
+        RepositoryProvider(
+          create: (_) => LocalRepository(),
+          lazy: false,
+        ),
         RepositoryProvider(create: (_) => AuthRepository()),
         RepositoryProvider(create: (_) => PersistentStorageRepository()),
         RepositoryProvider(

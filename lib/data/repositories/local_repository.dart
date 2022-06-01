@@ -18,13 +18,13 @@ class LocalRepository {
       new StreamController.broadcast();
   Stream<ConnectionInfo?> get connectionInfoStream =>
       _connectionInfoStreamController.stream;
-  late ConnectionInfo? _connectionInfo;
+  ConnectionInfo? connectionInfo;
 
-  final StreamController<List<FridgeState>> _fridgesStateStreamController =
+  final StreamController<List<FridgeState?>> _fridgesStateStreamController =
       new StreamController.broadcast();
-  Stream<List<FridgeState>> get fridgesStateStream =>
+  Stream<List<FridgeState?>> get fridgesStateStream =>
       _fridgesStateStreamController.stream;
-  List<FridgeState> _fridgesState = [];
+  List<FridgeState?> _fridgesState = [];
   // Fridges's connected.
   List<String> fridgesId = [];
   // MQTT Client
@@ -54,24 +54,26 @@ class LocalRepository {
         .withWillQos(MqttQos.atLeastOnce);
     client.connectionMessage = connMess;
 
-    connect();
+    // connect();
   }
 
   void onDisconnected() {
     connected = false;
-    _connectionInfo = null;
+    connectionInfo = null;
     _fridgesState = [];
 
     _connectionStatusStreamController.add(connected);
-    _connectionInfoStreamController.add(_connectionInfo);
+    _connectionInfoStreamController.add(connectionInfo);
     _fridgesStateStreamController.add(_fridgesState);
   }
 
-  void connect() async {
+  Future<bool> connect(String id, String password) async {
+    if (connectionInfo != null) return true;
+    init();
     try {
       print("Trying to connect...");
       final MqttClientConnectionStatus? connectionStatus =
-          await client.connect();
+          await client.connect(id, password);
       print("Connection ${connectionStatus?.state}");
 
       /// Check we are connected
@@ -79,16 +81,24 @@ class LocalRepository {
         _connectionStatusStreamController.add(true);
         connected = true;
         initSubscription();
-      } else {
-        client.disconnect();
+        print('conected');
+        return connected;
       }
-    } on Exception catch (e) {
+
+      print('disconnected');
       client.disconnect();
+      return false;
+    } on Exception catch (e) {
+      print('disconnected por excepcion');
+      print(e);
+      client.disconnect();
+      return false;
     }
   }
 
   void initSubscription() {
-    client.subscribe('#', MqttQos.atMostOnce);
+    client.subscribe('information', MqttQos.atMostOnce);
+    client.subscribe('state/#', MqttQos.atMostOnce);
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
       final recMess = message![0].payload as MqttPublishMessage;
@@ -97,7 +107,6 @@ class LocalRepository {
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
       final jsonDecoded = json.decode(payload);
-      // print("Received $topic " + "Payload $payload");
 
       /// The information of the connection was updated
       if (topic == "information") onInformationUpdate(jsonDecoded);
@@ -106,35 +115,46 @@ class LocalRepository {
 
       /// A state was updated
       if (topicSplitted[0] == "state") {
-        String? _fridgeId = topicSplitted[1];
-        if (_connectionInfo!.standalone && _fridgeId == _connectionInfo!.id) {
-          final FridgeState _newFridgeState = FridgeState.fromJson(jsonDecoded);
-
-          try {
-            final int _indexOfFridge = _fridgesState
-                .map((e) => e.id)
-                .toList()
-                .indexOf(_newFridgeState.id);
-            if (_indexOfFridge == -1) {
-              _fridgesState.add(_newFridgeState);
-            } else {
-              _fridgesState[_indexOfFridge] = _newFridgeState;
-            }
-            _fridgesStateStreamController.add(_fridgesState);
-          } catch (e) {
-            print("error");
-            print(e);
-          }
-        }
+        final id = topicSplitted[1];
+        onStateUpdate(jsonDecoded, id);
       }
     });
+  }
+
+  void onStateUpdate(Map<String, dynamic> json, String id) {
+    final FridgeState _newFridgeState = FridgeState.fromJson(json);
+    // print(_newFridgeState.temperature);
+
+    if (connectionInfo == null) return;
+
+    if (connectionInfo!.standalone && id == connectionInfo!.id) {
+      final int _indexOfFridge =
+          _fridgesState.indexWhere((state) => state?.id == id);
+
+      if (_indexOfFridge == -1) {
+        _fridgesState.add(_newFridgeState);
+      } else {
+        _fridgesState[_indexOfFridge] = _newFridgeState;
+      }
+
+      _fridgesStateStreamController.add(_fridgesState);
+      return;
+    }
+  }
+
+  FridgeState? getFridgeStateById(String id) {
+    // final int _indexOfFridge =
+    //     _fridgesState.map((e) => e.id).toList().indexOf(_newFridgeState.id);
+
+    return _fridgesState.firstWhere((fridgeState) => fridgeState?.id == id,
+        orElse: () => null);
   }
 
   void onInformationUpdate(Map<String, dynamic> json) {
     // print("new info");
     // print("ssid ${json["ssid"]} ${json["id"]}");
-    _connectionInfo = ConnectionInfo.fromJson(json);
-    _connectionInfoStreamController.add(_connectionInfo);
+    connectionInfo = ConnectionInfo.fromJson(json);
+    _connectionInfoStreamController.add(connectionInfo);
   }
 
   void toggleLight(String fridgeId) {

@@ -40,8 +40,8 @@ class Thermostat extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(30),
           child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: Consts.lightSystem.shade300.withOpacity(0.95),
               shape: BoxShape.circle,
             ),
             child: Center(

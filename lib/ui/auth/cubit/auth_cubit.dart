@@ -12,5 +12,6 @@ class AuthCubit extends Cubit<AuthState> {
   void goTo(AuthState authState) {
     print('Go to $authState');
     emit(authState);
+
   }
 }

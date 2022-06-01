@@ -17,16 +17,18 @@ class ButtonAction extends StatelessWidget {
   final String description;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        children: [
-          PhysicalModel(
+    final textTheme = Theme.of(context).textTheme;
+    return Column(
+      children: [
+        InkWell(
+          borderRadius: BorderRadius.circular(60),
+          onTap: onTap,
+          child: PhysicalModel(
             color: Colors.black12,
             shape: BoxShape.circle,
             elevation: 3,
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               width: 60,
               height: 60,
               child: Icon(
@@ -35,21 +37,23 @@ class ButtonAction extends StatelessWidget {
                 size: 30,
               ),
               decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Color.fromRGBO(0, 0, 0, 0.2),
-                  //     blurRadius: 35,
-                  //     offset: const Offset(0, 15),
-                  //   ),
-                  // ],
-                  color: selected ? Consts.primary : Colors.white),
+                shape: BoxShape.circle,
+                color: selected ? Consts.primary : Colors.white,
+              ),
             ),
           ),
-          const SizedBox(height: 10),
-          Text(description)
-        ],
-      ),
+        ),
+        // const SizedBox(height: Consts.defaultPadding / 4),
+        TextButton(
+          onPressed: onTap,
+          child: Text(
+            description,
+            style: textTheme.bodyMedium?.copyWith(
+                // fontWeight: FontWeight.w600,
+                ),
+          ),
+        )
+      ],
     );
   }
 }

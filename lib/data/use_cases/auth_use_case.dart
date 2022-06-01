@@ -7,13 +7,14 @@ class AuthUseCase {
   final AuthRepository _authRepository;
   final PersistentStorageRepository _persistentStorageRepository;
   String? _token;
+  AuthUser? _authUser;
 
-  AuthUser? get currentUser => _authRepository.currentUser;
+  AuthUser? get currentUser => _authUser;
 
   /// Validates if the current user is not null
   Future<bool> validateLogin() async {
-    final user = _authRepository.currentUser;
-    print("user ${user?.email}");
+    final user = await getCurrentUser();
+    // print("user ${user?.email}");
     return user != null;
   }
 
@@ -21,7 +22,25 @@ class AuthUseCase {
   /// and updates the [_authRepository.currentUser]
   Future<AuthUser?> getCurrentUser() async {
     /// TODO: get current user
-    return await _authRepository.getCurrentUser(_token);
+    _authUser = await _authRepository.getCurrentUser(_token).then((authUser) {
+      _persistentStorageRepository.updateUserData(authUser);
+      return authUser;
+    }).onError((error, stackTrace) async {
+      print('trayendo desde shared preferences por error');
+
+      final AuthUser? authUser =
+          await _persistentStorageRepository.getCurrentUserData();
+
+      return authUser;
+    }).timeout(const Duration(seconds: 5), onTimeout: () async {
+      print('trayendo desde shared preferences');
+      final AuthUser? authUser =
+          await _persistentStorageRepository.getCurrentUserData();
+
+      return authUser;
+    });
+
+    return _authUser;
   }
 
   /// Sign in using the [email] and [password] and
@@ -32,8 +51,9 @@ class AuthUseCase {
 
     _token = await _authRepository.signInWithEmailAndPassword(
         email: email, password: password);
+    final AuthUser? authUser = await getCurrentUser();
     _persistentStorageRepository.updateToken(_token);
-    await getCurrentUser();
+    _persistentStorageRepository.updateUserData(authUser);
 
     return currentUser;
   }
@@ -43,6 +63,7 @@ class AuthUseCase {
   Future<void> signOut() async {
     /// TODO: sign out from auth repository
     _persistentStorageRepository.updateToken(null);
+    _persistentStorageRepository.updateUserData(null);
     _authRepository.signOut();
   }
 
