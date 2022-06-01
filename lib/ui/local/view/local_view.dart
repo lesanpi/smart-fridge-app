@@ -5,6 +5,10 @@ import 'package:wifi_led_esp8266/model/connection_info.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
+import 'package:wifi_led_esp8266/ui/local/view/disconnect_button.dart';
+import 'package:wifi_led_esp8266/ui/local/view/disconnect_view.dart';
+import 'package:wifi_led_esp8266/ui/local/view/no_data_view.dart';
+import 'package:wifi_led_esp8266/ui/local/view/standalone_fridge_view.dart';
 import 'package:wifi_led_esp8266/widgets/button_action.dart';
 import 'package:wifi_led_esp8266/widgets/thermostat.dart';
 
@@ -84,7 +88,7 @@ class LocalConnectionView extends StatelessWidget {
         }
 
         if (connectionInfo.standalone) {
-          return const FridgeView();
+          return const StandaloneFridgeView();
         }
 
         return const FridgeListView();
@@ -132,7 +136,7 @@ class FridgeView extends StatelessWidget {
                       description: 'Luz',
                     ),
                     const SizedBox(
-                      width: 40,
+                      width: Consts.defaultPadding,
                     ),
                     ButtonAction(
                       onTap: () {},
@@ -141,7 +145,7 @@ class FridgeView extends StatelessWidget {
                       description: 'Compresor',
                     ),
                     const SizedBox(
-                      width: 40,
+                      width: Consts.defaultPadding,
                     ),
                     ButtonAction(
                       onTap: () {},
@@ -152,7 +156,7 @@ class FridgeView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: Consts.defaultPadding * 2),
-                DisconnectConnectionButton(
+                DisconnectButton(
                   onTap: () => context.read<FridgeStateCubit>().disconnect(),
                 ),
               ],
@@ -160,43 +164,6 @@ class FridgeView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class NoDataView extends StatelessWidget {
-  const NoDataView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Consts.defaultPadding * 3,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(
-              Icons.wifi_off_rounded,
-              size: 100,
-              color: Consts.primary,
-            ),
-            SizedBox(height: Consts.defaultPadding),
-            Text(
-              "Sin datos",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: Consts.defaultPadding / 2),
-            DisconnectConnectionButton(),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -212,78 +179,9 @@ class FridgeListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('connected'),
-          DisconnectConnectionButton(),
+          DisconnectButton(),
         ],
       ),
-    );
-  }
-}
-
-class DisconnectedView extends StatelessWidget {
-  const DisconnectedView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Consts.defaultPadding * 3,
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.wifi_off_rounded,
-              size: 100,
-              color: Consts.primary,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
-            Text(
-              "Desconectado",
-              style: textTheme.headline3?.copyWith(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
-            ),
-            const SizedBox(height: Consts.defaultPadding / 2),
-            Text(
-              "Asegurate de estar conectado a la red WiFi correcta",
-              style: textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
-            ElevatedButton(
-              onPressed: () {
-                context.read<ConnectionCubit>().connect('');
-              },
-              child: const Text(
-                "Conectarse",
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class DisconnectConnectionButton extends StatelessWidget {
-  const DisconnectConnectionButton({Key? key, this.onTap}) : super(key: key);
-  final VoidCallback? onTap;
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () async {
-        await context.read<ConnectionCubit>().disconnect();
-        Navigator.maybePop(context);
-
-        if (onTap != null) {
-          onTap!();
-        }
-      },
-      child: const Text("Desconectarse"),
     );
   }
 }

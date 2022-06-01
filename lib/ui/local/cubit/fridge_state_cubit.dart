@@ -6,34 +6,28 @@ import 'package:wifi_led_esp8266/model/fridge_state.dart';
 
 class FridgeStateCubit extends Cubit<FridgeState?> {
   FridgeStateCubit(this._localRepository)
-      : super(
-          (_localRepository.connectionInfo == null
-              ? null
-              : _localRepository.getFridgeStateById(
-                  _localRepository.connectionInfo!.id,
-                )),
-        );
+      : super(_localRepository.fridgeSelected);
 
   final LocalRepository _localRepository;
-  StreamSubscription<List<FridgeState?>>? _fridgeStateStream;
+  StreamSubscription<FridgeState?>? _fridgeStateStream;
 
   void init() {
     if (_localRepository.connectionInfo == null) return;
 
-    _fridgeStateStream ??= _localRepository.fridgesStateStream.listen(
-      (fridgesStates) {
-        final _newFridgeState = fridgesStates.firstWhere(
-          (fridgeState) {
-            if (_localRepository.connectionInfo == null) return false;
+    _fridgeStateStream ??= _localRepository.fridgeSelectedStream.listen(
+      (fridgesState) {
+        emit(fridgesState);
+        // final _newFridgeState = fridgesStates.firstWhere(
+        //   (fridgeState) {
+        //     if (_localRepository.connectionInfo == null) return false;
 
-            return fridgeState?.id == _localRepository.connectionInfo!.id;
-          },
-          orElse: () {
-            return null;
-          },
-        );
-        // print('temperature cambiada ${_newFridgeState?.temperature}');
-        emit(_newFridgeState);
+        //     return fridgeState?.id == _localRepository.connectionInfo!.id;
+        //   },
+        //   orElse: () {
+        //     return null;
+        //   },
+        // );
+        // // print('temperature cambiada ${_newFridgeState?.temperature}');
       },
     );
   }
@@ -52,5 +46,23 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
       _fridgeStateStream!.cancel();
     }
     return super.close();
+  }
+
+  void toggleLight() {
+    if (state != null) {
+      _localRepository.toggleLight(state!.id);
+    }
+  }
+
+  void setMaxTemperature(int temperature) {
+    if (state != null) {
+      _localRepository.setMaxTemperature(state!.id, temperature);
+    }
+  }
+
+  void setMinTemperature(int temperature) {
+    if (state != null) {
+      _localRepository.setMinTemperature(state!.id, temperature);
+    }
   }
 }

@@ -21,6 +21,7 @@ class FridgeState {
     required this.minTemperature,
     required this.standalone,
     required this.ssid,
+    required this.ssidCoordinator,
   });
 
   String id;
@@ -32,6 +33,7 @@ class FridgeState {
   int minTemperature;
   bool standalone;
   String ssid;
+  String ssidCoordinator;
 
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
         id: json["id"],
@@ -43,6 +45,7 @@ class FridgeState {
         minTemperature: json["minTemperature"],
         standalone: json["standalone"],
         ssid: json["ssid"],
+        ssidCoordinator: json["ssidCoordinator"],
       );
 
   Map<String, dynamic> toJson() => {

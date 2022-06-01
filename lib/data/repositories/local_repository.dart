@@ -8,27 +8,28 @@ import 'package:wifi_led_esp8266/model/fridge_info.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
 
 class LocalRepository {
-  // Local Connection status
-  bool connected = false;
-  final StreamController<bool> _connectionStatusStreamController =
-      new StreamController.broadcast();
-  Stream<bool> get connectedStream => _connectionStatusStreamController.stream;
-
   final StreamController<ConnectionInfo?> _connectionInfoStreamController =
-      new StreamController.broadcast();
+      StreamController.broadcast();
   Stream<ConnectionInfo?> get connectionInfoStream =>
       _connectionInfoStreamController.stream;
   ConnectionInfo? connectionInfo;
 
   final StreamController<List<FridgeState?>> _fridgesStateStreamController =
-      new StreamController.broadcast();
+      StreamController.broadcast();
   Stream<List<FridgeState?>> get fridgesStateStream =>
       _fridgesStateStreamController.stream;
   List<FridgeState?> _fridgesState = [];
-  // Fridges's connected.
-  List<String> fridgesId = [];
+
+  // Fridge selected.
+  final StreamController<FridgeState?> _fridgeSelectedStreamController =
+      StreamController.broadcast();
+  Stream<FridgeState?> get fridgeSelectedStream =>
+      _fridgeSelectedStreamController.stream;
+  FridgeState? fridgeSelected;
+
   // MQTT Client
   MqttServerClient client = MqttServerClient('192.168.4.1', '');
+
 
   void init() {
     client = MqttServerClient('192.168.4.1', '');
@@ -58,16 +59,18 @@ class LocalRepository {
   }
 
   void onDisconnected() {
-    connected = false;
+    fridgeSelected = null;
     connectionInfo = null;
     _fridgesState = [];
 
-    _connectionStatusStreamController.add(connected);
     _connectionInfoStreamController.add(connectionInfo);
     _fridgesStateStreamController.add(_fridgesState);
+    _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
   Future<bool> connect(String id, String password) async {
+    client.disconnect();
+
     if (connectionInfo != null) return true;
     init();
     try {
@@ -78,11 +81,9 @@ class LocalRepository {
 
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
-        _connectionStatusStreamController.add(true);
-        connected = true;
         initSubscription();
         print('conected');
-        return connected;
+        return true;
       }
 
       print('disconnected');
@@ -128,6 +129,9 @@ class LocalRepository {
     if (connectionInfo == null) return;
 
     if (connectionInfo!.standalone && id == connectionInfo!.id) {
+      fridgeSelected = _newFridgeState;
+      _fridgeSelectedStreamController.add(fridgeSelected);
+
       final int _indexOfFridge =
           _fridgesState.indexWhere((state) => state?.id == id);
 
