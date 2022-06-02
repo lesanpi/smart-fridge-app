@@ -5,6 +5,7 @@ import 'package:wifi_led_esp8266/model/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
 import 'package:wifi_led_esp8266/ui/local/view/disconnect_button.dart';
 import 'package:wifi_led_esp8266/ui/local/view/no_data_view.dart';
+import 'package:wifi_led_esp8266/ui/comunication_mode/view/communication_mode_view.dart';
 import 'package:wifi_led_esp8266/ui/temperature_parameter/temperature_parameter.dart';
 import 'package:wifi_led_esp8266/widgets/button_action.dart';
 import 'package:wifi_led_esp8266/widgets/thermostat.dart';
@@ -28,6 +29,7 @@ class StandaloneFridgeView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: Consts.defaultPadding * 2),
                 const Text('Modo Independiente'),
                 Text(
                   fridge.id,
@@ -63,6 +65,8 @@ class StandaloneFridgeView extends StatelessWidget {
                 ),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 const TemperatureParameterView(),
+                const SizedBox(height: Consts.defaultPadding * 2),
+                const CommunicationModeView(),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 DisconnectButton(
                   onTap: () => context.read<FridgeStateCubit>().disconnect(),

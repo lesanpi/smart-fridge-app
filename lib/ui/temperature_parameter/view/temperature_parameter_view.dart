@@ -40,7 +40,7 @@ class TemperatureParameterView extends StatelessWidget {
                                       .read<TemperatureParameterCubit>()
                                       .set(fridgeState!);
                                 },
-                      child: const Text("Volver a valores por defecto"),
+                      child: const Text("Deshacer cambios"),
                     ),
                   ),
                   const SizedBox(height: Consts.defaultPadding),

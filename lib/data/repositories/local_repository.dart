@@ -30,7 +30,6 @@ class LocalRepository {
   // MQTT Client
   MqttServerClient client = MqttServerClient('192.168.4.1', '');
 
-
   void init() {
     client = MqttServerClient('192.168.4.1', '');
 

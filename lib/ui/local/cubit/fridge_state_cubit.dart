@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/model/fridge_state.dart';
+import 'package:wifi_led_esp8266/ui/comunication_mode/models/communication_mode.dart';
 
 class FridgeStateCubit extends Cubit<FridgeState?> {
   FridgeStateCubit(this._localRepository)
@@ -16,6 +17,8 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
 
     _fridgeStateStream ??= _localRepository.fridgeSelectedStream.listen(
       (fridgesState) {
+        // print(fridgesState?.ssidCoordinator);
+        // print(fridgesState?.ssid);
         emit(fridgesState);
         // final _newFridgeState = fridgesStates.firstWhere(
         //   (fridgeState) {
@@ -63,6 +66,26 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
   void setMinTemperature(int temperature) {
     if (state != null) {
       _localRepository.setMinTemperature(state!.id, temperature);
+    }
+  }
+
+  void setStandaloneMode(CommunicationMode communicationMode) {
+    if (state != null) {
+      _localRepository.setStandaloneMode(
+        state!.id,
+        communicationMode.ssid,
+        // communicationMode.password,
+      );
+    }
+  }
+
+  void setCoordinatorMode(CommunicationMode communicationMode) {
+    if (state != null) {
+      _localRepository.setCoordinatorMode(
+        state!.id,
+        communicationMode.ssidCoordinator,
+        communicationMode.passwordCoordinator,
+      );
     }
   }
 }

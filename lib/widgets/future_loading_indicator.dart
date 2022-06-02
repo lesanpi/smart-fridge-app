@@ -103,9 +103,10 @@ Future onDialogMessage({
       return Center(
         child: Container(
           // width: size.width * 0.8,
-          width: 300,
+          width: 350,
           // height: 425,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+          padding: EdgeInsets.symmetric(
+              horizontal: Consts.defaultPadding, vertical: 30),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius:
@@ -122,7 +123,7 @@ Future onDialogMessage({
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: Consts.defaultPadding * 2),
+              // const SizedBox(height: Consts.defaultPadding),
               warning
                   ? const Icon(
                       Icons.error_outline,
@@ -134,7 +135,7 @@ Future onDialogMessage({
                       color: Consts.primary,
                       size: 80,
                     ),
-              const SizedBox(height: Consts.defaultPadding),
+              const SizedBox(height: Consts.defaultPadding / 2),
               Text(
                 title,
                 style: Theme.of(context).textTheme.headline4!.copyWith(
@@ -144,6 +145,8 @@ Future onDialogMessage({
                     ),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: Consts.defaultPadding),
+
               // if (message.isNotEmpty)
               Text(
                 message,

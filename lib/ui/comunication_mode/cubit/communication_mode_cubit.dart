@@ -16,6 +16,9 @@ class CommunicationModeCubit extends Cubit<CommunicationMode> {
   void onChangedPasswordCoordinator(String passwordCoordinator) =>
       emit(state.copyWith(passwordCoordinator: passwordCoordinator));
 
+  void onChangeCommunicationMode(bool value) =>
+      emit(state.copyWith(coordinatorMode: value));
+
   void set(FridgeState fridgeState) =>
       emit(CommunicationMode.fromFridgeState(fridgeState));
 }

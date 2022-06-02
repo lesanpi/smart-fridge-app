@@ -58,5 +58,6 @@ class FridgeState {
         "minTemperature": minTemperature,
         "standalone": standalone,
         "ssid": ssid,
+        "ssidCoordinator": ssidCoordinator,
       };
 }

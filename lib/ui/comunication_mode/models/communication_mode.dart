@@ -37,7 +37,7 @@ class CommunicationMode extends Equatable {
       CommunicationMode(
         coordinatorMode: coordinatorMode ?? this.coordinatorMode,
         ssid: ssid ?? this.ssid,
-        ssidCoordinator: ssidCoordinator ?? this.ssid,
+        ssidCoordinator: ssidCoordinator ?? this.ssidCoordinator,
         password: password ?? this.password,
         passwordCoordinator: passwordCoordinator ?? this.passwordCoordinator,
       );
