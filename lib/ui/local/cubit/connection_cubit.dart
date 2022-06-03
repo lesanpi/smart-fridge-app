@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/data/use_cases/auth_use_case.dart';
-import 'package:wifi_led_esp8266/model/connection_info.dart';
+import 'package:wifi_led_esp8266/models/connection_info.dart';
 
 class ConnectionCubit extends Cubit<ConnectionInfo?> {
   ConnectionCubit(this._authUseCase, this._localRepository)
@@ -26,7 +26,7 @@ class ConnectionCubit extends Cubit<ConnectionInfo?> {
         } else {
           emit(null);
         }
-      });
+      }) as StreamSubscription<ConnectionInfo?>?;
     }
   }
 
@@ -54,7 +54,7 @@ class ConnectionCubit extends Cubit<ConnectionInfo?> {
       } else {
         emit(null);
       }
-    });
+    }) as StreamSubscription<ConnectionInfo?>?;
   }
 
   Future<void> disconnect() async {

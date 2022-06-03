@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/comunication_mode/models/communication_mode.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/communication_mode.dart';
 
 class FridgeStateCubit extends Cubit<FridgeState?> {
   FridgeStateCubit(this._localRepository)
@@ -16,21 +16,8 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     if (_localRepository.connectionInfo == null) return;
 
     _fridgeStateStream ??= _localRepository.fridgeSelectedStream.listen(
-      (fridgesState) {
-        // print(fridgesState?.ssidCoordinator);
-        // print(fridgesState?.ssid);
-        emit(fridgesState);
-        // final _newFridgeState = fridgesStates.firstWhere(
-        //   (fridgeState) {
-        //     if (_localRepository.connectionInfo == null) return false;
-
-        //     return fridgeState?.id == _localRepository.connectionInfo!.id;
-        //   },
-        //   orElse: () {
-        //     return null;
-        //   },
-        // );
-        // // print('temperature cambiada ${_newFridgeState?.temperature}');
+      (fridgeState) {
+        emit(fridgeState);
       },
     );
   }

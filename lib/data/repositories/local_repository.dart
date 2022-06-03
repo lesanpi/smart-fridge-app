@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:wifi_led_esp8266/model/connection_info.dart';
-import 'package:wifi_led_esp8266/model/fridge_info.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/connection_info.dart';
+import 'package:wifi_led_esp8266/models/fridge_info.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
 
 class LocalRepository {
   final StreamController<ConnectionInfo?> _connectionInfoStreamController =
@@ -14,11 +14,11 @@ class LocalRepository {
       _connectionInfoStreamController.stream;
   ConnectionInfo? connectionInfo;
 
-  final StreamController<List<FridgeState?>> _fridgesStateStreamController =
+  final StreamController<List<FridgeState>> _fridgesStateStreamController =
       StreamController.broadcast();
-  Stream<List<FridgeState?>> get fridgesStateStream =>
+  Stream<List<FridgeState>> get fridgesStateStream =>
       _fridgesStateStreamController.stream;
-  List<FridgeState?> _fridgesState = [];
+  List<FridgeState> fridgesState = [];
 
   // Fridge selected.
   final StreamController<FridgeState?> _fridgeSelectedStreamController =
@@ -60,10 +60,10 @@ class LocalRepository {
   void onDisconnected() {
     fridgeSelected = null;
     connectionInfo = null;
-    _fridgesState = [];
+    fridgesState = [];
 
     _connectionInfoStreamController.add(connectionInfo);
-    _fridgesStateStreamController.add(_fridgesState);
+    _fridgesStateStreamController.add(fridgesState);
     _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
@@ -132,15 +132,15 @@ class LocalRepository {
       _fridgeSelectedStreamController.add(fridgeSelected);
 
       final int _indexOfFridge =
-          _fridgesState.indexWhere((state) => state?.id == id);
+          fridgesState.indexWhere((state) => state.id == id);
 
       if (_indexOfFridge == -1) {
-        _fridgesState.add(_newFridgeState);
+        fridgesState.add(_newFridgeState);
       } else {
-        _fridgesState[_indexOfFridge] = _newFridgeState;
+        fridgesState[_indexOfFridge] = _newFridgeState;
       }
 
-      _fridgesStateStreamController.add(_fridgesState);
+      _fridgesStateStreamController.add(fridgesState);
       return;
     }
   }
@@ -149,8 +149,8 @@ class LocalRepository {
     // final int _indexOfFridge =
     //     _fridgesState.map((e) => e.id).toList().indexOf(_newFridgeState.id);
 
-    return _fridgesState.firstWhere((fridgeState) => fridgeState?.id == id,
-        orElse: () => null);
+    return (fridgesState as List<FridgeState?>)
+        .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
 
   void onInformationUpdate(Map<String, dynamic> json) {

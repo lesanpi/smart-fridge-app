@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/model/connection_info.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
-import 'package:wifi_led_esp8266/ui/local/view/disconnect_button.dart';
-import 'package:wifi_led_esp8266/ui/local/view/disconnect_view.dart';
-import 'package:wifi_led_esp8266/ui/local/view/no_data_view.dart';
-import 'package:wifi_led_esp8266/ui/local/view/standalone_fridge_view.dart';
-import 'package:wifi_led_esp8266/widgets/button_action.dart';
-import 'package:wifi_led_esp8266/widgets/thermostat.dart';
+import 'package:wifi_led_esp8266/models/connection_info.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/widgets/widgets.dart';
 
-class LocalView extends StatelessWidget {
-  const LocalView({Key? key}) : super(key: key);
+import '../local.dart';
+
+class LocalPage extends StatelessWidget {
+  const LocalPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FridgeStateCubit(context.read())..init(),
-          lazy: false,
-        ),
-        BlocProvider(
           create: (context) => ConnectionCubit(
             context.read(),
             context.read(),
           )..init(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => FridgeStateCubit(context.read())..init(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (context) => FridgesCubit(context.read())..init(),
+          lazy: false,
         ),
       ],
       child: Scaffold(
@@ -37,40 +37,15 @@ class LocalView extends StatelessWidget {
         ),
         backgroundColor: Consts.lightSystem.shade300,
         body: const SafeArea(
-          child: LocalConnectionView(),
+          child: LocalView(),
         ),
       ),
     );
   }
 }
 
-class LocalAppBar extends StatelessWidget {
-  const LocalAppBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Consts.lightSystem.shade300,
-      leading: BackButton(color: Consts.neutral.shade700),
-      centerTitle: true,
-      title: BlocBuilder<ConnectionCubit, ConnectionInfo?>(
-        builder: (context, connectionInfo) {
-          return Text(
-            connectionInfo != null ? "Conectado" : "Desconectado",
-            style: TextStyle(
-              color: Consts.neutral.shade700,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class LocalConnectionView extends StatelessWidget {
-  const LocalConnectionView({Key? key}) : super(key: key);
+class LocalView extends StatelessWidget {
+  const LocalView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,10 +63,10 @@ class LocalConnectionView extends StatelessWidget {
         }
 
         if (connectionInfo.standalone) {
-          return const StandaloneFridgeView();
+          return const StandaloneView();
         }
 
-        return const FridgeListView();
+        return const CoordinatorView();
       },
     );
   }
@@ -164,24 +139,6 @@ class FridgeView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class FridgeListView extends StatelessWidget {
-  const FridgeListView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('connected'),
-          DisconnectButton(),
-        ],
-      ),
     );
   }
 }

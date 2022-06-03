@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
 
 class CommunicationMode extends Equatable {
   const CommunicationMode({

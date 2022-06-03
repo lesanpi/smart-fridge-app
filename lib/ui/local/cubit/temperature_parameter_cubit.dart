@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/temperature_parameter/models/temperature_parameters.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/temperature_parameters.dart';
 
 class TemperatureParameterCubit extends Cubit<TemperatureParameter> {
   TemperatureParameterCubit(TemperatureParameter initialState)

@@ -9,7 +9,7 @@ class CustomTheme {
   static TextStyle _workSansMedium =
       const TextStyle(fontFamily: 'Work Sans Medium');
 
-  static RoundedRectangleBorder _buttonShape = RoundedRectangleBorder(
+  static RoundedRectangleBorder buttonShape = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(Consts.defaultBorderRadius),
   );
 
@@ -123,12 +123,12 @@ class CustomTheme {
           width: 1.0,
         ),
         primary: Consts.primary.shade400,
-        shape: _buttonShape,
+        shape: buttonShape,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        shape: _buttonShape,
+        shape: buttonShape,
         primary: Consts.primary.shade400,
       ),
     ),

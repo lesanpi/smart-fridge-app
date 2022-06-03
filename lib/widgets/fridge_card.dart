@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wifi_led_esp8266/model/fridge_info.dart';
+import 'package:wifi_led_esp8266/models/fridge_info.dart';
 
 class FridgeCard extends StatelessWidget {
   const FridgeCard({

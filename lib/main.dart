@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/data/repositories/bluetooth_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/data/use_cases/uses_cases.dart';
 import 'package:wifi_led_esp8266/theme.dart';
@@ -41,6 +42,7 @@ class SmartFridgeApp extends StatelessWidget {
         ),
         RepositoryProvider(create: (_) => AuthRepository()),
         RepositoryProvider(create: (_) => PersistentStorageRepository()),
+        RepositoryProvider(create: (_) => BluetoothRepository()),
         RepositoryProvider(
             create: (context) => AuthUseCase(context.read(), context.read())),
       ],

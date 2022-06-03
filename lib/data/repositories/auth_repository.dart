@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/exceptions/auth_exception.dart';
-import 'package:wifi_led_esp8266/model/auth_user.dart';
+import 'package:wifi_led_esp8266/models/auth_user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthRepository {

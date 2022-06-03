@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/local/view/disconnect_button.dart';
+import 'package:wifi_led_esp8266/ui/local/local.dart';
 
 class NoDataView extends StatelessWidget {
   const NoDataView({Key? key}) : super(key: key);

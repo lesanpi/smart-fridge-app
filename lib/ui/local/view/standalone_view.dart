@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
-import 'package:wifi_led_esp8266/ui/local/view/disconnect_button.dart';
-import 'package:wifi_led_esp8266/ui/local/view/no_data_view.dart';
-import 'package:wifi_led_esp8266/ui/comunication_mode/view/communication_mode_view.dart';
-import 'package:wifi_led_esp8266/ui/temperature_parameter/temperature_parameter.dart';
-import 'package:wifi_led_esp8266/widgets/button_action.dart';
-import 'package:wifi_led_esp8266/widgets/thermostat.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/widgets/widgets.dart';
+import '../local.dart';
 
-class StandaloneFridgeView extends StatelessWidget {
-  const StandaloneFridgeView({Key? key}) : super(key: key);
+class StandaloneView extends StatelessWidget {
+  const StandaloneView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

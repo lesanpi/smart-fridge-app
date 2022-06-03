@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/ui/auth/auth.dart';
 import 'package:wifi_led_esp8266/ui/home/home.dart';
 
@@ -33,6 +34,7 @@ class SplashPage extends StatelessWidget {
           }
         },
         child: Scaffold(
+          backgroundColor: Consts.lightSystem.shade300,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

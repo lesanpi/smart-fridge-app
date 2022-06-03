@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wifi_led_esp8266/model/auth_user.dart';
+import 'package:wifi_led_esp8266/models/auth_user.dart';
 
 class PersistentStorageRepository {
   void updateToken(String? token) async {

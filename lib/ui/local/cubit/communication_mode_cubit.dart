@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wifi_led_esp8266/model/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/comunication_mode/models/communication_mode.dart';
+import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/communication_mode.dart';
 
 class CommunicationModeCubit extends Cubit<CommunicationMode> {
   CommunicationModeCubit(CommunicationMode initialState) : super(initialState);
