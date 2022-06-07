@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Consts {
 /* ------------------------- Application parameters ------------------------- */
   // static const httpLink = "http://192.168.18.3:3001";
-  static const httpLink = "http://192.168.1.104:3001";
+  static const httpLink = "http://192.168.1.103:3001";
   // static const algoliaAppId = "TYPWAL4JZU";
   // static const algoliaApiKey = "858e43b0d195cc08b91edbbc6222f4f8";
   static const Map<String, String> headers = {

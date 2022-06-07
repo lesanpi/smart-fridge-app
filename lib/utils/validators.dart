@@ -81,8 +81,8 @@ class Validators {
     if (password.isEmpty) {
       return 'Este campo es obligatorio';
     }
-    if (password.length < 6) {
-      return 'La contraseña debe tener al menos 6 caracteres';
+    if (password.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres';
     }
 
     return null;

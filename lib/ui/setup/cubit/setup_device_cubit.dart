@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:wifi_led_esp8266/models/device_configuration.dart';
 
 class SetupDeviceCubit extends Cubit<BluetoothDevice?> {
   SetupDeviceCubit() : super(null);
@@ -24,13 +25,18 @@ class SetupDeviceCubit extends Cubit<BluetoothDevice?> {
     return super.close();
   }
 
-  Future<void> sendData() async {
+  Future<void> sendData(DeviceConfiguration deviceConfiguration) async {
     print('tratando de enviando data');
     print(state?.address);
     print(state?.name ?? 'sin nombre');
+
+    print(deviceConfiguration.toJson());
     if (_bluetoothConnection != null) {
       if (_bluetoothConnection!.isConnected) {
-        _bluetoothConnection!.output.add(ascii.encode('hola mundo'));
+        print(ascii.encode(deviceConfiguration.toJson()));
+        print(ascii.decode(ascii.encode(deviceConfiguration.toJson())));
+        _bluetoothConnection!.output
+            .add(ascii.encode(deviceConfiguration.toJson()));
         final result = await _bluetoothConnection!.output.allSent;
         print('result $result');
       } else {
