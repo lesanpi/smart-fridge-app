@@ -29,6 +29,7 @@ class FridgesEmpty extends StatelessWidget {
                 fontWeight: FontWeight.w300,
                 color: Colors.black38,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(
@@ -36,8 +37,9 @@ class FridgesEmpty extends StatelessWidget {
               style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 3 * Consts.defaultPadding),
+            const DisconnectButton(),
             const SizedBox(height: Consts.defaultPadding),
-            const DisconnectButton()
           ],
         ),
       ),

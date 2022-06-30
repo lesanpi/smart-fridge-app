@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
+import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
+import 'package:wifi_led_esp8266/ui/local/local.dart';
 
 class DisconnectedView extends StatelessWidget {
   const DisconnectedView({Key? key}) : super(key: key);
@@ -39,8 +41,13 @@ class DisconnectedView extends StatelessWidget {
             ),
             const SizedBox(height: Consts.defaultPadding),
             ElevatedButton(
-              onPressed: () {
-                context.read<ConnectionCubit>().connect('');
+              onPressed: () async {
+                await context.read<ConnectionCubit>().connect('');
+
+                // context.read<ConnectionCubit>().connect('').then((_) {
+                //   context.read<ConnectionCubit>().connect('');
+                //   context.read<ConnectionCubit>().connect('');
+                // });
               },
               child: const Text(
                 "Conectarse",

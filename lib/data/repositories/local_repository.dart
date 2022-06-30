@@ -28,10 +28,10 @@ class LocalRepository {
   FridgeState? fridgeSelected;
 
   // MQTT Client
-  MqttServerClient client = MqttServerClient('192.168.4.1', '');
+  MqttServerClient client = MqttServerClient('192.168.0.1', '');
 
   void init() {
-    client = MqttServerClient('192.168.4.1', '');
+    client = MqttServerClient('192.168.0.1', '');
 
     /// Set the correct MQTT protocol for mosquito
     client.setProtocolV311();
@@ -69,7 +69,7 @@ class LocalRepository {
 
   Future<bool> connect(String id, String password) async {
     client.disconnect();
-
+    print('Connecting..');
     if (connectionInfo != null) return true;
     init();
     try {
@@ -108,6 +108,9 @@ class LocalRepository {
 
       final jsonDecoded = json.decode(payload);
 
+      print(jsonDecoded);
+      if (jsonDecoded == null) return;
+
       /// The information of the connection was updated
       if (topic == "information") onInformationUpdate(jsonDecoded);
 
@@ -143,6 +146,26 @@ class LocalRepository {
       _fridgesStateStreamController.add(fridgesState);
       return;
     }
+
+    if (!connectionInfo!.standalone) {
+      final int _indexOfFridge =
+          fridgesState.indexWhere((state) => state.id == id);
+
+      print(_indexOfFridge);
+      if (_indexOfFridge == -1) {
+        print('Agrego nuevo estado a la lista');
+        fridgesState.add(_newFridgeState);
+      } else {
+        print('Sustituyo estado existente');
+        // print(_newFridgeState.temperature);
+        fridgesState[_indexOfFridge] = _newFridgeState;
+      }
+      print('Finalmente' +
+          fridgesState.map((e) => e.toJson()).toList().toString());
+
+      _fridgesStateStreamController.add(fridgesState);
+      return;
+    }
   }
 
   FridgeState? getFridgeStateById(String id) {
@@ -154,7 +177,8 @@ class LocalRepository {
   }
 
   void onInformationUpdate(Map<String, dynamic> json) {
-    // print("new info");
+    print("new info");
+    print(json);
     // print("ssid ${json["ssid"]} ${json["id"]}");
     connectionInfo = ConnectionInfo.fromJson(json);
     _connectionInfoStreamController.add(connectionInfo);

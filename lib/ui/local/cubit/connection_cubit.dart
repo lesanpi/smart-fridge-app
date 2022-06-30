@@ -30,7 +30,7 @@ class ConnectionCubit extends Cubit<ConnectionInfo?> {
     }
   }
 
-  void connect(String password) async {
+  Future<void> connect(String password) async {
     // print('intentando conectarme localmente');
     final user = _authUseCase.currentUser;
 
