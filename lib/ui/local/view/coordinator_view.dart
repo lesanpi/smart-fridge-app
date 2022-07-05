@@ -5,6 +5,7 @@ import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/fridges_cubit.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
+import 'package:wifi_led_esp8266/ui/local/view/fridge_page.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/fridges_empty.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
 import '../local.dart';
@@ -18,10 +19,16 @@ class CoordinatorView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => FridgesCubit(context.read())..init(),
-      child: BlocBuilder<ConnectionCubit, ConnectionInfo?>(
+      lazy: false,
+      child: BlocConsumer<ConnectionCubit, ConnectionInfo?>(
+        listener: (context, _) {
+          context.read<FridgesCubit>().init();
+        },
         builder: (context, connectionInfo) {
           return BlocConsumer<FridgesCubit, List<FridgeState>>(
-            listener: (context, fridgeList) {},
+            listener: (context, fridgeList) {
+              // context.read<FridgesCubit>().init();
+            },
             builder: (context, fridgeList) {
               print('fridgelist');
               print(fridgeList.map((e) => e.toJson()).toList());
@@ -41,7 +48,35 @@ class CoordinatorView extends StatelessWidget {
                     child: ListView.separated(
                       itemBuilder: (context, index) {
                         return FridgeCard(
-                            onTap: () => {}, fridge: fridgeList[index]);
+                            onTap: () async {
+                              await context
+                                  .read<FridgesCubit>()
+                                  .selectedFridge(fridgeList[index])
+                                  .then((value) {
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) =>
+                                        const FridgePage(),
+                                    transitionDuration:
+                                        const Duration(milliseconds: 500),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      const begin = Offset(1.0, 0.0);
+                                      const end = Offset.zero;
+                                      final tween =
+                                          Tween(begin: begin, end: end);
+                                      final offsetAnimation =
+                                          animation.drive(tween);
+                                      return SlideTransition(
+                                        position: offsetAnimation,
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              });
+                            },
+                            fridge: fridgeList[index]);
                       },
                       separatorBuilder: (_, __) =>
                           const SizedBox(height: Consts.defaultPadding),

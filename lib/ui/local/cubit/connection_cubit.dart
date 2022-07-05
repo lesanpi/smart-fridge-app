@@ -46,6 +46,10 @@ class ConnectionCubit extends Cubit<ConnectionInfo?> {
     bool connected = await _localRepository.connect(user.id, password);
     if (!connected) return;
 
+    if (_connectionInfoStream != null) {
+      await _connectionInfoStream!.cancel();
+    }
+
     _connectionInfoStream =
         _localRepository.connectionInfoStream.listen((connectionInfo) {
       if (connectionInfo != null) {

@@ -63,7 +63,7 @@ class FridgeCard extends StatelessWidget {
                       Text(
                         fridge.id,
                         style: textTheme.headline2?.copyWith(
-                          color: Consts.primary.shade800,
+                          color: Consts.primary.shade400,
                         ),
                       )
                     ],

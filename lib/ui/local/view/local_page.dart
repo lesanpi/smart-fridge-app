@@ -25,6 +25,9 @@ class LocalPage extends StatelessWidget {
           create: (context) => FridgeStateCubit(context.read())..init(),
           lazy: false,
         ),
+        // BlocProvider(
+        //   create: (context) => FridgesCubit(context.read())..init(),
+        // ),
       ],
       child: Scaffold(
         appBar: const PreferredSize(
@@ -52,7 +55,7 @@ class LocalView extends StatelessWidget {
         if (connectionInfo.standalone) {
           context.read<FridgeStateCubit>().init();
         } else {
-          context.read<FridgesCubit>().init();
+          // context.read<FridgesCubit>().init();
         }
       },
       builder: (context, connectionInfo) {

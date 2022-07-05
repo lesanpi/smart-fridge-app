@@ -68,9 +68,15 @@ class LocalRepository {
   }
 
   Future<bool> connect(String id, String password) async {
-    client.disconnect();
+    if (client.connectionStatus?.state == MqttConnectionState.connected ||
+        client.connectionStatus?.state == MqttConnectionState.connecting) {
+      client.disconnect();
+    }
+    await Future.delayed(Duration(seconds: 1));
     print('Connecting..');
+
     if (connectionInfo != null) return true;
+
     init();
     try {
       print("Trying to connect...");
@@ -151,21 +157,34 @@ class LocalRepository {
       final int _indexOfFridge =
           fridgesState.indexWhere((state) => state.id == id);
 
-      print(_indexOfFridge);
+      if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
+        fridgeSelected = _newFridgeState;
+        _fridgeSelectedStreamController.add(fridgeSelected);
+      }
+
+      // print(_indexOfFridge);
       if (_indexOfFridge == -1) {
-        print('Agrego nuevo estado a la lista');
+        // print('Agrego nuevo estado a la lista');
         fridgesState.add(_newFridgeState);
       } else {
-        print('Sustituyo estado existente');
+        // print('Sustituyo estado existente');
         // print(_newFridgeState.temperature);
         fridgesState[_indexOfFridge] = _newFridgeState;
       }
-      print('Finalmente' +
-          fridgesState.map((e) => e.toJson()).toList().toString());
+      // print('Finalmente' +
+      // fridgesState.map((e) => e.toJson()).toList().toString());
 
       _fridgesStateStreamController.add(fridgesState);
       return;
     }
+  }
+
+  void onInformationUpdate(Map<String, dynamic> json) {
+    print("new info");
+    print(json);
+    // print("ssid ${json["ssid"]} ${json["id"]}");
+    connectionInfo = ConnectionInfo.fromJson(json);
+    _connectionInfoStreamController.add(connectionInfo);
   }
 
   FridgeState? getFridgeStateById(String id) {
@@ -176,12 +195,14 @@ class LocalRepository {
         .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
 
-  void onInformationUpdate(Map<String, dynamic> json) {
-    print("new info");
-    print(json);
-    // print("ssid ${json["ssid"]} ${json["id"]}");
-    connectionInfo = ConnectionInfo.fromJson(json);
-    _connectionInfoStreamController.add(connectionInfo);
+  void selectFridge(FridgeState _fridgeSelected) {
+    fridgeSelected = _fridgeSelected;
+    _fridgeSelectedStreamController.add(fridgeSelected);
+  }
+
+  void unselectFridge() {
+    fridgeSelected = null;
+    _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
   void toggleLight(String fridgeId) {
