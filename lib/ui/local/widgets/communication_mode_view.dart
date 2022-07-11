@@ -264,8 +264,10 @@ class _CoordinatorCommunicationViewState
                 decoration: const InputDecoration(
                   fillColor: Colors.white,
                   // border: OutlineInputBorder(),
+
                   hintText: 'Contraseña del Coordinador',
                 ),
+                obscureText: true,
                 onChanged: context
                     .read<CommunicationModeCubit>()
                     .onChangedPasswordCoordinator,

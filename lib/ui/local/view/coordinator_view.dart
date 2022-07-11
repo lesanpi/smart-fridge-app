@@ -30,8 +30,8 @@ class CoordinatorView extends StatelessWidget {
               // context.read<FridgesCubit>().init();
             },
             builder: (context, fridgeList) {
-              print('fridgelist');
-              print(fridgeList.map((e) => e.toJson()).toList());
+              // print('fridgelist');
+              // print(fridgeList.map((e) => e.toJson()).toList());
 
               if (fridgeList.isEmpty) return const FridgesEmpty();
 

@@ -25,7 +25,8 @@ class CommunicationMode extends Equatable {
       );
 
   @override
-  List<Object?> get props => [coordinatorMode, ssid, password];
+  List<Object?> get props =>
+      [coordinatorMode, ssid, password, ssidCoordinator, passwordCoordinator];
 
   CommunicationMode copyWith({
     bool? coordinatorMode,

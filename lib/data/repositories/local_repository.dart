@@ -266,6 +266,7 @@ class LocalRepository {
       'ssid': ssid,
       'password': password,
     });
+    print(data);
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
