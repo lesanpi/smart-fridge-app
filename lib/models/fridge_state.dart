@@ -2,6 +2,7 @@
 //
 //     final fridgeState = fridgeStateFromJson(jsonString);
 
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -10,9 +11,10 @@ FridgeState fridgeStateFromJson(String str) =>
 
 String fridgeStateToJson(FridgeState data) => json.encode(data.toJson());
 
-class FridgeState {
+class FridgeState extends Equatable {
   FridgeState({
     required this.id,
+    required this.name,
     required this.temperature,
     required this.light,
     required this.compressor,
@@ -25,6 +27,7 @@ class FridgeState {
   });
 
   String id;
+  String name;
   int temperature;
   bool light;
   bool compressor;
@@ -37,6 +40,7 @@ class FridgeState {
 
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
         id: json["id"],
+        name: json["name"],
         temperature: json["temperature"],
         light: json["light"],
         compressor: json["compressor"],
@@ -50,6 +54,7 @@ class FridgeState {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "name": name,
         "temperature": temperature,
         "light": light,
         "compressor": compressor,
@@ -60,4 +65,18 @@ class FridgeState {
         "ssid": ssid,
         "ssidCoordinator": ssidCoordinator,
       };
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        temperature,
+        light,
+        compressor,
+        door,
+        maxTemperature,
+        minTemperature,
+        ssid,
+        ssidCoordinator,
+      ];
 }

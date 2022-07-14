@@ -101,15 +101,15 @@ class DeviceConfiguration extends Equatable {
       );
 
   Map<String, dynamic> toMap() => {
-        "n": name,
-        "miT": minTemperature,
-        "maT": maxTemperature,
-        "f": ssid,
-        "c": ssidCoordinator,
-        "i": ssidInternet,
-        "p": password,
-        "pC": passwordCoordinator,
-        "pI": passwordInternet,
-        "cM": startOnCoordinatorMode,
+        "name": name,
+        "minTemperature": minTemperature,
+        "maxTemperature": maxTemperature,
+        "ssid": ssid,
+        "ssidCoordinator": ssidCoordinator,
+        "ssidInternet": ssidInternet,
+        "password": password,
+        "passwordCoordinator": passwordCoordinator,
+        "passwordInternet": passwordInternet,
+        "startOnCoordinatorMode": startOnCoordinatorMode,
       };
 }

@@ -8,6 +8,8 @@ class NoDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -15,14 +17,14 @@ class NoDataView extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(
+          children: [
+            const Icon(
               Icons.wifi_off_rounded,
               size: 100,
               color: Consts.primary,
             ),
-            SizedBox(height: Consts.defaultPadding),
-            Text(
+            const SizedBox(height: Consts.defaultPadding),
+            const Text(
               "Sin datos",
               style: TextStyle(
                 fontSize: 30,
@@ -31,8 +33,16 @@ class NoDataView extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: Consts.defaultPadding / 2),
-            DisconnectButton(),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            Text(
+              "Asegurate de haber configurado tu dispositivo previamente",
+              style: textTheme.bodyMedium?.copyWith(
+                fontSize: 15,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Consts.defaultPadding * 2),
+            const DisconnectButton(),
           ],
         ),
       ),

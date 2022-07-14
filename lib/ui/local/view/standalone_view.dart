@@ -24,7 +24,7 @@ class StandaloneView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: Consts.defaultPadding * 2),
+                NameController(initialName: fridge.name),
                 const Text('Modo Independiente'),
                 Text(
                   fridge.id,
@@ -88,6 +88,78 @@ class LightButton extends StatelessWidget {
       selected: selected,
       iconData: Icons.lightbulb,
       description: 'Luz',
+    );
+  }
+}
+
+class NameController extends StatefulWidget {
+  const NameController({Key? key, required this.initialName}) : super(key: key);
+  final String initialName;
+  @override
+  State<NameController> createState() => _NameControllerState();
+}
+
+class _NameControllerState extends State<NameController> {
+  late TextEditingController nameController =
+      TextEditingController(text: widget.initialName);
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, state) {
+        return Center(
+          child: SizedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (state!.name != nameController.text)
+                  GestureDetector(
+                    onTap: () => nameController.text = state.name,
+                    child: Icon(
+                      Icons.restart_alt,
+                      size: 30,
+                      color: Consts.primary.shade600,
+                    ),
+                  )
+                else
+                  const SizedBox(width: 40),
+                SizedBox(
+                  width: size.width * 0.65,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Consts.primary.shade600,
+                        ),
+                      ),
+                      suffixIcon: Icon(
+                        Icons.edit,
+                        size: 25,
+                        color: Consts.primary.shade600,
+                      ),
+                    ),
+                    style: textTheme.headline2?.copyWith(
+                      color: Consts.primary.shade600,
+                    ),
+                    controller: nameController,
+                    onChanged: (_) => setState(() {}),
+                    onSubmitted: (name) {
+                      if (state.name != nameController.text &&
+                          name.isNotEmpty) {
+                        context.read<FridgeStateCubit>().changeName(name);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

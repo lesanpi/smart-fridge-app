@@ -35,10 +35,8 @@ class FridgePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Text(
-                      //   fridge.id,
-                      //   style: textTheme.headline2,
-                      // ),
+                      const SizedBox(height: Consts.defaultPadding),
+                      NameController(initialName: fridge.name),
                       Text(fridge.id),
                       const SizedBox(height: Consts.defaultPadding * 1),
                       Thermostat(temperature: fridge.temperature),
@@ -98,8 +96,11 @@ class FridgeAppBar extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            fridge?.id ?? "",
-            style: textTheme.headline3,
+            fridge?.name ?? "",
+            style: TextStyle(
+              color: Consts.neutral.shade700,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           leading: BackButton(
             color: Consts.neutral.shade700,

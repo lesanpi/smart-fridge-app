@@ -38,6 +38,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     return super.close();
   }
 
+  void changeName(String name) {
+    if (name.isNotEmpty) {
+      _localRepository.changeName(state!.id, name);
+    }
+  }
+
   void toggleLight() {
     if (state != null) {
       _localRepository.toggleLight(state!.id);
