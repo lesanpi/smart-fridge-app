@@ -5,6 +5,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/models/device_configuration.dart';
+import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/fridge_info.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 
@@ -298,6 +299,24 @@ class LocalRepository {
 
     final data = jsonEncode(
       {'action': 'configureDevice', ...configuration.toMap()},
+    );
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+
+    client.publishMessage(
+      'action/' + connectionInfo!.id,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void configureCoordinator(CoordinatorConfiguration configuration) {
+    if (connectionInfo == null) return;
+    if (!connectionInfo!.configurationMode) return;
+    if (connectionInfo!.standalone) return;
+
+    final data = jsonEncode(
+      {'action': 'configureCoordinator', ...configuration.toMap()},
     );
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

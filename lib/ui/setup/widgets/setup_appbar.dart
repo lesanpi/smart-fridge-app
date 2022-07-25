@@ -9,19 +9,29 @@ class SetupAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Consts.lightSystem.shade300,
-      // backgroundColor: Consts.neutral.shade300,
-      leading: BackButton(color: Consts.neutral.shade700),
-      centerTitle: true,
-      title: Text(
-        'Agregar nuevo dispositivo',
-        style: TextStyle(
-          color: Consts.neutral.shade700,
-          fontWeight: FontWeight.bold,
+    return BlocBuilder<ConnectionCubit, ConnectionInfo?>(
+        builder: (context, state) {
+      bool isCoordinator = false;
+      if (state != null) {
+        isCoordinator = !state.standalone;
+      }
+
+      return AppBar(
+        elevation: 0,
+        backgroundColor: Consts.lightSystem.shade300,
+        // backgroundColor: Consts.neutral.shade300,
+        leading: BackButton(color: Consts.neutral.shade700),
+        centerTitle: true,
+        title: Text(
+          isCoordinator
+              ? 'Configurar nuevo coordinador'
+              : 'Configurar nuevo dispositivo',
+          style: TextStyle(
+            color: Consts.neutral.shade700,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

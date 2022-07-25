@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/device_configuration.dart';
 import 'package:wifi_led_esp8266/models/models.dart';
 import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
+import 'package:wifi_led_esp8266/ui/setup/cubit/coordinator_configuration_cubit.dart';
 import 'package:wifi_led_esp8266/ui/setup/cubit/device_configuration_cubit.dart';
 import 'package:wifi_led_esp8266/ui/setup/widgets/setup_appbar.dart';
 import 'package:wifi_led_esp8266/utils/validators.dart';
@@ -54,7 +56,7 @@ class SetupView extends StatelessWidget {
             if (connectionInfo.standalone) {
               return const SetupDeviceController();
             }
-            return const SetupDeviceController();
+            return const SetupDeviceCoordinator();
           },
         ),
       ),
@@ -676,6 +678,321 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
               context
                   .read<DeviceConfigurationCubit>()
                   .configureController(deviceConfiguration))
+          .then((value) {
+        Navigator.maybePop(context);
+      });
+    };
+  }
+}
+
+class SetupDeviceCoordinator extends StatefulWidget {
+  const SetupDeviceCoordinator({Key? key}) : super(key: key);
+
+  @override
+  State<SetupDeviceCoordinator> createState() => _SetupDeviceCoordinatorState();
+}
+
+class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
+  final _formKeyCoordinator = GlobalKey<FormState>();
+  final _formKeyInternet = GlobalKey<FormState>();
+  late final TextEditingController nameController = TextEditingController();
+  late final TextEditingController ssidController = TextEditingController();
+  late final TextEditingController ssidCoordinatorController =
+      TextEditingController();
+  late final TextEditingController ssidInternetController =
+      TextEditingController();
+  late final TextEditingController passwordController = TextEditingController();
+  late final TextEditingController passwordCoordinatorController =
+      TextEditingController();
+  late final TextEditingController passwordInternetController =
+      TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return BlocProvider(
+      create: (context) => CoordinatorConfigurationCubit(context.read()),
+      child:
+          BlocConsumer<CoordinatorConfigurationCubit, CoordinatorConfiguration>(
+        listener: (context, deviceConfiguration) {
+          print('cambio');
+          // ssidController.text = deviceConfiguration.ssid;
+          // ssidCoordinatorController.text = deviceConfiguration.ssidCoordinator;
+          // ssidInternetController.text = deviceConfiguration.ssidInternet;
+          // passwordController.text = deviceConfiguration.password;
+          // passwordCoordinatorController.text =
+          //     deviceConfiguration.passwordCoordinator;
+          // passwordInternetController.text =
+          //     deviceConfiguration.passwordInternet;
+        },
+        builder: (context, deviceConfiguration) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Consts.defaultPadding,
+                vertical: Consts.defaultPadding,
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              "Coordinador de comunicaciones",
+                              style: textTheme.headline2,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Center(
+                            child: Text(
+                              context.read<ConnectionCubit>().state?.id ?? '',
+                            ),
+                          ),
+                          Form(
+                            key: _formKeyCoordinator,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                /// Coordinador Wifi
+                                const SizedBox(height: Consts.defaultPadding),
+                                const Text(
+                                  'Nombre del equipo',
+                                  style: TextStyle(
+                                    color: Consts.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                  height: Consts.defaultPadding / 2,
+                                ),
+                                TextFormField(
+                                  controller: nameController,
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    // border: OutlineInputBorder(),
+                                    hintText:
+                                        'Nombre para identificar al equipo',
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    context
+                                        .read<CoordinatorConfigurationCubit>()
+                                        .onChangedName(value);
+                                  },
+                                  validator: Validators.validateEmpty,
+                                  autovalidateMode: AutovalidateMode.always,
+                                ),
+                                const SizedBox(
+                                  height: Consts.defaultPadding / 2,
+                                ),
+                                const Center(
+                                  child: Text(
+                                    "WiFi del Coordinador",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                const Text(
+                                  'SSDI del Coordinador',
+                                  style: TextStyle(
+                                    color: Consts.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                TextFormField(
+                                  controller: ssidCoordinatorController,
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    // border: OutlineInputBorder(),
+                                    hintText: 'SSDI del Coordinador',
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    context
+                                        .read<CoordinatorConfigurationCubit>()
+                                        .onChangedSsid(value);
+                                  },
+                                  validator: Validators.validateEmpty,
+                                  autovalidateMode: AutovalidateMode.always,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                const Text(
+                                  'Contraseña del Coordinador',
+                                  style: TextStyle(
+                                    color: Consts.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                TextFormField(
+                                  controller: passwordCoordinatorController,
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    // border: OutlineInputBorder(),
+                                    hintText:
+                                        'Contraseña del Wifi del Coordinador',
+                                  ),
+                                  obscureText: true,
+                                  keyboardType: TextInputType.text,
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    context
+                                        .read<CoordinatorConfigurationCubit>()
+                                        .onChangedPassword(value);
+                                  },
+                                  validator: Validators.validatePassword,
+                                  autovalidateMode: AutovalidateMode.always,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Form(
+                            key: _formKeyInternet,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: Consts.defaultPadding),
+                                const Center(
+                                  child: Text(
+                                    "WiFi de Internet",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                const Text(
+                                  'SSDI del Wifi (Internet)',
+                                  style: TextStyle(
+                                    color: Consts.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                TextFormField(
+                                  controller: ssidInternetController,
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    // border: OutlineInputBorder(),
+                                    hintText:
+                                        'Ingrese el nombre del WiFi con internet',
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    context
+                                        .read<CoordinatorConfigurationCubit>()
+                                        .onChangedSsidInternet(value);
+                                  },
+                                  validator: Validators.validateEmpty,
+                                  autovalidateMode: AutovalidateMode.always,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                const Text(
+                                  'Contraseña del Wifi',
+                                  style: TextStyle(
+                                    color: Consts.primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
+                                TextFormField(
+                                  controller: passwordInternetController,
+                                  decoration: const InputDecoration(
+                                    fillColor: Colors.white,
+                                    // border: OutlineInputBorder(),
+                                    hintText: 'Contraseña del Wifi',
+                                  ),
+                                  obscureText: true,
+                                  keyboardType: TextInputType.text,
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    context
+                                        .read<CoordinatorConfigurationCubit>()
+                                        .onChangedPasswordInternet(value);
+                                  },
+                                  validator: Validators.validatePassword,
+                                  autovalidateMode: AutovalidateMode.always,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: Consts.defaultPadding * 2),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: Consts.defaultPadding),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Consts.primary.shade600,
+                      shape: CustomTheme.buttonShape,
+                      minimumSize: const Size.fromHeight(40), // NEW
+                    ),
+                    onPressed: finalize(context, deviceConfiguration),
+                    child: Text(
+                      "FINALIZAR",
+                      style: textTheme.button?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Function()? finalize(
+      BuildContext context, CoordinatorConfiguration coordinatorConfiguration) {
+    print('empezar en coordinado');
+    if (_formKeyCoordinator.currentState == null ||
+        _formKeyInternet.currentState == null) return null;
+
+    if (!_formKeyCoordinator.currentState!.validate() ||
+        !_formKeyInternet.currentState!.validate()) return null;
+
+    return () async {
+      // _formKeyFridge.currentState!.validate();
+      // _formKeyCoordinator.currentState!.validate();
+      // _formKeyInternet.currentState!.validate();
+      await futureLoadingIndicator(
+              context,
+              context
+                  .read<CoordinatorConfigurationCubit>()
+                  .configureCoordinator(coordinatorConfiguration))
           .then((value) {
         Navigator.maybePop(context);
       });

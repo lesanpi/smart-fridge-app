@@ -20,7 +20,8 @@ class HomePage extends StatelessWidget {
       create: (context) => SignOutCubit(context.read()),
       child: Scaffold(
         backgroundColor: Consts.lightSystem.shade300,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton.extended(
           elevation: 5,
           onPressed: () {
             Navigator.of(context).push(
@@ -41,9 +42,10 @@ class HomePage extends StatelessWidget {
               ),
             );
           },
-          child: const Icon(
+          icon: Icon(
             Icons.add,
           ),
+          label: Text("Configurar nuevo dispositivo"),
         ),
         body: SafeArea(
           child: Padding(
