@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/fridges_cubit.dart';
+import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
 import 'package:wifi_led_esp8266/ui/local/view/fridge_page.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/fridges_empty.dart';
@@ -20,11 +19,11 @@ class CoordinatorView extends StatelessWidget {
     return BlocProvider(
       create: (context) => FridgesCubit(context.read())..init(),
       lazy: false,
-      child: BlocConsumer<ConnectionCubit, ConnectionInfo?>(
+      child: BlocConsumer<LocalConnectionBloc, LocalConnectionState>(
         listener: (context, _) {
           context.read<FridgesCubit>().init();
         },
-        builder: (context, connectionInfo) {
+        builder: (context, localConnection) {
           return BlocConsumer<FridgesCubit, List<FridgeState>>(
             listener: (context, fridgeList) {
               // context.read<FridgesCubit>().init();
@@ -39,10 +38,10 @@ class CoordinatorView extends StatelessWidget {
                 children: [
                   const SizedBox(height: Consts.defaultPadding),
                   Text(
-                    connectionInfo!.ssid,
+                    localConnection.connectionInfo!.ssid,
                     style: textTheme.headline2,
                   ),
-                  Text("Coordinador: ${connectionInfo.id}"),
+                  Text("Coordinador: ${localConnection.connectionInfo?.id}"),
                   const SizedBox(height: Consts.defaultPadding),
                   Expanded(
                     child: ListView.separated(

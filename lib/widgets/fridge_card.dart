@@ -16,26 +16,28 @@ class FridgeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double w = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
-
+    final alert = (fridge.temperature >= fridge.minTemperature &&
+        fridge.temperature <= fridge.maxTemperature);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Material(
         elevation: 10,
         borderRadius: const BorderRadius.all(Radius.circular(
-          Consts.defaultBorderRadius * 8,
+          Consts.defaultBorderRadius * 3,
         )),
         child: InkWell(
           onTap: onTap,
           borderRadius: const BorderRadius.all(Radius.circular(
-            Consts.defaultBorderRadius * 8,
+            Consts.defaultBorderRadius * 3,
           )),
           child: Container(
             // width: w,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               // color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(
-                Consts.defaultBorderRadius * 8,
+              color: alert ? Consts.error.withOpacity(0.1) : null,
+              borderRadius: const BorderRadius.all(Radius.circular(
+                Consts.defaultBorderRadius * 3,
               )), // 70
               // boxShadow: [
               //   BoxShadow(
@@ -46,8 +48,8 @@ class FridgeCard extends StatelessWidget {
               // ],
             ),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: Consts.defaultPadding),
+              padding: const EdgeInsets.symmetric(
+                  vertical: Consts.defaultPadding / 2),
               child: Row(
                 children: [
                   Column(
@@ -59,23 +61,30 @@ class FridgeCard extends StatelessWidget {
                         style: textTheme.titleSmall?.copyWith(
                           color: Consts.neutral.shade400,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                       Text(
                         fridge.name,
                         style: textTheme.headline2?.copyWith(
-                          color: Consts.primary.shade400,
+                          color: Consts.neutral.shade600,
                         ),
                       )
                     ],
                   ),
                   const Spacer(),
-                  Text(
-                    "${fridge.temperature}°C",
-                    style: textTheme.headline1?.copyWith(
-                        color: fridge.temperature >= fridge.minTemperature &&
-                                fridge.temperature <= fridge.maxTemperature
-                            ? Consts.neutral.shade800
-                            : Consts.error),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      "${fridge.temperature}°C",
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: textTheme.headline1?.copyWith(
+                          color: alert
+                              ? Consts.neutral.shade800
+                              : Color.fromARGB(255, 179, 13, 1)),
+                    ),
                   )
                 ],
               ),

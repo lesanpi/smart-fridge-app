@@ -28,7 +28,7 @@ class FridgeState extends Equatable {
 
   String id;
   String name;
-  int temperature;
+  double temperature;
   bool light;
   bool compressor;
   bool door;

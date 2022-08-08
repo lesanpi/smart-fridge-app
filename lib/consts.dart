@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 class Consts {
 /* ------------------------- Application parameters ------------------------- */
   // static const httpLink = "http://192.168.18.3:3001";
-  static const httpLink = "http://192.168.1.106:3001";
+  static const httpLink = "http://192.168.1.105:3001";
+  static const mqttCloudUrl =
+      "b18bfec2abdc420f99565f02ebd1fa05.s2.eu.hivemq.cloud";
+  static const mqttDefaultCoordinatorIp = "192.168.0.1";
+  static const mqttDefaultIps = "192.168.0.1";
+  // static const httpLink = "http://192.168.2.108:3001";
   // static const algoliaAppId = "TYPWAL4JZU";
   // static const algoliaApiKey = "858e43b0d195cc08b91edbbc6222f4f8";
   static const Map<String, String> headers = {

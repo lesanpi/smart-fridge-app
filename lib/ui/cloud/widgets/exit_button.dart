@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/theme.dart';
-import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
 
-class DisconnectButton extends StatelessWidget {
-  const DisconnectButton({Key? key, this.onTap}) : super(key: key);
+class ExitButton extends StatelessWidget {
+  const ExitButton({Key? key, this.onTap}) : super(key: key);
   final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
@@ -21,14 +19,13 @@ class DisconnectButton extends StatelessWidget {
         shape: CustomTheme.buttonShape,
       ),
       onPressed: () async {
-        context.read<LocalConnectionBloc>().add(LocalConnectionConnect());
-        Navigator.maybePop(context);
+        Navigator.pop(context);
 
         if (onTap != null) {
           onTap!();
         }
       },
-      child: const Text("Desconectarse"),
+      child: const Text("SALIR"),
     );
   }
 }

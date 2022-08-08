@@ -4,6 +4,7 @@ import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
 import 'package:wifi_led_esp8266/data/use_cases/auth_use_case.dart';
 import 'package:wifi_led_esp8266/ui/auth/auth.dart';
+import 'package:wifi_led_esp8266/ui/cloud/view/cloud_page.dart';
 import 'package:wifi_led_esp8266/ui/home/cubit/sign_out_cubit.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/menu_item.dart';
 import 'package:wifi_led_esp8266/ui/local/view/local_page.dart';
@@ -93,7 +94,25 @@ class InternetFridgesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedMenuItem(
-      onPressed: () => {},
+      onPressed: () {
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const CloudPage(),
+            transitionDuration: const Duration(milliseconds: 500),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              final tween = Tween(begin: begin, end: end);
+              final offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          ),
+        );
+      },
       title: "Neveras",
       description: "(Internet)",
       icon: const Icon(

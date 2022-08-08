@@ -7,6 +7,7 @@ import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/device_configuration.dart';
 import 'package:wifi_led_esp8266/models/models.dart';
 import 'package:wifi_led_esp8266/theme.dart';
+import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
 import 'package:wifi_led_esp8266/ui/setup/cubit/coordinator_configuration_cubit.dart';
 import 'package:wifi_led_esp8266/ui/setup/cubit/device_configuration_cubit.dart';
@@ -21,10 +22,10 @@ class SetupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // final textTheme = Theme.of(context).textTheme;
     return BlocProvider(
-      create: (context) => ConnectionCubit(
+      create: (context) => LocalConnectionBloc(
         context.read(),
         context.read(),
-      )..init(),
+      )..add(LocalConnectionInit()),
       lazy: false,
       child: const SetupView(),
     );
@@ -43,17 +44,17 @@ class SetupView extends StatelessWidget {
         preferredSize: Size.fromHeight(50),
       ),
       body: SafeArea(
-        child: BlocBuilder<ConnectionCubit, ConnectionInfo?>(
+        child: BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
           builder: (context, connectionInfo) {
-            if (connectionInfo == null) {
+            if (connectionInfo.connectionInfo == null) {
               return const NoDeviceFound();
             }
 
-            if (!connectionInfo.configurationMode) {
+            if (!connectionInfo.connectionInfo!.configurationMode) {
               return const NoConfigurationMode();
             }
 
-            if (connectionInfo.standalone) {
+            if (connectionInfo.connectionInfo!.standalone) {
               return const SetupDeviceController();
             }
             return const SetupDeviceCoordinator();
@@ -155,7 +156,9 @@ class NoDeviceFound extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      await context.read<ConnectionCubit>().connect('');
+                      context
+                          .read<LocalConnectionBloc>()
+                          .add(LocalConnectionConnect());
                     },
                     child: const Text(
                       "Conectarse",
@@ -242,7 +245,12 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           ),
                           Center(
                             child: Text(
-                              context.read<ConnectionCubit>().state?.id ?? '',
+                              context
+                                      .read<LocalConnectionBloc>()
+                                      .state
+                                      .connectionInfo
+                                      ?.id ??
+                                  '',
                             ),
                           ),
 
@@ -749,7 +757,12 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                           ),
                           Center(
                             child: Text(
-                              context.read<ConnectionCubit>().state?.id ?? '',
+                              context
+                                      .read<LocalConnectionBloc>()
+                                      .state
+                                      .connectionInfo
+                                      ?.id ??
+                                  '',
                             ),
                           ),
                           Form(

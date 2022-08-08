@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
 
 import '../local.dart';
@@ -15,10 +16,10 @@ class LocalPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ConnectionCubit(
+          create: (context) => LocalConnectionBloc(
             context.read(),
             context.read(),
-          )..init(),
+          )..add(LocalConnectionInit()),
           lazy: false,
         ),
         BlocProvider(
@@ -48,22 +49,61 @@ class LocalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ConnectionCubit, ConnectionInfo?>(
-      listener: (context, connectionInfo) {
-        if (connectionInfo == null) return;
+    final textTheme = Theme.of(context).textTheme;
+    return BlocConsumer<LocalConnectionBloc, LocalConnectionState>(
+      listener: (context, state) {
+        if (state.connectionInfo == null) return;
 
-        if (connectionInfo.standalone) {
+        if (state.connectionInfo!.standalone) {
           context.read<FridgeStateCubit>().init();
         } else {
           // context.read<FridgesCubit>().init();
         }
       },
-      builder: (context, connectionInfo) {
-        if (connectionInfo == null) {
+      builder: (context, state) {
+        print(state);
+
+        if (state is LocalConnectionLoading) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 10,
+                  ),
+                ),
+                const SizedBox(height: Consts.defaultPadding * 2),
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: 1000),
+                  duration: const Duration(seconds: 1000),
+                  builder: (context, value, _) {
+                    final dotsNum = (value.toInt()) % 4;
+                    return Text(
+                      'Cargando${'.' * dotsNum}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Consts.neutral.shade700,
+                        fontSize: 25,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+        if (state is LocalConnectionWaiting) {
+          return const NoDataView();
+        }
+        if (state is LocalConnectionDisconnected ||
+            state.connectionInfo == null) {
           return const DisconnectedView();
         }
 
-        if (connectionInfo.standalone) {
+        if (state.connectionInfo!.standalone) {
           return const StandaloneView();
         }
 

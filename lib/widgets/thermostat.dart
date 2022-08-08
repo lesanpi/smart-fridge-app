@@ -4,7 +4,7 @@ import 'package:wifi_led_esp8266/utils/utils.dart';
 
 class Thermostat extends StatelessWidget {
   const Thermostat({Key? key, required this.temperature}) : super(key: key);
-  final int temperature;
+  final double temperature;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,9 @@ class Thermostat extends StatelessWidget {
               child: Stack(
                 children: [
                   Text(
-                    temperature == 404 ? "--  " : "$temperature  ",
+                    temperature == 404
+                        ? "--  "
+                        : "${temperature.floorToDouble()}  ",
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 70,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/ui/cloud/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
 import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
@@ -36,7 +37,7 @@ class DisconnectedView extends StatelessWidget {
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(
-              "Asegurate de estar conectado a la red WiFi correcta",
+              "Conectate a las neveras de forma remota. Asegurate de tener una conexión de internet estable",
               style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -44,8 +45,8 @@ class DisconnectedView extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context
-                    .read<LocalConnectionBloc>()
-                    .add(LocalConnectionConnect());
+                    .read<CloudConnectionBloc>()
+                    .add(CloudConnectionConnect());
 
                 // context.read<ConnectionCubit>().connect('').then((_) {
                 //   context.read<ConnectionCubit>().connect('');

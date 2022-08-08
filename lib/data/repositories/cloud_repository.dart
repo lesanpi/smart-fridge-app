@@ -5,18 +5,13 @@ import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/models/connection_info.dart';
-import 'package:wifi_led_esp8266/models/device_configuration.dart';
-import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
+import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 
-class LocalRepository {
-  final StreamController<ConnectionInfo?> _connectionInfoStreamController =
-      StreamController.broadcast();
-  Stream<ConnectionInfo?> get connectionInfoStream =>
-      _connectionInfoStreamController.stream;
-  ConnectionInfo? connectionInfo;
+class CloudRepository {
+  CloudRepository(this._authRepository);
+  final AuthRepository _authRepository;
+  bool conected = false;
 
   final StreamController<List<FridgeState>> _fridgesStateStreamController =
       StreamController.broadcast();
@@ -32,16 +27,16 @@ class LocalRepository {
   FridgeState? fridgeSelected;
 
   // MQTT Client
-  MqttServerClient client = MqttServerClient('192.168.0.1', '');
+  MqttServerClient client =
+      MqttServerClient.withPort(Consts.mqttCloudUrl, '', 8883);
 
-  Future<void> init({String server = '192.168.0.1'}) async {
-    client = MqttServerClient(server, '');
-
-    /// Set the correct MQTT protocol for mosquito
-    client.setProtocolV311();
+  Future<void> init({String server = Consts.mqttCloudUrl}) async {
+    client = MqttServerClient.withPort(Consts.mqttCloudUrl, '', 8883);
 
     /// If you intend to use a keep alive you must set it here otherwise keep alive will be disabled.
     client.keepAlivePeriod = 30;
+    client.secure = true;
+    client.securityContext = SecurityContext.defaultContext;
 
     /// Add the unsolicited disconnection callback
     client.onDisconnected = onDisconnected;
@@ -57,33 +52,31 @@ class LocalRepository {
         .startClean() // Non persistent session for testing
         .withWillQos(MqttQos.atLeastOnce);
     client.connectionMessage = connMess;
-
-    // connect();
   }
 
   void onDisconnected() {
     fridgeSelected = null;
-    connectionInfo = null;
     fridgesState = [];
 
-    _connectionInfoStreamController.add(connectionInfo);
     _fridgesStateStreamController.add(fridgesState);
     _fridgeSelectedStreamController.add(fridgeSelected);
+    conected = false;
   }
 
-  Future<bool> connect(String id, String password,
-      {String server = Consts.mqttDefaultCoordinatorIp}) async {
+  Future<bool> connect(
+      {String id = 'testUser',
+      String password = 'testUser',
+      String server = Consts.mqttCloudUrl}) async {
     if (client.connectionStatus?.state == MqttConnectionState.connected ||
         client.connectionStatus?.state == MqttConnectionState.connecting) {
       client.disconnect();
     }
     await Future.delayed(const Duration(seconds: 1));
 
-    if (connectionInfo != null) return true;
-
     await init(server: server);
     print('Inicializado');
     try {
+      print('conectando');
       final MqttClientConnectionStatus? connectionStatus =
           await client.connect(id, password);
 
@@ -92,34 +85,29 @@ class LocalRepository {
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
         initSubscription();
+        conected = true;
         return true;
       }
 
       client.disconnect();
+      conected = false;
       return false;
     } on SocketException catch (e) {
-      if (e.osError?.errorCode == 113 &&
-          server == Consts.mqttDefaultCoordinatorIp) {
-        final String? wifiIp = await NetworkInfo().getWifiIP();
-        if (wifiIp != null) {
-          final splittedIp = wifiIp.split('.');
-          splittedIp.removeLast();
-          final serverIp = splittedIp.join('.') + '.200';
-          return await connect(id, password, server: serverIp);
-        }
-
-        return false;
-      }
       client.disconnect();
+      conected = false;
+      print(e);
+
       return false;
     } on Exception catch (e) {
+      print(e);
       client.disconnect();
+      conected = false;
+
       return false;
     }
   }
 
   void initSubscription() {
-    client.subscribe('information', MqttQos.atMostOnce);
     client.subscribe('state/#', MqttQos.atMostOnce);
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
@@ -133,9 +121,9 @@ class LocalRepository {
       if (jsonDecoded == null) return;
 
       /// The information of the connection was updated
-      if (topic == "information") onInformationUpdate(jsonDecoded);
-
       final List<String> topicSplitted = topic.split('/');
+
+      print(jsonDecoded);
 
       /// A state was updated
       if (topicSplitted[0] == "state") {
@@ -146,64 +134,38 @@ class LocalRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String id) {
+    print(json);
     final FridgeState _newFridgeState = FridgeState.fromJson(json);
-    // print(_newFridgeState.temperature);
 
-    if (connectionInfo == null) return;
+    final int _indexOfFridge =
+        fridgesState.indexWhere((state) => state.id == id);
 
-    if (connectionInfo!.standalone && id == connectionInfo!.id) {
+    if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
       fridgeSelected = _newFridgeState;
       _fridgeSelectedStreamController.add(fridgeSelected);
-
-      final int _indexOfFridge =
-          fridgesState.indexWhere((state) => state.id == id);
-
-      if (_indexOfFridge == -1) {
-        fridgesState.add(_newFridgeState);
-      } else {
-        fridgesState[_indexOfFridge] = _newFridgeState;
-      }
-
-      _fridgesStateStreamController.add(fridgesState);
-      return;
     }
 
-    if (!connectionInfo!.standalone) {
-      final int _indexOfFridge =
-          fridgesState.indexWhere((state) => state.id == id);
-
-      if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
-        fridgeSelected = _newFridgeState;
-        _fridgeSelectedStreamController.add(fridgeSelected);
-      }
-
-      // print(_indexOfFridge);
-      if (_indexOfFridge == -1) {
-        // print('Agrego nuevo estado a la lista');
-        fridgesState.add(_newFridgeState);
-      } else {
-        // print('Sustituyo estado existente');
-        // print(_newFridgeState.temperature);
-        fridgesState[_indexOfFridge] = _newFridgeState;
-      }
-      // print('Finalmente' +
-      // fridgesState.map((e) => e.toJson()).toList().toString());
-
-      _fridgesStateStreamController.add(fridgesState);
-      return;
+    // print(_indexOfFridge);
+    if (_indexOfFridge == -1) {
+      // print('Agrego nuevo estado a la lista');
+      fridgesState.add(_newFridgeState);
+    } else {
+      // print('Sustituyo estado existente');
+      // print(_newFridgeState.temperature);
+      fridgesState[_indexOfFridge] = _newFridgeState;
     }
-  }
+    // print('Finalmente' +
+    // fridgesState.map((e) => e.toJson()).toList().toString());
 
-  void onInformationUpdate(Map<String, dynamic> json) {
-    // print("ssid ${json["ssid"]} ${json["id"]}");
-    connectionInfo = ConnectionInfo.fromJson(json);
-    _connectionInfoStreamController.add(connectionInfo);
+    _fridgesStateStreamController.add(fridgesState);
+    return;
   }
 
   FridgeState? getFridgeStateById(String id) {
     // final int _indexOfFridge =
     //     _fridgesState.map((e) => e.id).toList().indexOf(_newFridgeState.id);
 
+    // ignore: unnecessary_cast
     return (fridgesState as List<FridgeState?>)
         .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
@@ -298,42 +260,6 @@ class LocalRepository {
     payloadBuilder.addString(data);
     client.publishMessage(
       'action/' + fridgeId,
-      MqttQos.atLeastOnce,
-      payloadBuilder.payload!,
-    );
-  }
-
-  void configureController(DeviceConfiguration configuration) {
-    if (connectionInfo == null) return;
-    if (!connectionInfo!.configurationMode) return;
-    if (!connectionInfo!.standalone) return;
-
-    final data = jsonEncode(
-      {'action': 'configureDevice', ...configuration.toMap()},
-    );
-    final payloadBuilder = MqttClientPayloadBuilder();
-    payloadBuilder.addString(data);
-
-    client.publishMessage(
-      'action/' + connectionInfo!.id,
-      MqttQos.atLeastOnce,
-      payloadBuilder.payload!,
-    );
-  }
-
-  void configureCoordinator(CoordinatorConfiguration configuration) {
-    if (connectionInfo == null) return;
-    if (!connectionInfo!.configurationMode) return;
-    if (connectionInfo!.standalone) return;
-
-    final data = jsonEncode(
-      {'action': 'configureCoordinator', ...configuration.toMap()},
-    );
-    final payloadBuilder = MqttClientPayloadBuilder();
-    payloadBuilder.addString(data);
-
-    client.publishMessage(
-      'action/' + connectionInfo!.id,
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );

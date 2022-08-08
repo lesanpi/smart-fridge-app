@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
+import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
 
 class SetupAppBar extends StatelessWidget {
@@ -9,11 +10,11 @@ class SetupAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ConnectionCubit, ConnectionInfo?>(
+    return BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
         builder: (context, state) {
       bool isCoordinator = false;
-      if (state != null) {
-        isCoordinator = !state.standalone;
+      if (state.connectionInfo != null) {
+        isCoordinator = !state.connectionInfo!.standalone;
       }
 
       return AppBar(

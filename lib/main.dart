@@ -45,6 +45,10 @@ class SmartFridgeApp extends StatelessWidget {
         RepositoryProvider(create: (_) => BluetoothRepository()),
         RepositoryProvider(
             create: (context) => AuthUseCase(context.read(), context.read())),
+        RepositoryProvider(
+          create: (context) => CloudRepository(context.read()),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

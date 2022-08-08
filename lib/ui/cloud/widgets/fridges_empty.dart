@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
-import 'package:wifi_led_esp8266/ui/local/local.dart';
+import 'package:wifi_led_esp8266/ui/cloud/cloud.dart';
+import 'package:wifi_led_esp8266/ui/cloud/widgets/disconnect_button.dart';
+import 'package:wifi_led_esp8266/ui/local/widgets/disconnect_button.dart';
 
-class DisconnectedView extends StatelessWidget {
-  const DisconnectedView({Key? key}) : super(key: key);
+class FridgesEmpty extends StatelessWidget {
+  const FridgesEmpty({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,41 +19,29 @@ class DisconnectedView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              Icons.wifi_off_rounded,
+              Icons.line_style_outlined,
               size: 100,
               color: Consts.primary,
             ),
             const SizedBox(height: Consts.defaultPadding),
             Text(
-              "Desconectado",
+              "No hay neveras conectadas",
               style: textTheme.headline3?.copyWith(
                 fontSize: 30,
                 fontWeight: FontWeight.w300,
                 color: Colors.black38,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(
-              "Asegurate de estar conectado a la red WiFi correcta",
+              "Configura tus controladores en Modo Coordinado, para que se conecten a Internet y puedan ser monitoreadas y controladas remotamente",
               style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
+            const SizedBox(height: 3 * Consts.defaultPadding),
+            const CloudDisconnectButton(),
             const SizedBox(height: Consts.defaultPadding),
-            ElevatedButton(
-              onPressed: () {
-                context
-                    .read<LocalConnectionBloc>()
-                    .add(LocalConnectionConnect());
-
-                // context.read<ConnectionCubit>().connect('').then((_) {
-                //   context.read<ConnectionCubit>().connect('');
-                //   context.read<ConnectionCubit>().connect('');
-                // });
-              },
-              child: const Text(
-                "Conectarse",
-              ),
-            )
           ],
         ),
       ),
