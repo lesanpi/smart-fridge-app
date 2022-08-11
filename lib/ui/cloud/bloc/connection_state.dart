@@ -6,8 +6,7 @@ abstract class CloudConnectionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        ...fridgesStates.map((e) => e.id),
-        ...fridgesStates.map((e) => e.temperature),
+        ...fridgesStates,
         fridgesStates.isEmpty,
       ];
 }

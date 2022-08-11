@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/cloud/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/cloud/view/fridge_page.dart';
@@ -107,7 +108,33 @@ class CloudView extends StatelessWidget {
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   return FridgeCard(
-                    onTap: () {},
+                    onTap: () async {
+                      await context
+                          .read<CloudFridgesCubit>()
+                          .selectedFridge(state.fridgesStates[index])
+                          .then((value) async {
+                        await Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => const FridgePage(),
+                            transitionDuration:
+                                const Duration(milliseconds: 500),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              final tween = Tween(begin: begin, end: end);
+                              final offsetAnimation = animation.drive(tween);
+                              return SlideTransition(
+                                position: offsetAnimation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                        RepositoryProvider.of<CloudRepository>(context)
+                            .unselectFridge();
+                      });
+                    },
                     fridge: state.fridgesStates[index],
                   );
                 },

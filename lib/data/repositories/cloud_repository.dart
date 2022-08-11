@@ -50,7 +50,7 @@ class CloudRepository {
             'willtopic') // If you set this you must set a will message
         .withWillMessage('My Will message')
         .startClean() // Non persistent session for testing
-        .withWillQos(MqttQos.atLeastOnce);
+        .withWillQos(MqttQos.exactlyOnce);
     client.connectionMessage = connMess;
   }
 
@@ -108,7 +108,7 @@ class CloudRepository {
   }
 
   void initSubscription() {
-    client.subscribe('state/#', MqttQos.atMostOnce);
+    client.subscribe('state/#', MqttQos.exactlyOnce);
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
       final recMess = message![0].payload as MqttPublishMessage;
@@ -116,6 +116,7 @@ class CloudRepository {
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
+      print("[INTERNET] Payload: $payload");
       final jsonDecoded = json.decode(payload);
 
       if (jsonDecoded == null) return;
@@ -123,18 +124,19 @@ class CloudRepository {
       /// The information of the connection was updated
       final List<String> topicSplitted = topic.split('/');
 
-      print(jsonDecoded);
+      print("[INTERNET] $jsonDecoded");
 
       /// A state was updated
       if (topicSplitted[0] == "state") {
         final id = topicSplitted[1];
-        onStateUpdate(jsonDecoded, id);
+        try {
+          onStateUpdate(jsonDecoded, id);
+        } catch (e) {}
       }
     });
   }
 
   void onStateUpdate(Map<String, dynamic> json, String id) {
-    print(json);
     final FridgeState _newFridgeState = FridgeState.fromJson(json);
 
     final int _indexOfFridge =

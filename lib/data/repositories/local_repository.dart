@@ -32,10 +32,11 @@ class LocalRepository {
   FridgeState? fridgeSelected;
 
   // MQTT Client
-  MqttServerClient client = MqttServerClient('192.168.0.1', '');
+  MqttServerClient client = MqttServerClient.withPort('192.168.0.1', '', 1883);
 
   Future<void> init({String server = '192.168.0.1'}) async {
-    client = MqttServerClient(server, '');
+    // client = MqttServerClient(server, '');
+    client = MqttServerClient.withPort(server, '', 1883);
 
     /// Set the correct MQTT protocol for mosquito
     client.setProtocolV311();

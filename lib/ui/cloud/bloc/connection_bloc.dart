@@ -28,8 +28,9 @@ class CloudConnectionBloc
   StreamSubscription<List<FridgeState>>? _fridgesStatesStream;
 
   void update(CloudConnectionUpdate event, Emitter<CloudConnectionState> emit) {
+    emit(const CloudConnectionLoading());
     if (event.fridgeStates.isNotEmpty) {
-      emit(CloudConnectionLoaded(event.fridgeStates));
+      emit(CloudConnectionLoaded([...event.fridgeStates]));
     } else {
       emit(const CloudConnectionEmpty());
     }
@@ -107,7 +108,6 @@ class CloudConnectionBloc
     if (_fridgesStatesStream != null) {
       _fridgesStatesStream!.cancel();
     }
-    // _localRepository.client.disconnect();
 
     return super.close();
   }

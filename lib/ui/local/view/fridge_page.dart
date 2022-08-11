@@ -39,11 +39,17 @@ class FridgePage extends StatelessWidget {
                     children: [
                       const SizedBox(height: Consts.defaultPadding),
                       NameController(initialName: fridge.name),
-                      Text(fridge.id),
+                      Text(
+                        fridge.id,
+                        style: textTheme.headline2,
+                      ),
                       const SizedBox(height: Consts.defaultPadding * 1),
                       Thermostat(
-                          temperature:
-                              fridge.temperature.toStringAsFixed(2) as double),
+                        temperature:
+                            fridge.temperature.toStringAsFixed(2) as double,
+                        alert: !(fridge.temperature >= fridge.minTemperature &&
+                            fridge.temperature <= fridge.maxTemperature),
+                      ),
                       const SizedBox(height: Consts.defaultPadding * 2),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

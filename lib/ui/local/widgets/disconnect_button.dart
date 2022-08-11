@@ -21,7 +21,7 @@ class DisconnectButton extends StatelessWidget {
         shape: CustomTheme.buttonShape,
       ),
       onPressed: () async {
-        context.read<LocalConnectionBloc>().add(LocalConnectionConnect());
+        context.read<LocalConnectionBloc>().add(LocalConnectionDisconnect());
         Navigator.maybePop(context);
 
         if (onTap != null) {

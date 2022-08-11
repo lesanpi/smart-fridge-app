@@ -138,7 +138,11 @@ class FridgeView extends StatelessWidget {
                 ),
                 Text(fridge.id),
                 const SizedBox(height: Consts.defaultPadding * 2),
-                Thermostat(temperature: fridge.temperature),
+                Thermostat(
+                  temperature: fridge.temperature,
+                  alert: !(fridge.temperature >= fridge.minTemperature &&
+                      fridge.temperature <= fridge.maxTemperature),
+                ),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

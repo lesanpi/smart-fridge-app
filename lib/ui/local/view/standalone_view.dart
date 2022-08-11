@@ -18,6 +18,7 @@ class StandaloneView extends StatelessWidget {
         if (fridge == null) {
           return const NoDataView();
         }
+        print(fridge.temperature.toString());
         return Center(
           child: SingleChildScrollView(
             child: Column(
@@ -32,7 +33,11 @@ class StandaloneView extends StatelessWidget {
                 ),
                 Text(fridge.id),
                 const SizedBox(height: Consts.defaultPadding * 2),
-                Thermostat(temperature: fridge.temperature),
+                Thermostat(
+                  temperature: fridge.temperature,
+                  alert: !(fridge.temperature >= fridge.minTemperature &&
+                      fridge.temperature <= fridge.maxTemperature),
+                ),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

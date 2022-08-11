@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/data/use_cases/auth_use_case.dart';
@@ -38,6 +39,9 @@ class LocalConnectionBloc
 
     if (connectionInfo != null) {
       emit(LocalConnectionLoaded(connectionInfo));
+    } else if (_localRepository.client.connectionStatus?.state ==
+        MqttConnectionState.connecting) {
+      emit(const LocalConnectionLoading());
     }
     _connectionInfoStream =
         _localRepository.connectionInfoStream.listen((connectionInfo) {
@@ -75,12 +79,14 @@ class LocalConnectionBloc
 
     if (_connectionInfoStream != null) {
       await _connectionInfoStream!.cancel();
-    }
 
-    _connectionInfoStream =
-        _localRepository.connectionInfoStream.listen((connectionInfo) {
-      add(LocalConnectionUpdate(connectionInfo));
-    });
+      _connectionInfoStream =
+          _localRepository.connectionInfoStream.listen((connectionInfo) {
+        try {
+          add(LocalConnectionUpdate(connectionInfo));
+        } catch (e) {}
+      });
+    }
   }
 
   Future<void> disconnect(LocalConnectionDisconnect event,

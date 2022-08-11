@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/communication_mode.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/fridge_state_cubit.dart';
+import 'package:wifi_led_esp8266/ui/cloud/cubit/fridge_state_cubit.dart';
 import 'package:wifi_led_esp8266/widgets/future_loading_indicator.dart';
 
 import '../cubit/communication_mode_cubit.dart';

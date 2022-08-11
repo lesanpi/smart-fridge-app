@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import '../cloud.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
@@ -37,18 +38,27 @@ class FridgePage extends StatelessWidget {
                     children: [
                       const SizedBox(height: Consts.defaultPadding),
                       NameController(initialName: fridge.name),
-                      Text(fridge.id),
+                      Text(
+                        fridge.id,
+                        style: textTheme.headline2,
+                      ),
                       const SizedBox(height: Consts.defaultPadding * 1),
-                      Thermostat(temperature: fridge.temperature),
+                      Thermostat(
+                        temperature: fridge.temperature,
+                        alert: !(fridge.temperature >= fridge.minTemperature &&
+                            fridge.temperature <= fridge.maxTemperature),
+                      ),
                       const SizedBox(height: Consts.defaultPadding * 2),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ButtonAction(
-                            onTap: () {},
+                            onTap: () {
+                              context.read<FridgeStateCubit>().toggleLight();
+                            },
                             selected: fridge.light,
                             iconData: Icons.lightbulb,
-                            description: 'Compresor',
+                            description: 'Luz',
                           ),
                           const SizedBox(
                             width: Consts.defaultPadding,
@@ -73,8 +83,8 @@ class FridgePage extends StatelessWidget {
                       const SizedBox(height: Consts.defaultPadding * 2),
                       const TemperatureParameterView(),
                       const SizedBox(height: Consts.defaultPadding * 2),
-                      const CommunicationModeView(),
-                      const SizedBox(height: Consts.defaultPadding * 2),
+                      // const CommunicationModeView(),
+                      // const SizedBox(height: Consts.defaultPadding * 2),
                     ],
                   ),
                 ),
@@ -110,7 +120,6 @@ class FridgeAppBar extends StatelessWidget {
           leading: BackButton(
             color: Consts.neutral.shade700,
             onPressed: () {
-              RepositoryProvider.of<LocalRepository>(context).unselectFridge();
               Navigator.maybePop(context);
             },
           ),

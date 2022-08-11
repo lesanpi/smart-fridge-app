@@ -35,7 +35,7 @@ class FridgeCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             decoration: BoxDecoration(
               // color: Colors.white,
-              color: alert ? Consts.error.withOpacity(0.1) : null,
+              color: !alert ? Consts.error.withOpacity(0.1) : null,
               borderRadius: const BorderRadius.all(Radius.circular(
                 Consts.defaultBorderRadius * 3,
               )), // 70
@@ -73,17 +73,15 @@ class FridgeCard extends StatelessWidget {
                     ],
                   ),
                   const Spacer(),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      "${fridge.temperature}°C",
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
-                      softWrap: false,
-                      style: textTheme.headline1?.copyWith(
-                          color: alert
-                              ? Consts.neutral.shade800
-                              : Color.fromARGB(255, 179, 13, 1)),
+                  Text(
+                    "${fridge.temperature.round()}°C",
+                    overflow: TextOverflow.fade,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: textTheme.headline1?.copyWith(
+                      color: alert
+                          ? Consts.neutral.shade800
+                          : Consts.error.shade400,
                     ),
                   )
                 ],
