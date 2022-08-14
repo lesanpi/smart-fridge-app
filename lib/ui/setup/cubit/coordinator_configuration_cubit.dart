@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
+import 'package:wifi_led_esp8266/data/use_cases/setup_use_case.dart';
 import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 
 class CoordinatorConfigurationCubit extends Cubit<CoordinatorConfiguration> {
-  CoordinatorConfigurationCubit(this._localRepository)
+  CoordinatorConfigurationCubit(this._setupUseCase)
       : super(CoordinatorConfiguration.initial());
-  final LocalRepository _localRepository;
+  final SetupUseCase _setupUseCase;
 
   void onChangedSsidInternet(String value) {
     emit(state.copyWith(ssidInternet: value));
@@ -20,10 +21,9 @@ class CoordinatorConfigurationCubit extends Cubit<CoordinatorConfiguration> {
   void onChangedSsid(String value) => emit(state.copyWith(ssid: value));
   void onChangedPassword(String value) => emit(state.copyWith(password: value));
 
-  Future<void> configureCoordinator(
+  Future<bool> configureCoordinator(
       CoordinatorConfiguration coordinatorConfiguration) async {
-    print(coordinatorConfiguration.toJson());
-    _localRepository.configureCoordinator(coordinatorConfiguration);
-    await Future.delayed(const Duration(seconds: 1));
+    final success = _setupUseCase.configureDevice(coordinatorConfiguration, 1);
+    return success;
   }
 }

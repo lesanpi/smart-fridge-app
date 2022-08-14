@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
-import 'package:wifi_led_esp8266/models/device_configuration.dart';
+import 'package:wifi_led_esp8266/data/use_cases/setup_use_case.dart';
+import 'package:wifi_led_esp8266/models/controller_configuration.dart';
 
-class DeviceConfigurationCubit extends Cubit<DeviceConfiguration> {
-  DeviceConfigurationCubit(this._localRepository)
-      : super(DeviceConfiguration.initial());
-  final LocalRepository _localRepository;
+class DeviceConfigurationCubit extends Cubit<ControllerConfiguration> {
+  DeviceConfigurationCubit(this._setupUseCase)
+      : super(ControllerConfiguration.initial());
+  final SetupUseCase _setupUseCase;
 
   void onChangedSsidInternet(String value) {
     emit(state.copyWith(ssidInternet: value));
@@ -44,10 +45,13 @@ class DeviceConfigurationCubit extends Cubit<DeviceConfiguration> {
   void onChangedPasswordCordinator(String value) =>
       emit(state.copyWith(passwordCoordinator: value));
 
-  Future<void> configureController(
-      DeviceConfiguration deviceConfiguration) async {
+  Future<bool> configureController(
+      ControllerConfiguration deviceConfiguration) async {
+    // await Future.delayed(const Duration(seconds: 1));
     print(deviceConfiguration.toJson());
-    _localRepository.configureController(deviceConfiguration);
-    await Future.delayed(const Duration(seconds: 1));
+    print('hola');
+
+    final success = await _setupUseCase.configureDevice(deviceConfiguration, 0);
+    return success;
   }
 }

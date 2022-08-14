@@ -4,6 +4,7 @@ import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/exceptions/auth_exception.dart';
 import 'package:wifi_led_esp8266/models/auth_user.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class AuthRepository {
   AuthUser? _user;
@@ -15,13 +16,16 @@ class AuthRepository {
   /// using the [token] in the persistent storage
   Future<AuthUser?> getCurrentUser(String? token) async {
     if (token != null) {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      final jsonData = jsonEncode({'fcmToken': fcmToken});
+
       final url = Uri.parse(Consts.httpLink + '/api/user');
       final Map<String, String> headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ${token}',
       };
-      final response = await http.post(url, headers: headers);
+      final response = await http.post(url,body: jsonData, headers: headers);
 
       print(response.body);
       currentUser = authUserFromJson(response.body);
@@ -37,14 +41,16 @@ class AuthRepository {
   Future<String?> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     final url = Uri.parse(Consts.httpLink + '/api/login');
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
-    final jsonData = jsonEncode({'email': email, 'password': password});
+    final jsonData = jsonEncode(
+        {'email': email, 'password': password, 'fcmToken': fcmToken});
     final response =
         await http.post(url, body: jsonData, headers: Consts.headers);
 
     final body = jsonDecode(response.body);
     final statusCode = response.statusCode;
-
+    print(body);
     if (statusCode != 200) {
       print('error sign in not 200 status');
       throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
@@ -66,6 +72,7 @@ class AuthRepository {
     // TODO: sign up
 
     print('sign up repository');
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
     final url = Uri.parse(Consts.httpLink + '/api/users');
     final jsonData = jsonEncode({
@@ -73,6 +80,7 @@ class AuthRepository {
       'name': name,
       'phone': phone,
       'password': password,
+      'fcmToken': fcmToken
     });
     print('await response');
 

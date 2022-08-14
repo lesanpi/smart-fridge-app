@@ -136,20 +136,19 @@ class CloudRepository {
     });
   }
 
-  void onStateUpdate(Map<String, dynamic> json, String id) {
+  void onStateUpdate(Map<String, dynamic> json, String topicId) {
     final FridgeState _newFridgeState = FridgeState.fromJson(json);
 
+    final id = _newFridgeState.id;
     final int _indexOfFridge =
         fridgesState.indexWhere((state) => state.id == id);
-
     if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
       fridgeSelected = _newFridgeState;
       _fridgeSelectedStreamController.add(fridgeSelected);
     }
-
-    // print(_indexOfFridge);
     if (_indexOfFridge == -1) {
-      // print('Agrego nuevo estado a la lista');
+      print('Agrego nuevo estado a la lista');
+
       fridgesState.add(_newFridgeState);
     } else {
       // print('Sustituyo estado existente');

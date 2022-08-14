@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
-import 'package:wifi_led_esp8266/models/device_configuration.dart';
+import 'package:wifi_led_esp8266/models/controller_configuration.dart';
 import 'package:wifi_led_esp8266/models/models.dart';
 import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
@@ -45,16 +45,30 @@ class SetupView extends StatelessWidget {
       ),
       body: SafeArea(
         child: BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
-          builder: (context, connectionInfo) {
-            if (connectionInfo.connectionInfo == null) {
+          builder: (context, state) {
+            if (state is LocalConnectionLoading) {
+              return const Center(
+                child: LoadingMessage(),
+              );
+            }
+            if (state is LocalConnectionWaiting) {
+              return const Center(
+                child: LoadingMessage(),
+              );
+            }
+
+            if (state is LocalConnectionDisconnected) {
+              return const DisconnectedView();
+            }
+            if (state.connectionInfo == null) {
               return const NoDeviceFound();
             }
 
-            if (!connectionInfo.connectionInfo!.configurationMode) {
+            if (!state.connectionInfo!.configurationMode) {
               return const NoConfigurationMode();
             }
 
-            if (connectionInfo.connectionInfo!.standalone) {
+            if (state.connectionInfo!.standalone) {
               return const SetupDeviceController();
             }
             return const SetupDeviceCoordinator();
@@ -103,7 +117,12 @@ class NoConfigurationMode extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: Consts.defaultPadding / 2),
+            const SizedBox(height: Consts.defaultPadding),
+            DisconnectButton(
+              onTap: () => context
+                  .read<LocalConnectionBloc>()
+                  .add(LocalConnectionDisconnect()),
+            ),
           ],
         ),
       ),
@@ -211,9 +230,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
 
     return BlocProvider(
       create: (context) => DeviceConfigurationCubit(context.read()),
-      child: BlocConsumer<DeviceConfigurationCubit, DeviceConfiguration>(
+      child: BlocConsumer<DeviceConfigurationCubit, ControllerConfiguration>(
         listener: (context, deviceConfiguration) {
-          print('cambio');
           // ssidController.text = deviceConfiguration.ssid;
           // ssidCoordinatorController.text = deviceConfiguration.ssidCoordinator;
           // ssidInternetController.text = deviceConfiguration.ssidInternet;
@@ -656,7 +674,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
   }
 
   Function()? finalize(
-      BuildContext context, DeviceConfiguration deviceConfiguration) {
+      BuildContext context, ControllerConfiguration deviceConfiguration) {
     if (!deviceConfiguration.startOnCoordinatorMode) {
       print('no empezar en modo coordinado');
       print(_formKeyFridge.currentState);
@@ -681,13 +699,16 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
       // _formKeyFridge.currentState!.validate();
       // _formKeyCoordinator.currentState!.validate();
       // _formKeyInternet.currentState!.validate();
-      await futureLoadingIndicator(
+      await futureLoadingIndicator<bool>(
               context,
               context
                   .read<DeviceConfigurationCubit>()
                   .configureController(deviceConfiguration))
           .then((value) {
-        Navigator.maybePop(context);
+        if (value == null) return;
+        if (value) {
+          Navigator.maybePop(context);
+        }
       });
     };
   }

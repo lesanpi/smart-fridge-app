@@ -1,14 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/bluetooth_repository.dart';
+import 'package:wifi_led_esp8266/data/repositories/push_notifications_service.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/data/use_cases/uses_cases.dart';
+import 'package:wifi_led_esp8266/firebase_options.dart';
 import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/splash/splash.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PushNotificationService.initializeApp();
+
   runApp(const SmartFridgeApp());
 }
 
@@ -47,6 +53,10 @@ class SmartFridgeApp extends StatelessWidget {
             create: (context) => AuthUseCase(context.read(), context.read())),
         RepositoryProvider(
           create: (context) => CloudRepository(context.read()),
+          lazy: false,
+        ),
+        RepositoryProvider(
+          create: (context) => SetupUseCase(context.read(), context.read()),
           lazy: false,
         ),
       ],

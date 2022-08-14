@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "938191076938",
+    "project_id": "zonarefri-3481e",
+    "storage_bucket": "zonarefri-3481e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938191076938:android:3138960e6c01fea69ab0b3",
+        "android_client_info": {
+          "package_name": "com.lesanpi.zona_refri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938191076938-83ujarucrias346fmen1gaf28jmrl1lm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuE1NONymue_u7h3dNLwFVPVq3-5214t0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938191076938-83ujarucrias346fmen1gaf28jmrl1lm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

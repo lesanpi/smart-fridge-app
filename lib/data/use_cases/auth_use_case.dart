@@ -32,8 +32,8 @@ class AuthUseCase {
           await _persistentStorageRepository.getCurrentUserData();
 
       return authUser;
-    }).timeout(const Duration(seconds: 5), onTimeout: () async {
-      print('trayendo desde shared preferences');
+    }).timeout(const Duration(seconds: 15), onTimeout: () async {
+      print('[Timeout] trayendo desde shared preferences');
       final AuthUser? authUser =
           await _persistentStorageRepository.getCurrentUserData();
 

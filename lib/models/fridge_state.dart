@@ -41,7 +41,9 @@ class FridgeState extends Equatable {
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
         id: json["id"],
         name: json["name"],
-        temperature: json["temperature"] is int ? (json["temperature"] as int).toDouble() : json["temperature"] as double ,
+        temperature: json["temperature"] is int
+            ? (json["temperature"] as int).toDouble()
+            : json["temperature"] as double,
         light: json["light"],
         compressor: json["compressor"],
         door: json["door"],

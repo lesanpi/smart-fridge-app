@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:wifi_led_esp8266/models/device_configuration.dart';
 // import 'package:wifi_led_esp8266/models/fridge_state.dart';
 
-class CoordinatorConfiguration extends Equatable {
+class CoordinatorConfiguration extends DeviceConfiguration {
   const CoordinatorConfiguration({
     required this.name,
     required this.ssid,
@@ -64,6 +65,7 @@ class CoordinatorConfiguration extends Equatable {
         passwordInternet: json["passwordInternet"],
       );
 
+  @override
   Map<String, dynamic> toMap() => {
         "name": name,
         "ssid": ssid,

@@ -6,8 +6,9 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
-import 'package:wifi_led_esp8266/models/device_configuration.dart';
+import 'package:wifi_led_esp8266/models/controller_configuration.dart';
 import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
+import 'package:wifi_led_esp8266/models/device_configuration.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
@@ -304,13 +305,19 @@ class LocalRepository {
     );
   }
 
-  void configureController(DeviceConfiguration configuration) {
+  void configureController(
+      DeviceConfiguration configuration, String userId, String id) {
     if (connectionInfo == null) return;
     if (!connectionInfo!.configurationMode) return;
     if (!connectionInfo!.standalone) return;
 
     final data = jsonEncode(
-      {'action': 'configureDevice', ...configuration.toMap()},
+      {
+        'action': 'configureDevice',
+        ...configuration.toMap(),
+        'id': id,
+        'userId': userId,
+      },
     );
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
@@ -322,13 +329,19 @@ class LocalRepository {
     );
   }
 
-  void configureCoordinator(CoordinatorConfiguration configuration) {
+  void configureCoordinator(
+      DeviceConfiguration configuration, String userId, String id) {
     if (connectionInfo == null) return;
     if (!connectionInfo!.configurationMode) return;
     if (connectionInfo!.standalone) return;
 
     final data = jsonEncode(
-      {'action': 'configureCoordinator', ...configuration.toMap()},
+      {
+        'action': 'configureCoordinator',
+        ...configuration.toMap(),
+        'id': id,
+        'userId': userId,
+      },
     );
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

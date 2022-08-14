@@ -52,27 +52,30 @@ class FridgeCard extends StatelessWidget {
                   vertical: Consts.defaultPadding / 2),
               child: Row(
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "#${fridge.id}",
-                        style: textTheme.titleSmall?.copyWith(
-                          color: Consts.neutral.shade400,
+                  Expanded(
+                    flex: 10,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "#${fridge.id}",
+                          style: textTheme.titleSmall?.copyWith(
+                            color: Consts.neutral.shade400,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      Text(
-                        fridge.name,
-                        style: textTheme.headline2?.copyWith(
-                          color: Consts.neutral.shade600,
-                        ),
-                      )
-                    ],
+                        Text(
+                          fridge.name,
+                          style: textTheme.headline2?.copyWith(
+                            color: Consts.neutral.shade600,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
                   Text(
                     "${fridge.temperature.round()}°C",
                     overflow: TextOverflow.fade,

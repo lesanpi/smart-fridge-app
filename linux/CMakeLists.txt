@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "wifi_led_esp8266")
-set(APPLICATION_ID "com.example.wifi_led_esp8266")
+set(BINARY_NAME "zona_refri")
+set(APPLICATION_ID "com.lesanpi.zona_refri")
 
 cmake_policy(SET CMP0063 NEW)
 
