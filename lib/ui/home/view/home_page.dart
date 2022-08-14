@@ -49,36 +49,38 @@ class HomePage extends StatelessWidget {
           label: Text("Configurar nuevo dispositivo"),
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Consts.defaultPadding * 2,
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: Consts.defaultPadding * 6),
-                  const HelloMessage(),
-                  const SizedBox(height: Consts.defaultPadding * 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Expanded(child: InternetFridgesButton()),
-                      SizedBox(width: Consts.defaultPadding),
-                      Expanded(child: LocalFridgesButton()),
-                    ],
-                  ),
-                  const SizedBox(height: Consts.defaultPadding),
-                  Row(
-                    children: const [
-                      Expanded(child: SignOutButton()),
-                      SizedBox(width: Consts.defaultPadding),
-                      Expanded(child: EditProfileButton())
-                    ],
-                  )
-                ],
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Consts.defaultPadding * 2,
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: Consts.defaultPadding * 6),
+                    const HelloMessage(),
+                    const SizedBox(height: Consts.defaultPadding * 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Expanded(child: InternetFridgesButton()),
+                        SizedBox(width: Consts.defaultPadding),
+                        Expanded(child: LocalFridgesButton()),
+                      ],
+                    ),
+                    const SizedBox(height: Consts.defaultPadding),
+                    Row(
+                      children: const [
+                        Expanded(child: SignOutButton()),
+                        SizedBox(width: Consts.defaultPadding),
+                        Expanded(child: EditProfileButton())
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -153,6 +155,7 @@ class LocalFridgesButton extends StatelessWidget {
       icon: const Icon(
         Icons.home_filled,
         size: 60,
+        color: Consts.primary,
       ),
     );
   }
@@ -178,6 +181,7 @@ class SignOutButton extends StatelessWidget {
         icon: const Icon(
           Icons.logout,
           size: 60,
+          color: Consts.primary,
         ),
       ),
     );
@@ -196,6 +200,7 @@ class EditProfileButton extends StatelessWidget {
       icon: const Icon(
         Icons.person,
         size: 60,
+        // color: Consts.accent,
       ),
     );
   }
@@ -214,13 +219,17 @@ class HelloMessage extends StatelessWidget {
       children: [
         Text(
           "Bienvenido,",
-          style: textTheme.headline1,
+          style: textTheme.headline5?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: Consts.fontDark,
+          ),
         ),
         Text(
           authUser != null ? authUser.name : "",
-          style: textTheme.headline1?.copyWith(
+          style: textTheme.headline4?.copyWith(
             fontWeight: FontWeight.w700,
             color: Consts.primary,
+            height: 1,
           ),
         ),
       ],

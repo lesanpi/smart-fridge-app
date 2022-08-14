@@ -28,7 +28,10 @@ class DisconnectButton extends StatelessWidget {
           onTap!();
         }
       },
-      child: const Text("Desconectarse"),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: Consts.defaultPadding),
+        child: Text("Desconectarse"),
+      ),
     );
   }
 }

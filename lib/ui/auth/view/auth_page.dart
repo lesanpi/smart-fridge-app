@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/auth_cubit.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/sign_in_cubit.dart';
-import 'package:wifi_led_esp8266/ui/auth/view/sign_in_view.dart';
-import 'package:wifi_led_esp8266/ui/auth/view/sign_up_view.dart';
+import 'package:wifi_led_esp8266/ui/auth/view/sign_in_page.dart';
+import 'package:wifi_led_esp8266/ui/auth/view/sign_up_page.dart';
 import 'package:wifi_led_esp8266/ui/home/home.dart';
 import 'package:wifi_led_esp8266/utils/validators.dart';
 import 'package:wifi_led_esp8266/widgets/form_input.dart';
@@ -40,7 +40,7 @@ class _AuthPageState extends State<AuthPage> {
               child: Center(
                 child: Stack(
                   children: [
-                    const SignInView(),
+                    const SignInPage(),
                     Positioned(
                       bottom: 0,
                       height: 80,
@@ -50,7 +50,7 @@ class _AuthPageState extends State<AuthPage> {
                         // shadowColor: Colors.black,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Consts.darkSystem.shade300,
+                            color: Consts.fontDark,
                           ),
                         ),
                       ),
@@ -91,7 +91,7 @@ class _AuthPageState extends State<AuthPage> {
     if (state == AuthState.SIGNIN) {
       _cardContent = const SizedBox.shrink();
     } else if (state == AuthState.SIGNUP) {
-      _cardContent = const SignUpView();
+      _cardContent = const SignUpPage();
     } else if (state == AuthState.RECOVER) {
       // _cardContent = RecoverPasswordWidget();
     }

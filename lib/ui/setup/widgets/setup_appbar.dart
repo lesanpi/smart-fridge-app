@@ -10,6 +10,8 @@ class SetupAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
         builder: (context, state) {
       bool isCoordinator = false;
@@ -27,9 +29,9 @@ class SetupAppBar extends StatelessWidget {
           isCoordinator
               ? 'Configurar nuevo coordinador'
               : 'Configurar nuevo dispositivo',
-          style: TextStyle(
-            color: Consts.neutral.shade700,
+          style: textTheme.headline6?.copyWith(
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
       );

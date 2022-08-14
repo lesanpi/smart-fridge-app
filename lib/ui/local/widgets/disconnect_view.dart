@@ -17,46 +17,51 @@ class DisconnectedView extends StatelessWidget {
         horizontal: Consts.defaultPadding * 3,
       ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.wifi_off_rounded,
-              size: 100,
-              color: Consts.primary,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
-            Text(
-              "Desconectado",
-              style: textTheme.headline3?.copyWith(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Icon(
+                Icons.wifi_off_rounded,
+                size: 100,
+                color: Consts.primary,
               ),
-            ),
-            const SizedBox(height: Consts.defaultPadding / 2),
-            Text(
-              "Asegurate de estar conectado a la red WiFi correcta",
-              style: textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
-            ElevatedButton(
-              onPressed: () {
-                context
-                    .read<LocalConnectionBloc>()
-                    .add(LocalConnectionConnect());
+              const SizedBox(height: Consts.defaultPadding),
+              Text(
+                "Desconectado",
+                style: textTheme.headline5?.copyWith(
+                    // fontSize: 30,
+                    // fontWeight: FontWeight.w300,
+                    // color: Colors.black38,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: Consts.defaultPadding / 2),
+              Text(
+                "Asegurate de estar conectado a la red WiFi correcta",
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: Consts.defaultPadding),
+              ElevatedButton(
+                // style: Theme.of(context).elevatedButtonTheme.style,
+                onPressed: () {
+                  context
+                      .read<LocalConnectionBloc>()
+                      .add(LocalConnectionConnect());
 
-                // context.read<ConnectionCubit>().connect('').then((_) {
-                //   context.read<ConnectionCubit>().connect('');
-                //   context.read<ConnectionCubit>().connect('');
-                // });
-              },
-              child: const Text(
-                "Conectarse",
-              ),
-            )
-          ],
+                  // context.read<ConnectionCubit>().connect('').then((_) {
+                  //   context.read<ConnectionCubit>().connect('');
+                  //   context.read<ConnectionCubit>().connect('');
+                  // });
+                },
+                child: const Text(
+                  "Conectarse",
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

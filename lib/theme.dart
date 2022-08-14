@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
   static TextStyle _workSans = const TextStyle(fontFamily: 'Work Sans Regular');
@@ -31,106 +32,149 @@ class CustomTheme {
   );
 
   static ThemeData mainTheme = ThemeData(
-    primarySwatch: Consts.primary,
-    colorScheme: ColorScheme(
-      primary: Consts.primary,
-      primaryVariant: Consts.primary[400]!,
-      secondary: Consts.secondary,
-      secondaryVariant: Consts.secondary[400]!,
-      surface: Consts.bg100,
-      background: Consts.bg100,
-      error: Consts.error,
-      onPrimary: Consts.textWh,
-      onSecondary: Consts.textWh,
-      onSurface: Consts.textBl,
-      onBackground: Consts.textBl,
-      onError: Consts.textWh,
-      brightness: Brightness.light,
+    // primarySwatch: Consts.primary,
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: Consts.primary,
+      accentColor: Consts.accent,
+      backgroundColor: Consts.background,
+      errorColor: Consts.error,
+      cardColor: Consts.background.shade100,
     ),
     scaffoldBackgroundColor: Consts.bg100,
-    textTheme: TextTheme(
-      headline1: _workSansBold.copyWith(
-        fontSize: 36.0,
-        letterSpacing: 0.0,
-      ),
-      headline2: _workSansBold.copyWith(
-        fontSize: 24.0,
-        letterSpacing: 0.0,
-      ),
-      headline3: _workSans.copyWith(
-        fontSize: 22.0,
-        letterSpacing: 0.0,
-      ),
-      headline4: _workSans.copyWith(
-        fontSize: 20.0,
-        letterSpacing: 0.0,
-      ),
-      headline5: _workSans.copyWith(
-        fontSize: 18.0,
-        letterSpacing: 0.0,
-      ),
-      headline6: _workSans.copyWith(
-        fontSize: 16.0,
-        letterSpacing: 0.0,
-      ),
-      subtitle1: _workSans,
-      subtitle2: _workSans,
-      bodyText1: _workSansBold.copyWith(
-        // fontSize: 16.0,
-        height: 1.5,
-      ),
-      bodyText2: _workSans.copyWith(
-        // fontSize: 16.0,
-        height: 1.5,
-      ),
-      button: _workSans.copyWith(fontSize: 16.0),
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    textTheme: GoogleFonts.poppinsTextTheme()
+        .copyWith(bodyLarge: GoogleFonts.poppins(fontWeight: FontWeight.w600))
+        .apply(bodyColor: Consts.fontDark),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: Consts.primary,
     ),
+    // inputDecorationTheme: InputDecorationTheme(
+    //   hintStyle: TextStyle(
+    //     color: Consts.neutral.shade500,
+    //   ),
+    //   labelStyle: TextStyle(
+    //     color: Consts.neutral.shade500,
+    //   ),
+    //   border: OutlineInputBorder(
+    //     borderSide: BorderSide(color: Consts.accent.shade400),
+    //     borderRadius: BorderRadius.circular(Consts.borderRadius),
+    //   ),
+    //   enabledBorder: outlineInputBorder,
+    //   focusedBorder: outlineInputBorder,
+    //   fillColor: Consts.neutral[200],
+    //   filled: true,
+    //   isCollapsed: true,
+    //   isDense: true,
+    //   contentPadding: const EdgeInsets.symmetric(
+    //     vertical: Consts.defaultPadding / 2,
+    //     horizontal: Consts.defaultPadding / 2,
+    //   ),
+    // ),
     inputDecorationTheme: InputDecorationTheme(
-      labelStyle: TextStyle().copyWith(
-        color: Consts.neutral[400],
-        fontSize: 14,
-      ),
-      hintStyle: TextStyle().copyWith(
-        color: Consts.neutral[400],
-        fontSize: 14,
-      ),
-      border: outlineInputBorder,
-      enabledBorder: outlineInputBorder,
-      focusedBorder: outlineInputBorder,
-      fillColor: Consts.neutral[200],
-      filled: true,
-      isCollapsed: true,
       isDense: true,
-      contentPadding: const EdgeInsets.symmetric(
-        vertical: Consts.defaultPadding / 2,
-        horizontal: Consts.defaultPadding / 2,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: Consts.accent.shade400),
+        borderRadius: BorderRadius.circular(Consts.borderRadius),
       ),
+      hintStyle: TextStyle(
+        color: Consts.neutral.shade500,
+      ),
+      labelStyle: TextStyle(
+        color: Consts.neutral.shade500,
+      ),
+      focusColor: Consts.accent,
     ),
     primaryIconTheme: IconThemeData(color: Consts.textWh),
-    textSelectionTheme: TextSelectionThemeData(
-      selectionColor: Consts.secondary[40],
-      selectionHandleColor: Consts.secondary,
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionColor: Consts.accent,
+      selectionHandleColor: Consts.accent,
       cursorColor: Colors.black,
     ),
-    cupertinoOverrideTheme: CupertinoThemeData(primaryColor: Consts.secondary),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(
-          color: Consts.primary.shade400,
-          width: 1.0,
+    cupertinoOverrideTheme: CupertinoThemeData(
+      primaryColor: Consts.accent,
+    ),
+    // outlinedButtonTheme: OutlinedButtonThemeData(
+    //   style: OutlinedButton.styleFrom(
+    //     side: BorderSide(
+    //       color: Consts.primary.shade400,
+    //       width: 1.0,
+    //     ),
+    //     primary: Consts.primary.shade400,
+    //     shape: buttonShape,
+    //   ),
+    // ),
+    // elevatedButtonTheme: ElevatedButtonThemeData(
+    //   style: ElevatedButton.styleFrom(
+    //     shape: buttonShape,
+    //     primary: Consts.primary.shade400,
+    //   ),
+    // ),
+    sliderTheme: SliderThemeData(
+      // overlayColor: Consts.accent,
+      activeTrackColor: Consts.primary,
+      thumbColor: Consts.primary.shade400,
+      trackHeight: 15,
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        textStyle: GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
         ),
-        primary: Consts.primary.shade400,
-        shape: buttonShape,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        shape: buttonShape,
-        primary: Consts.primary.shade400,
+        onPrimary: Consts.fontWhite,
+        textStyle: GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
+        ),
+        primary: Consts.accent,
+        padding: const EdgeInsets.symmetric(
+          vertical: 13,
+          horizontal: Consts.defaultPadding,
+        ),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Consts.borderRadius),
+        ),
       ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        textStyle: GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
+          color: Consts.primary,
+        ),
+        side: const BorderSide(color: Consts.primary),
+        padding: const EdgeInsets.symmetric(
+          vertical: 13,
+          horizontal: Consts.defaultPadding,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Consts.borderRadius),
+        ),
+      ),
+    ),
+
+    tabBarTheme: const TabBarTheme(
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(
+          color: Consts.primary,
+          width: 2,
+        ),
+      ),
+      // overlayColor: MaterialStateProperty.all(Consts.primary),
+      labelStyle: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Consts.primary,
+        fontSize: 16,
+      ),
+      labelColor: Consts.primary,
+      unselectedLabelStyle: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFc6c6c6),
+        fontSize: 16,
+      ),
+      unselectedLabelColor: Color(0xFFc6c6c6),
     ),
     checkboxTheme: CheckboxThemeData(
       fillColor: MaterialStateProperty.resolveWith(

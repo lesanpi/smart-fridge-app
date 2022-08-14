@@ -100,13 +100,9 @@ class NoConfigurationMode extends StatelessWidget {
               color: Consts.primary,
             ),
             const SizedBox(height: Consts.defaultPadding),
-            const Text(
+            Text(
               "Atención!",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
+              style: textTheme.headline5,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
@@ -151,13 +147,9 @@ class NoDeviceFound extends StatelessWidget {
               color: Consts.primary,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
-            const Text(
-              "No se encontro una conexión",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
+            Text(
+              "No se encontró una conexión",
+              style: textTheme.headline5,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
@@ -189,7 +181,13 @@ class NoDeviceFound extends StatelessWidget {
                     onPressed: () {
                       Navigator.maybePop(context);
                     },
-                    child: const Text("Regresar"),
+                    child: Text(
+                      "Regresar",
+                      style: textTheme.button?.copyWith(
+                        color: Consts.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),

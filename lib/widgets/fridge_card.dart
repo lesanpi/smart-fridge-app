@@ -68,7 +68,7 @@ class FridgeCard extends StatelessWidget {
                         ),
                         Text(
                           fridge.name,
-                          style: textTheme.headline2?.copyWith(
+                          style: textTheme.headline5?.copyWith(
                             color: Consts.neutral.shade600,
                           ),
                         )
@@ -81,10 +81,11 @@ class FridgeCard extends StatelessWidget {
                     overflow: TextOverflow.fade,
                     maxLines: 1,
                     softWrap: false,
-                    style: textTheme.headline1?.copyWith(
+                    style: textTheme.headline6?.copyWith(
                       color: alert
                           ? Consts.neutral.shade800
                           : Consts.error.shade400,
+                      fontWeight: FontWeight.w600,
                     ),
                   )
                 ],

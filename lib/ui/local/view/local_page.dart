@@ -64,35 +64,8 @@ class LocalView extends StatelessWidget {
         print(state);
 
         if (state is LocalConnectionLoading) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 10,
-                  ),
-                ),
-                const SizedBox(height: Consts.defaultPadding * 2),
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: 1000),
-                  duration: const Duration(seconds: 1000),
-                  builder: (context, value, _) {
-                    final dotsNum = (value.toInt()) % 4;
-                    return Text(
-                      'Cargando${'.' * dotsNum}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Consts.neutral.shade700,
-                        fontSize: 25,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+          return const Center(
+            child: LoadingMessage(),
           );
         }
         if (state is LocalConnectionWaiting) {

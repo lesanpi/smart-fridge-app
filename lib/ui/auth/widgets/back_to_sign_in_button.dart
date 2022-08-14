@@ -13,16 +13,18 @@ class BackToSignInButton extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             '¿Ya tienes una cuenta?',
             style: textTheme.bodyMedium?.copyWith(
-              color: Consts.lightSystem.shade100,
+              color: Consts.fontDark,
             ),
           ),
           TextButton(
-            onPressed: () => context.read<AuthCubit>().goTo(AuthState.SIGNIN),
+            onPressed: () {
+              Navigator.pop(context);
+            },
             child: Text('Inicia sesión'),
             style: TextButton.styleFrom(
               primary: Consts.primary,

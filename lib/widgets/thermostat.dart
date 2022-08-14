@@ -33,8 +33,8 @@ class Thermostat extends StatelessWidget {
           gradient: LinearGradient(colors: [
             Consts.primary,
             Consts.primary.shade100,
-            Consts.primary.shade700,
-            Consts.primary.shade500,
+            Consts.primary.shade400,
+            Consts.primary.shade400,
             Consts.primary,
             Consts.primary.shade200,
           ]),

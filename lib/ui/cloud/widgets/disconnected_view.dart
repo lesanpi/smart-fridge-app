@@ -29,11 +29,8 @@ class DisconnectedView extends StatelessWidget {
             const SizedBox(height: Consts.defaultPadding),
             Text(
               "Desconectado",
-              style: textTheme.headline3?.copyWith(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
+              style: textTheme.headline5?.copyWith(),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(

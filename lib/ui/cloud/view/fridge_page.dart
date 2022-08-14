@@ -39,8 +39,8 @@ class FridgePage extends StatelessWidget {
                       const SizedBox(height: Consts.defaultPadding),
                       NameController(initialName: fridge.name),
                       Text(
-                        fridge.id,
-                        style: textTheme.headline2,
+                        '#${fridge.id}',
+                        style: textTheme.headline6,
                       ),
                       const SizedBox(height: Consts.defaultPadding * 1),
                       Thermostat(
@@ -153,10 +153,10 @@ class _NameControllerState extends State<NameController> {
                 if (state!.name != nameController.text)
                   GestureDetector(
                     onTap: () => nameController.text = state.name,
-                    child: Icon(
+                    child: const Icon(
                       Icons.restart_alt,
                       size: 30,
-                      color: Consts.primary.shade600,
+                      color: Consts.primary,
                     ),
                   )
                 else
@@ -165,22 +165,22 @@ class _NameControllerState extends State<NameController> {
                   width: size.width * 0.65,
                   child: TextField(
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Consts.primary.shade600,
+                          color: Consts.primary,
                         ),
                       ),
                       suffixIcon: Icon(
                         Icons.edit,
                         size: 25,
-                        color: Consts.primary.shade600,
+                        color: Consts.primary,
                       ),
                     ),
-                    style: textTheme.headline2?.copyWith(
-                      color: Consts.primary.shade600,
+                    style: textTheme.headline5?.copyWith(
+                      color: Consts.primary,
                     ),
                     controller: nameController,
                     onChanged: (_) => setState(() {}),

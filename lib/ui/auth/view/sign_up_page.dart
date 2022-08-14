@@ -13,14 +13,14 @@ import 'package:wifi_led_esp8266/widgets/form_dropdown_with_text.dart';
 import 'package:wifi_led_esp8266/widgets/form_input.dart';
 import 'package:wifi_led_esp8266/widgets/future_loading_indicator.dart';
 
-class SignUpView extends StatefulWidget {
-  const SignUpView({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _SignUpPageState extends State<SignUpPage> {
   late final textTheme = Theme.of(context).textTheme;
   late final size = MediaQuery.of(context).size;
 
@@ -51,29 +51,38 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     final double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
+    final textTheme = Theme.of(context).textTheme;
 
-    return BlocProvider(
-      create: (context) => SignUpCubit(context.read()),
-      child: BlocConsumer<SignUpCubit, SignUpFormState>(
-        listener: (context, state) {
-          if (state == SignInState.existingUser) {
-            print('correct auth');
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          }
-        },
-        builder: (context, state) {
-          return Container(
-            margin: EdgeInsets.only(bottom: bottomInsets),
-            child: PhysicalModel(
-              color: Consts.darkSystem.shade300,
-              elevation: 50,
-              // width: size.width,
+    return Scaffold(
+      backgroundColor: Consts.lightSystem.shade300,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Consts.accent.shade400,
+        centerTitle: true,
+        title: Text(
+          'Nuevo usuario',
+          style: textTheme.headline5?.copyWith(
+            color: Consts.neutral.shade100,
+          ),
+        ),
+      ),
+      body: BlocProvider(
+        create: (context) => SignUpCubit(context.read()),
+        child: BlocConsumer<SignUpCubit, SignUpFormState>(
+          listener: (context, state) {
+            if (state == SignInState.existingUser) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+            }
+          },
+          builder: (context, state) {
+            return Container(
+              margin: EdgeInsets.only(bottom: bottomInsets),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: Consts.defaultPadding * 2,
+                  horizontal: Consts.defaultPadding * 1.5,
                 ),
                 child: Center(
                   child: SingleChildScrollView(
@@ -84,12 +93,12 @@ class _SignUpViewState extends State<SignUpView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: Consts.defaultPadding * 2),
-                          Icon(
-                            Icons.ac_unit_outlined,
-                            size: 150,
-                            color: Consts.lightSystem.shade100,
-                          ),
+                          // const SizedBox(height: Consts.defaultPadding * 2),
+                          // Icon(
+                          //   Icons.ac_unit_outlined,
+                          //   size: 150,
+                          //   color: Consts.accent,
+                          // ),
                           const SizedBox(height: Consts.defaultPadding * 2),
                           emailInput(),
                           const SizedBox(height: Consts.defaultPadding),
@@ -106,7 +115,7 @@ class _SignUpViewState extends State<SignUpView> {
                             child: Text(
                               'REGISTRARSE',
                               style: textTheme.bodyLarge?.copyWith(
-                                color: Consts.primary.shade400,
+                                color: Consts.neutral.shade100,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -114,8 +123,8 @@ class _SignUpViewState extends State<SignUpView> {
                                 .elevatedButtonTheme
                                 .style!
                                 .copyWith(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Consts.lightSystem.shade100),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Consts.accent),
                                 ),
                           ),
                           const SizedBox(height: Consts.defaultPadding),
@@ -127,9 +136,9 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

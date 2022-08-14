@@ -4,58 +4,39 @@ import 'package:flutter/material.dart';
 class Consts {
 /* ------------------------- Application parameters ------------------------- */
   // static const httpLink = "http://192.168.18.3:3001";
-  static const httpLink = "http://192.168.1.102:3001";
+  static const httpLink = "http://192.168.1.106:3001";
   static const mqttCloudUrl =
       "b18bfec2abdc420f99565f02ebd1fa05.s2.eu.hivemq.cloud";
   static const mqttDefaultCoordinatorIp = "192.168.0.1";
   static const mqttDefaultIps = "192.168.0.1";
-  // static const httpLink = "http://192.168.2.108:3001";
-  // static const algoliaAppId = "TYPWAL4JZU";
-  // static const algoliaApiKey = "858e43b0d195cc08b91edbbc6222f4f8";
   static const Map<String, String> headers = {
     'Content-type': 'application/json',
     'Accept': 'application/json',
   };
 /* -------------------------------------------------------------------------- */
 
-/* ------------------------- Algolia Search Indexes ------------------------- */
-  // static const productsIndex = "products";
-  // static const usersIndex = "users";
-  // static const ordersIndex = "orders";
-  // static const categoriesIndex = "categories";
-/* -------------------------------------------------------------------------- */
-
 /* ---------------------------- Theme parameters ---------------------------- */
-  static const int _kPrimaryPrim = 0xFF4dd0e1;
-  static const MaterialColor primary = MaterialColor(_kPrimaryPrim, {
-    50: Color(0xFFe0f7fa),
-    100: Color(0xFFb2ebf2),
-    200: Color(0xFF80deea),
-    300: Color(_kPrimaryPrim),
-    400: Color(0xFF26c6da),
-    500: Color(0xFF00bcd4),
-    600: Color(0xFF00acc1),
-    700: Color(0xFF0097a7),
-    800: Color(0xFF00838f),
-    900: Color(0xFF006064),
+  static const int _kPrimaryPrim = 0xFF164296;
+  static const MaterialColor accent = MaterialColor(_kPrimaryPrim, {
+    100: Color(0xFF5F7BB1),
+    200: Color(_kPrimaryPrim),
+    300: Color(0xFF232E74),
+    400: Color(0xFF171E4C),
+    700: Color(0xFF171E4C),
   });
 
-  static const int _kSecondaryPrim = 0xFF4dd0e1;
-  static const MaterialColor secondary = MaterialColor(_kPrimaryPrim, {
-    50: Color(0xFFe0f7fa),
-    100: Color(0xFFb2ebf2),
-    200: Color(0xFF80deea),
-    300: Color(_kPrimaryPrim),
-    400: Color(0xFF26c6da),
-    500: Color(0xFF00bcd4),
-    600: Color(0xFF00acc1),
-    700: Color(0xFF0097a7),
-    800: Color(0xFF00838f),
-    900: Color(0xFF006064),
+  static const int _kAccentPrim = 0xFF07AEC7;
+  static const MaterialColor primary = MaterialColor(_kAccentPrim, {
+    50: Color(0xFFE5FBFF),
+    100: Color(0xFF7CDEEE),
+    200: Color(0xFF00C5E4),
+    300: Color(_kAccentPrim),
+    400: Color(0xFF006271),
+    700: Color(0xFF006271),
   });
 
   static const int _kNeutralPrim = 0xFFF7F8F9;
-  static const MaterialColor neutral = const MaterialColor(_kNeutralPrim, {
+  static const MaterialColor neutral = MaterialColor(_kNeutralPrim, {
     100: Color(_kNeutralPrim),
     200: Color(0xFFE8EBED),
     300: Color(0xFFC9CDD2),
@@ -66,20 +47,18 @@ class Consts {
     800: Color(0xFF292727),
   });
 
-  static const int _kSuccessPrim = 0xFF3D9B52;
-  static const MaterialColor success = const MaterialColor(_kSuccessPrim, {
+  static const int _kSuccessPrim = 0xFF00831D;
+  static const MaterialColor success = MaterialColor(_kSuccessPrim, {
     100: Color(0xFFD0ECD6),
     200: Color(0xFF67C57C),
-    300: Color(_kSuccessPrim),
-    400: Color(0xFF00831D),
+    300: Color(0xFF3D9B52),
+    400: Color(_kSuccessPrim),
   });
 
-  static const int _kWarningPrim = 0xFFF8BF29;
-  static const MaterialColor warning = const MaterialColor(_kWarningPrim, {
-    100: Color(0xFFFFF0CB),
-    200: Color(0xFFFFD462),
-    300: Color(_kWarningPrim),
-    400: Color(0xFFE7A700),
+  static const int _kInfoPrim = 0xFF64B6F7;
+  static const MaterialColor info = MaterialColor(_kInfoPrim, {
+    100: Color(0xFFEFF8FE),
+    200: Color(_kInfoPrim),
   });
 
   static const int _kErrorPrim = 0xFFE5483D;
@@ -102,6 +81,17 @@ class Consts {
     300: Color(0xFF26282B),
   });
 
+  static const int _kBackgroundPrim = 0xFFFBFCFC;
+  static const MaterialColor background = MaterialColor(_kBackgroundPrim, {
+    100: Color(0xFFFFFFFF),
+    200: Color(_kBackgroundPrim),
+    300: Color(0xFFF7F8FA),
+    400: Color(0xFFEBF0F3),
+    500: Color(0xFFE0E0E3),
+    600: Color(0xFFC5C8CF),
+    700: Color(0xFF050710),
+  });
+
 // Text colors
   static const Color textBl = const Color(0xFF333333);
   static const Color textWh = const Color(0xFFFEFEFE);
@@ -117,6 +107,9 @@ class Consts {
 
   static const double defaultPadding = 20.0;
   static const double defaultBorderRadius = 5.0;
+
+  /// Default border radius for the UI elements.
+  static const double borderRadius = 8;
 
   static const Size categoryCardSize = Size(110, 110);
 
@@ -134,4 +127,9 @@ class Consts {
     primary,
     primary.shade200,
   ]);
+
+  static const Color fontDark = Color(0xFF1F2D4A);
+  static const Color fontDarkGray = Color(0xFF6B7280);
+  static const Color fontLightGray = Color(0xFF9A9FA7);
+  static const Color fontWhite = Color(0xFFFEFEFE);
 }

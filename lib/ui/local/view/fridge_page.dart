@@ -40,8 +40,8 @@ class FridgePage extends StatelessWidget {
                       const SizedBox(height: Consts.defaultPadding),
                       NameController(initialName: fridge.name),
                       Text(
-                        fridge.id,
-                        style: textTheme.headline2,
+                        '#${fridge.id}',
+                        style: textTheme.headline6,
                       ),
                       const SizedBox(height: Consts.defaultPadding * 1),
                       Thermostat(

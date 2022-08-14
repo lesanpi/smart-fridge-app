@@ -26,11 +26,7 @@ class FridgesEmpty extends StatelessWidget {
             const SizedBox(height: Consts.defaultPadding),
             Text(
               "No hay neveras conectadas",
-              style: textTheme.headline3?.copyWith(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
+              style: textTheme.headline5,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),

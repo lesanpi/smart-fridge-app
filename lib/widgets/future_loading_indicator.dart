@@ -175,6 +175,8 @@ Future onDialogMessage({
                 ),
                 // const SizedBox(height: Consts.defaultPadding / 2),
               ],
+              const SizedBox(height: Consts.defaultPadding / 2),
+
               OutlinedButton(
                 clipBehavior: Clip.none,
                 onPressed: () {
@@ -184,7 +186,7 @@ Future onDialogMessage({
                 child: Text(
                   'CERRAR',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Consts.primary.shade400,
+                        color: Consts.primary,
                         fontWeight: FontWeight.w700,
                       ),
                 ),

@@ -24,13 +24,9 @@ class NoDataView extends StatelessWidget {
               color: Consts.primary,
             ),
             const SizedBox(height: Consts.defaultPadding),
-            const Text(
+            Text(
               "Sin datos",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
-                color: Colors.black38,
-              ),
+              style: textTheme.headline5,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),

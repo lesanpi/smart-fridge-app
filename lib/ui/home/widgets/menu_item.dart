@@ -26,17 +26,17 @@ class ElevatedMenuItem extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: elevatedButtonTheme?.copyWith(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(Consts.defaultBorderRadius * 5),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(Consts.defaultBorderRadius * 5),
+              ),
             ),
-          ),
-        ),
+            backgroundColor: MaterialStateProperty.all(Consts.accent)),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: Consts.defaultPadding,
-            horizontal: Consts.defaultPadding / 2,
+            vertical: Consts.defaultPadding / 2,
+            // horizontal: Consts.defaultPadding / 2,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -46,7 +46,7 @@ class ElevatedMenuItem extends StatelessWidget {
               icon,
               Text(
                 title,
-                style: textTheme.headline4?.copyWith(
+                style: textTheme.headline5?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   // fontSize: 20,
@@ -97,11 +97,13 @@ class OutlinedMenuItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(Consts.defaultBorderRadius * 5),
           ),
         ),
+        overlayColor:
+            MaterialStateProperty.all(Consts.primary.withOpacity(0.1)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          vertical: Consts.defaultPadding,
-          horizontal: Consts.defaultPadding / 2,
+          vertical: Consts.defaultPadding / 2,
+          // horizontal: Consts.defaultPadding / 2,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -111,7 +113,7 @@ class OutlinedMenuItem extends StatelessWidget {
             icon,
             Text(
               title,
-              style: textTheme.headline4?.copyWith(
+              style: textTheme.headline5?.copyWith(
                 color: Consts.primary,
                 fontWeight: FontWeight.w600,
               ),
