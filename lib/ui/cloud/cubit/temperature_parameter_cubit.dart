@@ -12,6 +12,10 @@ class TemperatureParameterCubit extends Cubit<TemperatureParameter> {
   void onChangedMaxTemperature(int maxTemperature) =>
       emit(state.copyWith(maxTemperature: maxTemperature));
 
+        void onChangedDesiredTemperature(int desiredTemperature) =>
+      emit(state.copyWith(desiredTemperature: desiredTemperature));
+
+
   void set(FridgeState fridgeState) =>
       emit(TemperatureParameter.initialFromFridgeState(fridgeState));
 }

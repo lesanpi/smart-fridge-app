@@ -19,11 +19,13 @@ class FridgeState extends Equatable {
     required this.light,
     required this.compressor,
     required this.door,
+    required this.desiredTemperature,
     required this.maxTemperature,
     required this.minTemperature,
     required this.standalone,
     required this.ssid,
     required this.ssidCoordinator,
+    required this.isConnectedToWifi,
   });
 
   String id;
@@ -32,11 +34,13 @@ class FridgeState extends Equatable {
   bool light;
   bool compressor;
   bool door;
+  int desiredTemperature;
   int maxTemperature;
   int minTemperature;
   bool standalone;
   String ssid;
   String ssidCoordinator;
+  bool isConnectedToWifi;
 
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
         id: json["id"],
@@ -47,11 +51,13 @@ class FridgeState extends Equatable {
         light: json["light"],
         compressor: json["compressor"],
         door: json["door"],
+        desiredTemperature: json["desiredTemperature"],
         maxTemperature: json["maxTemperature"],
         minTemperature: json["minTemperature"],
         standalone: json["standalone"],
         ssid: json["ssid"],
         ssidCoordinator: json["ssidCoordinator"],
+        isConnectedToWifi: json["isConnectedToWifi"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,11 +67,13 @@ class FridgeState extends Equatable {
         "light": light,
         "compressor": compressor,
         "door": door,
+        "desiredTemperature": desiredTemperature,
         "maxTemperature": maxTemperature,
         "minTemperature": minTemperature,
         "standalone": standalone,
         "ssid": ssid,
         "ssidCoordinator": ssidCoordinator,
+        "isConnectedToWifi": isConnectedToWifi,
       };
 
   @override
@@ -76,9 +84,11 @@ class FridgeState extends Equatable {
         light,
         compressor,
         door,
+        desiredTemperature,
         maxTemperature,
         minTemperature,
         ssid,
         ssidCoordinator,
+        isConnectedToWifi,
       ];
 }

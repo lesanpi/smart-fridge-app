@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:wifi_led_esp8266/models/fridge_info.dart';
 
 AuthUser authUserFromJson(String str) => AuthUser.fromJson(json.decode(str));
+AuthUser authUserFromJsonStorage(String str) =>
+    AuthUser.fromStorage(json.decode(str));
 
 String authUserToJson(AuthUser data) => json.encode(data.toJson());
 
@@ -18,15 +20,25 @@ class AuthUser {
   final String email;
   final String phone;
   final String name;
-  final List<FridgeInfo> fridges;
+  final List<String> fridges;
 
   factory AuthUser.fromJson(Map<String, dynamic> json) => AuthUser(
         id: json["id"],
         email: json["email"],
         name: json["name"],
         phone: json["phone"],
-        fridges: List<FridgeInfo>.from(
-            json["fridges"].map((x) => FridgeInfo.fromJson(x))),
+        fridges:
+            List<String>.from(json["fridges"].map((x) => x["id"] as String)),
+      );
+
+  factory AuthUser.fromStorage(Map<String, dynamic> json) => AuthUser(
+        id: json["id"],
+        email: json["email"],
+        name: json["name"],
+        phone: json["phone"],
+        fridges: List<String>.from(json["fridges"].map((x) {
+          return x as String;
+        })),
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +46,6 @@ class AuthUser {
         "email": email,
         "name": name,
         "phone": phone,
-        "fridges": List<dynamic>.from(fridges.map((x) => x.toJson())),
+        "fridges": fridges,
       };
 }

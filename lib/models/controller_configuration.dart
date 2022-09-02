@@ -7,6 +7,7 @@ import 'package:wifi_led_esp8266/models/device_configuration.dart';
 class ControllerConfiguration extends DeviceConfiguration {
   const ControllerConfiguration({
     required this.name,
+    required this.desiredTemperature,
     required this.minTemperature,
     required this.maxTemperature,
     required this.ssid,
@@ -19,6 +20,7 @@ class ControllerConfiguration extends DeviceConfiguration {
   });
 
   final String name;
+  final int desiredTemperature;
   final int minTemperature;
   final int maxTemperature;
   final String ssid;
@@ -31,6 +33,7 @@ class ControllerConfiguration extends DeviceConfiguration {
 
   ControllerConfiguration copyWith({
     String? name,
+    int? desiredTemperature,
     int? minTemperature,
     int? maxTemperature,
     bool? startOnCoordinatorMode,
@@ -42,6 +45,7 @@ class ControllerConfiguration extends DeviceConfiguration {
     String? passwordInternet,
   }) =>
       ControllerConfiguration(
+        desiredTemperature: desiredTemperature ?? this.desiredTemperature,
         name: name ?? this.name,
         minTemperature: minTemperature ?? this.minTemperature,
         maxTemperature: maxTemperature ?? this.maxTemperature,
@@ -56,6 +60,7 @@ class ControllerConfiguration extends DeviceConfiguration {
       );
 
   factory ControllerConfiguration.initial() => const ControllerConfiguration(
+        desiredTemperature: 15,
         name: "",
         minTemperature: -20,
         maxTemperature: 30,
@@ -71,6 +76,7 @@ class ControllerConfiguration extends DeviceConfiguration {
   @override
   List<Object?> get props => [
         name,
+        desiredTemperature,
         minTemperature,
         maxTemperature,
         ssid,
@@ -90,6 +96,7 @@ class ControllerConfiguration extends DeviceConfiguration {
   factory ControllerConfiguration.fromMap(Map<String, dynamic> json) =>
       ControllerConfiguration(
         name: json["name"],
+        desiredTemperature: json["desiredTemperature"],
         minTemperature: json["minTemperature"],
         maxTemperature: json["maxTemperature"],
         ssid: json["ssid"],
@@ -104,6 +111,7 @@ class ControllerConfiguration extends DeviceConfiguration {
   @override
   Map<String, dynamic> toMap() => {
         "name": name,
+        "desiredTemperature": desiredTemperature,
         "minTemperature": minTemperature,
         "maxTemperature": maxTemperature,
         "ssid": ssid,

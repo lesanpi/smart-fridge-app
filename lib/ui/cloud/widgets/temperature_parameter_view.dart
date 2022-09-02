@@ -43,6 +43,7 @@ class TemperatureParameterView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Consts.defaultPadding),
+                  const DesiredTemperatureController(),
                   const MinTemperatureController(),
                   const MaxTemperatureController(),
                 ],
@@ -177,6 +178,73 @@ class MaxTemperatureController extends StatelessWidget {
                       onChanged: (value) => context
                           .read<TemperatureParameterCubit>()
                           .onChangedMaxTemperature(value.toInt()),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
+}
+
+class DesiredTemperatureController extends StatelessWidget {
+  const DesiredTemperatureController({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+        builder: (context, fridgeState) {
+      return BlocBuilder<TemperatureParameterCubit, TemperatureParameter>(
+        builder: (context, temperatureParameter) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: Consts.defaultPadding),
+              Row(
+                children: [
+                  const Text(
+                    "Temperatura deseada",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    onPressed: temperatureParameter.desiredTemperature ==
+                            fridgeState?.desiredTemperature
+                        ? null
+                        : () => context
+                            .read<FridgeStateCubit>()
+                            .setDesiredTemperature(
+                                temperatureParameter.desiredTemperature),
+                    child: const Text("Guardar"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Consts.defaultPadding / 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    temperatureParameter.desiredTemperature.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Expanded(
+                    child: Slider(
+                      min: -20,
+                      max: 30,
+                      value: temperatureParameter.desiredTemperature.toDouble(),
+                      onChanged: (value) => context
+                          .read<TemperatureParameterCubit>()
+                          .onChangedDesiredTemperature(value.toInt()),
                     ),
                   ),
                 ],

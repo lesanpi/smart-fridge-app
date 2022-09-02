@@ -62,18 +62,21 @@ class LocalView extends StatelessWidget {
       },
       builder: (context, state) {
         print(state);
-
+        if (state is LocalConnectionWaiting) {
+          return const NoDataView();
+        }
         if (state is LocalConnectionLoading) {
           return const Center(
             child: LoadingMessage(),
           );
         }
-        if (state is LocalConnectionWaiting) {
-          return const NoDataView();
-        }
         if (state is LocalConnectionDisconnected ||
             state.connectionInfo == null) {
           return const DisconnectedView();
+        }
+
+        if (state.connectionInfo!.configurationMode) {
+          return const ConfigurationModeMessage();
         }
 
         if (state.connectionInfo!.standalone) {
@@ -157,6 +160,53 @@ class FridgeView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class ConfigurationModeMessage extends StatelessWidget {
+  const ConfigurationModeMessage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Consts.defaultPadding * 2,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.settings,
+              size: 100,
+              color: Consts.primary,
+            ),
+            const SizedBox(height: Consts.defaultPadding),
+            Text(
+              "Atención!",
+              style: textTheme.headline5,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            Text(
+              '''Estas intentando ingresar a un dispositivo en modo configuración. Asegurate que tu dispositivo este configurado.''',
+              style: textTheme.bodyMedium?.copyWith(
+                fontSize: 15,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Consts.defaultPadding),
+            DisconnectButton(
+              onTap: () => context
+                  .read<LocalConnectionBloc>()
+                  .add(LocalConnectionDisconnect()),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

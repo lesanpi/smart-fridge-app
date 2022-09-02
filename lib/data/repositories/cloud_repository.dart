@@ -45,7 +45,7 @@ class CloudRepository {
     /// client identifier, any supplied username/password and clean session,
     /// an example of a specific one below.
     final connMess = MqttConnectMessage()
-        .withClientIdentifier('Mqtt_MyClientUniqueIdWildcard')
+        .withClientIdentifier(_authRepository.currentUser!.id)
         .withWillTopic(
             'willtopic') // If you set this you must set a will message
         .withWillMessage('My Will message')
@@ -84,6 +84,7 @@ class CloudRepository {
 
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
+        print('Estoy conectado');
         initSubscription();
         conected = true;
         return true;
@@ -108,23 +109,43 @@ class CloudRepository {
   }
 
   void initSubscription() {
-    client.subscribe('state/#', MqttQos.exactlyOnce);
+    print('Suscrbiendome');
+
+    if (_authRepository.currentUser == null) {
+      print(_authRepository.currentUser);
+      print('El usuario es nulo');
+      return;
+    }
+    final fridges = _authRepository.currentUser!.fridges;
+    // client.subscribe('state/#', MqttQos.exactlyOnce);
+    // client.subscribe('state/62f90f52d8f2c401b58817e3', MqttQos.exactlyOnce);
+
+    fridges.forEach((element) {
+      print(element);
+      client.subscribe(('state/$element'), MqttQos.exactlyOnce);
+    });
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
       final recMess = message![0].payload as MqttPublishMessage;
       final topic = message[0].topic;
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-
-      print("[INTERNET] Payload: $payload");
-      final jsonDecoded = json.decode(payload);
+      // print("[MESSAGE]" + recMess.toString());
+      // print("[TOPIC]" + message[0].topic);
+      // print("[INTERNET] Payload: $payload");
+      Map<String, dynamic> jsonDecoded;
+      try {
+        jsonDecoded = json.decode(payload);
+      } catch (e) {
+        return;
+      }
 
       if (jsonDecoded == null) return;
 
       /// The information of the connection was updated
       final List<String> topicSplitted = topic.split('/');
 
-      print("[INTERNET] $jsonDecoded");
+      // print("[INTERNET] $jsonDecoded");
 
       /// A state was updated
       if (topicSplitted[0] == "state") {
@@ -148,8 +169,10 @@ class CloudRepository {
     }
     if (_indexOfFridge == -1) {
       print('Agrego nuevo estado a la lista');
-
-      fridgesState.add(_newFridgeState);
+      if (_authRepository.currentUser!.fridges
+          .any((element) => id == element)) {
+        fridgesState.add(_newFridgeState);
+      }
     } else {
       // print('Sustituyo estado existente');
       // print(_newFridgeState.temperature);
@@ -198,6 +221,20 @@ class CloudRepository {
   void toggleLight(String fridgeId) {
     final data = jsonEncode({
       'action': 'toggleLight',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setDesiredTemperature(String fridgeId, int desiredTemperature) {
+    final data = jsonEncode({
+      'action': 'setDesiredTemperature',
+      'temperature': desiredTemperature,
     });
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

@@ -25,7 +25,7 @@ class AuthRepository {
         'Accept': 'application/json',
         'Authorization': 'Bearer ${token}',
       };
-      final response = await http.post(url,body: jsonData, headers: headers);
+      final response = await http.post(url, body: jsonData, headers: headers);
 
       print(response.body);
       currentUser = authUserFromJson(response.body);

@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
+import 'package:wifi_led_esp8266/models/temperature_stat.dart';
+import 'package:wifi_led_esp8266/ui/cloud/bloc/temperature_stats_bloc/temperature_stats_bloc.dart';
 import '../cloud.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class FridgePage extends StatelessWidget {
   const FridgePage({Key? key}) : super(key: key);
@@ -83,8 +86,13 @@ class FridgePage extends StatelessWidget {
                       const SizedBox(height: Consts.defaultPadding * 2),
                       const TemperatureParameterView(),
                       const SizedBox(height: Consts.defaultPadding * 2),
-                      // const CommunicationModeView(),
-                      // const SizedBox(height: Consts.defaultPadding * 2),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Consts.defaultPadding * 2,
+                        ),
+                        child: FridgeStats(fridgeId: fridge.id),
+                      ),
+                      const SizedBox(height: Consts.defaultPadding * 3),
                     ],
                   ),
                 ),
@@ -197,6 +205,50 @@ class _NameControllerState extends State<NameController> {
           ),
         );
       },
+    );
+  }
+}
+
+class FridgeStats extends StatelessWidget {
+  const FridgeStats({Key? key, required this.fridgeId}) : super(key: key);
+  final String fridgeId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TemperatureStatsBloc(context.read(), fridgeId)
+        ..add(TemperatureStatsGet()),
+      child: BlocBuilder<TemperatureStatsBloc, TemperatureStatsState>(
+        builder: (context, state) {
+          if (state is TemperatureStatsLoading ||
+              state is TemperatureStatsInitial) {
+            return const LoadingMessage();
+          }
+
+          if (state is TemperatureStatsFailed) {
+            return const Center(
+              child: Text('Ocurrió un error'),
+            );
+          }
+
+          // return SizedBox.shrink();
+          return SizedBox(
+            height: 300,
+            child: charts.TimeSeriesChart(
+              state.stats
+                  .map(
+                    (e) => charts.Series<TemperatureStat, DateTime>(
+                      id: 'temperature/' + fridgeId,
+                      data: state.stats,
+                      domainFn: (temp, _) => temp.timestamp,
+                      measureFn: (temp, _) => temp.temp,
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

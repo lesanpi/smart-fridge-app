@@ -43,7 +43,7 @@ class LocalRepository {
     client.setProtocolV311();
 
     /// If you intend to use a keep alive you must set it here otherwise keep alive will be disabled.
-    client.keepAlivePeriod = 30;
+    client.keepAlivePeriod = 60;
 
     /// Add the unsolicited disconnection callback
     client.onDisconnected = onDisconnected;
@@ -57,7 +57,7 @@ class LocalRepository {
             'willtopic') // If you set this you must set a will message
         .withWillMessage('My Will message')
         .startClean() // Non persistent session for testing
-        .withWillQos(MqttQos.atLeastOnce);
+        .withWillQos(MqttQos.atMostOnce);
     client.connectionMessage = connMess;
 
     // connect();
@@ -130,7 +130,13 @@ class LocalRepository {
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      final jsonDecoded = json.decode(payload);
+      print(payload);
+      Map<String, dynamic>? jsonDecoded;
+      try {
+        jsonDecoded = json.decode(payload);
+      } catch (e) {
+        return;
+      }
 
       if (jsonDecoded == null) return;
 
@@ -148,6 +154,8 @@ class LocalRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String id) {
+    print(json);
+    if (json.isEmpty) return;
     final FridgeState _newFridgeState = FridgeState.fromJson(json);
     // print(_newFridgeState.temperature);
 
@@ -265,6 +273,20 @@ class LocalRepository {
     final data = jsonEncode({
       'action': 'setMinTemperature',
       'minTemperature': minTemperature,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setDesiredTemperature(String fridgeId, int desiredTemperature) {
+    final data = jsonEncode({
+      'action': 'setDesiredTemperature',
+      'temperature': desiredTemperature,
     });
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

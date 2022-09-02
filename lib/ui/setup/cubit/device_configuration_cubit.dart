@@ -17,6 +17,9 @@ class DeviceConfigurationCubit extends Cubit<ControllerConfiguration> {
     emit(_newState);
   }
 
+  void onChangedDesiredTemperature(int desiredTemperature) =>
+      emit(state.copyWith(desiredTemperature: desiredTemperature));
+
   void onChangedMinTemperature(int minTemperature) =>
       emit(state.copyWith(minTemperature: minTemperature));
 

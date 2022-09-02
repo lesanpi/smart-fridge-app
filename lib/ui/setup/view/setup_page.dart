@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/controller_configuration.dart';
@@ -60,6 +59,7 @@ class SetupView extends StatelessWidget {
             if (state is LocalConnectionDisconnected) {
               return const DisconnectedView();
             }
+
             if (state.connectionInfo == null) {
               return const NoDeviceFound();
             }
@@ -256,18 +256,53 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           Center(
                             child: Text(
                               "Controlador de Nevera",
-                              style: textTheme.headline2,
+                              style: textTheme.headline5,
                             ),
                           ),
-                          Center(
-                            child: Text(
-                              context
-                                      .read<LocalConnectionBloc>()
-                                      .state
-                                      .connectionInfo
-                                      ?.id ??
-                                  '',
+                          // Center(
+                          //   child: Text(
+                          //     context
+                          //             .read<LocalConnectionBloc>()
+                          //             .state
+                          //             .connectionInfo
+                          //             ?.id ??
+                          //         '',
+                          //   ),
+                          // ),
+                          /// Desired Temperature
+                          const SizedBox(height: Consts.defaultPadding / 2),
+                          const Text(
+                            "Temperatura ideal",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
                             ),
+                          ),
+                          const SizedBox(height: Consts.defaultPadding / 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                deviceConfiguration.desiredTemperature
+                                    .toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Expanded(
+                                child: Slider(
+                                  min: -20,
+                                  max: 30,
+                                  value: deviceConfiguration.desiredTemperature
+                                      .toDouble(),
+                                  onChanged: (value) => context
+                                      .read<DeviceConfigurationCubit>()
+                                      .onChangedDesiredTemperature(
+                                          value.toInt()),
+                                ),
+                              ),
+                            ],
                           ),
 
                           /// Min Temperature
@@ -649,7 +684,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                   const SizedBox(height: Consts.defaultPadding),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Consts.primary.shade600,
+                      primary: Consts.primary.shade300,
                       shape: CustomTheme.buttonShape,
                       minimumSize: const Size.fromHeight(40), // NEW
                     ),
@@ -707,6 +742,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
         if (value) {
           Navigator.maybePop(context);
         }
+
+        // TODO(lesanpi): error message dialog
       });
     };
   }

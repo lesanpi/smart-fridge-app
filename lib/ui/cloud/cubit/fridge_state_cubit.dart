@@ -43,6 +43,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     }
   }
 
+  void setDesiredTemperature(int temperature) {
+    if (state != null) {
+      _cloudRepository.setDesiredTemperature(state!.id, temperature);
+    }
+  }
+
   void toggleLight() {
     if (state != null) {
       _cloudRepository.toggleLight(state!.id);

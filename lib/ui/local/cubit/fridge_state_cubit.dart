@@ -50,6 +50,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     }
   }
 
+  void setDesiredTemperature(int temperature) {
+    if (state != null) {
+      _localRepository.setDesiredTemperature(state!.id, temperature);
+    }
+  }
+
   void setMaxTemperature(int temperature) {
     if (state != null) {
       _localRepository.setMaxTemperature(state!.id, temperature);

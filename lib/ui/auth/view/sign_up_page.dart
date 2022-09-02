@@ -54,6 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Consts.lightSystem.shade300,
       appBar: AppBar(
         elevation: 0,

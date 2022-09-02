@@ -71,22 +71,51 @@ class FridgeCard extends StatelessWidget {
                           style: textTheme.headline5?.copyWith(
                             color: Consts.neutral.shade600,
                           ),
-                        )
+                        ),
+                        Text(
+                          fridge.standalone
+                              ? "Modo independiente"
+                              : "Modo coordinado",
+                          style: textTheme.bodySmall?.copyWith(
+                            color: Consts.fontDark,
+                            fontWeight: FontWeight.w600,
+                            height: 0.8,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ],
                     ),
                   ),
                   // const Spacer(),
-                  Text(
-                    "${fridge.temperature.round()}°C",
-                    overflow: TextOverflow.fade,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: textTheme.headline6?.copyWith(
-                      color: alert
-                          ? Consts.neutral.shade800
-                          : Consts.error.shade400,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Column(
+                    children: [
+                      // Spacer(),
+                      Text(
+                        "${fridge.temperature.round()}°C",
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: textTheme.headline6?.copyWith(
+                          color: alert
+                              ? Consts.neutral.shade800
+                              : Consts.error.shade400,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            fridge.isConnectedToWifi
+                                ? Icons.wifi
+                                : Icons.perm_scan_wifi_outlined,
+                            color: fridge.isConnectedToWifi
+                                ? Consts.fontDark
+                                : Consts.error.shade300,
+                          ),
+                        ],
+                      )
+                    ],
                   )
                 ],
               ),

@@ -30,12 +30,13 @@ class AuthUseCase {
 
       final AuthUser? authUser =
           await _persistentStorageRepository.getCurrentUserData();
-
+      _authRepository.currentUser = authUser;
       return authUser;
     }).timeout(const Duration(seconds: 15), onTimeout: () async {
       print('[Timeout] trayendo desde shared preferences');
       final AuthUser? authUser =
           await _persistentStorageRepository.getCurrentUserData();
+      _authRepository.currentUser = authUser;
 
       return authUser;
     });
@@ -61,7 +62,8 @@ class AuthUseCase {
   /// Deletes the [_token] in the persistent storage
   /// and set user to null in the [_authRepository]
   Future<void> signOut() async {
-    /// TODO: sign out from auth repository
+    // TODO: sign out from auth repository
+    _token = null;
     _persistentStorageRepository.updateToken(null);
     _persistentStorageRepository.updateUserData(null);
     _authRepository.signOut();
