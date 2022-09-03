@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
+import 'package:wifi_led_esp8266/data/use_cases/fridge_use_case.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/models/communication_mode.dart';
 
 class FridgeStateCubit extends Cubit<FridgeState?> {
-  FridgeStateCubit(this._cloudRepository)
+  FridgeStateCubit(this._fridgeUseCase, this._cloudRepository)
       : super(_cloudRepository.fridgeSelected);
 
   final CloudRepository _cloudRepository;
+  final FridgeUseCase _fridgeUseCase;
   StreamSubscription<FridgeState?>? _fridgeStateStream;
 
   void init() {
@@ -52,6 +54,15 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
   void toggleLight() {
     if (state != null) {
       _cloudRepository.toggleLight(state!.id);
+    }
+  }
+
+  void restoreFactory() async {
+    // TODO: Return Message
+    final success = await _fridgeUseCase.deleteFridge(state!.id);
+    _cloudRepository.factoryRestore(state!.id);
+    if (success) {
+      print('success');
     }
   }
 

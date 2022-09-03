@@ -19,7 +19,8 @@ class CloudPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FridgeStateCubit(context.read())..init(),
+          create: (context) =>
+              FridgeStateCubit(context.read(), context.read())..init(),
           lazy: false,
         ),
         BlocProvider(

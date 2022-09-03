@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:wifi_led_esp8266/models/temperature_stat.dart';
 
 class FridgeUseCase {
-  const FridgeUseCase(this._persistentStorageRepository);
-  // final AuthUseCase _authUseCase;
+  const FridgeUseCase(this._authUseCase, this._persistentStorageRepository);
+  final AuthUseCase _authUseCase;
   final PersistentStorageRepository _persistentStorageRepository;
 
   Future<List<TemperatureStat>> getFridgeTemperatures(String fridgeId) async {
@@ -43,5 +43,25 @@ class FridgeUseCase {
     //     responseDecoded.map((stat) => TemperatureStat.fromJson(stat)));
     // print(stats);
     return stats;
+  }
+
+  Future<bool> deleteFridge(String fridgeId) async {
+    final _token = await _persistentStorageRepository.getCurrentToken();
+
+    final url = Uri.parse(Consts.httpLink + '/api/fridges/' + fridgeId);
+    final Map<String, String> headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    };
+
+    try {
+      final response = await http.delete(url, headers: headers);
+      print(response.body);
+      await _authUseCase.getCurrentUser();
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
   }
 }

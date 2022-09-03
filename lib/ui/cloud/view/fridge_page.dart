@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
-import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/models/temperature_stat.dart';
 import 'package:wifi_led_esp8266/ui/cloud/bloc/temperature_stats_bloc/temperature_stats_bloc.dart';
+import 'package:wifi_led_esp8266/ui/cloud/widgets/restore_fridge_button.dart';
 import '../cloud.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
@@ -18,7 +18,8 @@ class FridgePage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return BlocProvider(
-      create: (context) => FridgeStateCubit(context.read())..init(),
+      create: (context) =>
+          FridgeStateCubit(context.read(), context.read())..init(),
       lazy: false,
       child: Scaffold(
         appBar: const PreferredSize(
@@ -92,6 +93,8 @@ class FridgePage extends StatelessWidget {
                         ),
                         child: FridgeStats(fridgeId: fridge.id),
                       ),
+                      const SizedBox(height: Consts.defaultPadding / 2),
+                      const RestoreFridgeButton(),
                       const SizedBox(height: Consts.defaultPadding * 3),
                     ],
                   ),

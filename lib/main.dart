@@ -60,7 +60,7 @@ class SmartFridgeApp extends StatelessWidget {
           lazy: false,
         ),
         RepositoryProvider(
-          create: (context) => FridgeUseCase(context.read()),
+          create: (context) => FridgeUseCase(context.read(), context.read()),
           lazy: false,
         ),
       ],

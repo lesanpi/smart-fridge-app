@@ -135,6 +135,7 @@ class LocalRepository {
       try {
         jsonDecoded = json.decode(payload);
       } catch (e) {
+        print(e);
         return;
       }
 
@@ -214,6 +215,7 @@ class LocalRepository {
     // final int _indexOfFridge =
     //     _fridgesState.map((e) => e.id).toList().indexOf(_newFridgeState.id);
 
+    // ignore: unnecessary_cast
     return (fridgesState as List<FridgeState?>)
         .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
@@ -254,6 +256,37 @@ class LocalRepository {
       payloadBuilder.payload!,
     );
   }
+
+  void factoryRestore(String fridgeId) {
+    if (connectionInfo == null) return;
+
+    final data = jsonEncode({
+      'action': 'factoryRestore',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+
+    client.unsubscribe('state/$fridgeId');
+    if (connectionInfo!.standalone) {
+      client.disconnect();
+    }
+
+    fridgesState =
+        fridgesState.where((element) => element.id != fridgeId).toList();
+    if (fridgeSelected?.id == fridgeId) {
+      fridgeSelected = null;
+    }
+
+    _fridgeSelectedStreamController.add(fridgeSelected);
+    _fridgesStateStreamController.add(fridgesState);
+  }
+
+  void factoryRestoreCoordinator() {}
 
   void setMaxTemperature(String fridgeId, int maxTemperature) {
     final data = jsonEncode({
@@ -336,9 +369,9 @@ class LocalRepository {
     final data = jsonEncode(
       {
         'action': 'configureDevice',
-        ...configuration.toMap(),
         'id': id,
         'userId': userId,
+        ...configuration.toMap(),
       },
     );
     final payloadBuilder = MqttClientPayloadBuilder();

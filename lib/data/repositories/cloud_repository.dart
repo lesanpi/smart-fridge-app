@@ -231,6 +231,30 @@ class CloudRepository {
     );
   }
 
+  void factoryRestore(String fridgeId) {
+    final data = jsonEncode({
+      'action': 'factoryRestore',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+
+    client.unsubscribe('state/$fridgeId');
+
+    fridgesState =
+        fridgesState.where((element) => element.id != fridgeId).toList();
+    if (fridgeSelected?.id == fridgeId) {
+      fridgeSelected = null;
+    }
+
+    _fridgeSelectedStreamController.add(fridgeSelected);
+    _fridgesStateStreamController.add(fridgesState);
+  }
+
   void setDesiredTemperature(String fridgeId, int desiredTemperature) {
     final data = jsonEncode({
       'action': 'setDesiredTemperature',

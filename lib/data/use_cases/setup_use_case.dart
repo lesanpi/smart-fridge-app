@@ -36,6 +36,7 @@ class SetupUseCase {
     if (response.statusCode != 200) {
       return false;
     }
+    print(response.body);
     final responseDecoded = jsonDecode(response.body);
     final userId = responseDecoded['user'];
     final id = responseDecoded['id'];

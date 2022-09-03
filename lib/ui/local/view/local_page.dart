@@ -23,7 +23,8 @@ class LocalPage extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => FridgeStateCubit(context.read())..init(),
+          create: (context) =>
+              FridgeStateCubit(context.read(), context.read())..init(),
           lazy: false,
         ),
         // BlocProvider(
@@ -62,21 +63,34 @@ class LocalView extends StatelessWidget {
       },
       builder: (context, state) {
         print(state);
-        if (state is LocalConnectionWaiting) {
-          return const NoDataView();
-        }
+
         if (state is LocalConnectionLoading) {
           return const Center(
             child: LoadingMessage(),
           );
         }
-        if (state is LocalConnectionDisconnected ||
-            state.connectionInfo == null) {
+        if (state is LocalConnectionDisconnected) {
           return const DisconnectedView();
         }
+        final connectionNull = state.connectionInfo == null;
+        if (state is LocalConnectionWaiting) {
+          // print(state.connectionInfo);
+          if (!connectionNull) {
+            if (state.connectionInfo!.configurationMode) {
+              return const ConfigurationModeMessage();
+            }
+          }
+          return const NoDataView();
+        }
 
-        if (state.connectionInfo!.configurationMode) {
-          return const ConfigurationModeMessage();
+        if (!connectionNull) {
+          if (state.connectionInfo!.configurationMode) {
+            return const ConfigurationModeMessage();
+          }
+        }
+
+        if (connectionNull) {
+          return const DisconnectedView();
         }
 
         if (state.connectionInfo!.standalone) {

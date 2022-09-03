@@ -30,7 +30,7 @@ class DisconnectButton extends StatelessWidget {
       },
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: Consts.defaultPadding),
-        child: Text("Desconectarse"),
+        child: Text("DESCONECTARSE"),
       ),
     );
   }
