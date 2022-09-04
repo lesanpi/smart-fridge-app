@@ -93,7 +93,7 @@ class FridgePage extends StatelessWidget {
                         ),
                         child: FridgeStats(fridgeId: fridge.id),
                       ),
-                      const SizedBox(height: Consts.defaultPadding / 2),
+                      const SizedBox(height: Consts.defaultPadding * 2),
                       const RestoreFridgeButton(),
                       const SizedBox(height: Consts.defaultPadding * 3),
                     ],

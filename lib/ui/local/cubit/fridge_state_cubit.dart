@@ -49,8 +49,8 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
   void restoreFactory() async {
     // TODO: Return Message
     final success = await _fridgeUseCase.deleteFridge(state!.id);
-    _localRepository.factoryRestore(state!.id);
     if (success) {
+      _localRepository.factoryRestore(state!.id);
       print('success');
     }
   }

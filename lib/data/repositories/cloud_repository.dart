@@ -120,9 +120,10 @@ class CloudRepository {
     // client.subscribe('state/#', MqttQos.exactlyOnce);
     // client.subscribe('state/62f90f52d8f2c401b58817e3', MqttQos.exactlyOnce);
 
+    client.subscribe('state/6312c34b49d3ac2f30375872', MqttQos.exactlyOnce);
     fridges.forEach((element) {
       print(element);
-      client.subscribe(('state/$element'), MqttQos.exactlyOnce);
+      client.subscribe('state/$element', MqttQos.exactlyOnce);
     });
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
@@ -169,6 +170,8 @@ class CloudRepository {
     }
     if (_indexOfFridge == -1) {
       print('Agrego nuevo estado a la lista');
+      // fridgesState.add(_newFridgeState);
+
       if (_authRepository.currentUser!.fridges
           .any((element) => id == element)) {
         fridgesState.add(_newFridgeState);
@@ -197,6 +200,7 @@ class CloudRepository {
   void selectFridge(FridgeState _fridgeSelected) {
     fridgeSelected = _fridgeSelected;
     _fridgeSelectedStreamController.add(fridgeSelected);
+    print('Fridge selected ${fridgeSelected}');
   }
 
   void unselectFridge() {
