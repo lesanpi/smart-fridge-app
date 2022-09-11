@@ -52,7 +52,6 @@ class DeviceConfigurationCubit extends Cubit<ControllerConfiguration> {
       ControllerConfiguration deviceConfiguration) async {
     // await Future.delayed(const Duration(seconds: 1));
     print(deviceConfiguration.toJson());
-    print('hola');
 
     final success = await _setupUseCase.configureDevice(deviceConfiguration, 0);
     return success;

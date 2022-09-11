@@ -5,6 +5,7 @@ import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
 import 'package:wifi_led_esp8266/models/temperature_stat.dart';
 import 'package:wifi_led_esp8266/ui/cloud/bloc/temperature_stats_bloc/temperature_stats_bloc.dart';
 import 'package:wifi_led_esp8266/ui/cloud/widgets/restore_fridge_button.dart';
+import 'package:wifi_led_esp8266/ui/cloud/widgets/wifi_internet_view.dart';
 import '../cloud.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
@@ -86,6 +87,8 @@ class FridgePage extends StatelessWidget {
                       ),
                       const SizedBox(height: Consts.defaultPadding * 2),
                       const TemperatureParameterView(),
+                      const SizedBox(height: Consts.defaultPadding * 2),
+                      const WifiInternetView(),
                       const SizedBox(height: Consts.defaultPadding * 2),
                       Padding(
                         padding: const EdgeInsets.symmetric(

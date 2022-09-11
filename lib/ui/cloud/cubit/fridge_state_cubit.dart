@@ -6,6 +6,7 @@ import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/data/use_cases/fridge_use_case.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/models/communication_mode.dart';
+import 'package:wifi_led_esp8266/models/wifi_internet.dart';
 
 class FridgeStateCubit extends Cubit<FridgeState?> {
   FridgeStateCubit(this._fridgeUseCase, this._cloudRepository)
@@ -95,6 +96,16 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
         state!.id,
         communicationMode.ssidCoordinator,
         communicationMode.passwordCoordinator,
+      );
+    }
+  }
+
+  void setInternet(WifiInternet wifiInternet) {
+    if (state != null) {
+      _cloudRepository.setInternet(
+        state!.id,
+        wifiInternet.ssid,
+        wifiInternet.password,
       );
     }
   }

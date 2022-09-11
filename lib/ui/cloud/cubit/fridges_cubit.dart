@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
+import 'package:wifi_led_esp8266/models/wifi_internet.dart';
 
 class CloudFridgesCubit extends Cubit<List<FridgeState>> {
   CloudFridgesCubit(this._cloudRepository)

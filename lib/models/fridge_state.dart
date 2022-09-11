@@ -25,6 +25,7 @@ class FridgeState extends Equatable {
     required this.standalone,
     required this.ssid,
     required this.ssidCoordinator,
+    required this.ssidInternet,
     required this.isConnectedToWifi,
   });
 
@@ -40,6 +41,7 @@ class FridgeState extends Equatable {
   bool standalone;
   String ssid;
   String ssidCoordinator;
+  String ssidInternet;
   bool isConnectedToWifi;
 
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
@@ -57,6 +59,7 @@ class FridgeState extends Equatable {
         standalone: json["standalone"],
         ssid: json["ssid"],
         ssidCoordinator: json["ssidCoordinator"],
+        ssidInternet: json["ssidInternet"],
         isConnectedToWifi: json["isConnectedToWifi"],
       );
 
@@ -73,6 +76,7 @@ class FridgeState extends Equatable {
         "standalone": standalone,
         "ssid": ssid,
         "ssidCoordinator": ssidCoordinator,
+        "ssidInternet": ssidInternet,
         "isConnectedToWifi": isConnectedToWifi,
       };
 
@@ -89,6 +93,7 @@ class FridgeState extends Equatable {
         minTemperature,
         ssid,
         ssidCoordinator,
+        ssidInternet,
         isConnectedToWifi,
       ];
 }

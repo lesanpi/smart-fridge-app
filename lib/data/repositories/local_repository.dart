@@ -360,8 +360,24 @@ class LocalRepository {
     );
   }
 
-  void configureController(
-      DeviceConfiguration configuration, String userId, String id) {
+  void setInternet(String fridgeId, String ssid, String password) {
+    final data = jsonEncode({
+      'action': 'setInternet',
+      'ssid': ssid,
+      'password': password,
+    });
+    print(data);
+
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void configureController(DeviceConfiguration configuration, String userId) {
     if (connectionInfo == null) return;
     if (!connectionInfo!.configurationMode) return;
     if (!connectionInfo!.standalone) return;
@@ -369,7 +385,7 @@ class LocalRepository {
     final data = jsonEncode(
       {
         'action': 'configureDevice',
-        'id': id,
+        // 'id': id,
         'userId': userId,
         ...configuration.toMap(),
       },

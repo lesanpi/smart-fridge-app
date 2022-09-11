@@ -31,16 +31,18 @@ class SetupUseCase {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     };
-    final response = await http.post(url, body: jsonData, headers: headers);
+    // final response = await http.post(url, body: jsonData, headers: headers);
 
-    if (response.statusCode != 200) {
-      return false;
-    }
-    print(response.body);
-    final responseDecoded = jsonDecode(response.body);
-    final userId = responseDecoded['user'];
-    final id = responseDecoded['id'];
-    _localRepository.configureController(configuration, userId, id);
+    // if (response.statusCode != 200) {
+    //   return false;
+    // }
+    // print(response.body);
+    // final responseDecoded = jsonDecode(response.body);
+    // final userId = responseDecoded['user'];
+    // final id = responseDecoded['id'];
+
+    final userId = _authUseCase.currentUser!.id;
+    _localRepository.configureController(configuration, userId);
     try {
       await _authUseCase.getCurrentUser();
     } catch (e) {}

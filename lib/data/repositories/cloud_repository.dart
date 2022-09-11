@@ -132,8 +132,8 @@ class CloudRepository {
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
       // print("[MESSAGE]" + recMess.toString());
-      // print("[TOPIC]" + message[0].topic);
-      // print("[INTERNET] Payload: $payload");
+      print("[TOPIC]" + message[0].topic);
+      print("[INTERNET] Payload: $payload");
       Map<String, dynamic> jsonDecoded;
       try {
         jsonDecoded = json.decode(payload);
@@ -322,6 +322,23 @@ class CloudRepository {
       'password': password,
     });
     print(data);
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/' + fridgeId,
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setInternet(String fridgeId, String ssid, String password) {
+    final data = jsonEncode({
+      'action': 'setInternet',
+      'ssid': ssid,
+      'password': password,
+    });
+    print(data);
+
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(

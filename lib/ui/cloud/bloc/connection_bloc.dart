@@ -36,7 +36,9 @@ class CloudConnectionBloc
     }
   }
 
-  void init(CloudConnectionInit event, Emitter<CloudConnectionState> emit) {
+  void init(
+      CloudConnectionInit event, Emitter<CloudConnectionState> emit) async {
+    await _authUseCase.getCurrentUser();
     final connected = _cloudRepository.conected;
     final fridgesStates = _cloudRepository.fridgesState;
 

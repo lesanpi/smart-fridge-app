@@ -75,6 +75,9 @@ class CloudView extends StatelessWidget {
 
         if (state is CloudConnectionEmpty) return const FridgesEmpty();
 
+        if (state.fridgesStates.isEmpty) {
+          return const FridgesEmpty();
+        }
         return Column(
           children: [
             const SizedBox(height: Consts.defaultPadding),

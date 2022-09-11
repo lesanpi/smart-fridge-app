@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/restore_fridge_button.dart';
+import 'package:wifi_led_esp8266/ui/local/widgets/wifi_internet_view.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
 import '../local.dart';
 
@@ -68,6 +69,8 @@ class StandaloneView extends StatelessWidget {
                 const TemperatureParameterView(),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 const CommunicationModeView(),
+                const SizedBox(height: Consts.defaultPadding * 2),
+                const WifiInternetView(),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 const RestoreFridgeButton(),
                 const SizedBox(height: Consts.defaultPadding / 2),
