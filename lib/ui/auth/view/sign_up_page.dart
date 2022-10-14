@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/auth/cubit/auth_cubit.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/sign_in_cubit.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/sign_up_cubit.dart';
 import 'package:wifi_led_esp8266/ui/auth/widgets/back_to_sign_in_button.dart';
 import 'package:wifi_led_esp8266/ui/home/home.dart';
 import 'package:wifi_led_esp8266/utils/validators.dart';
 import 'package:wifi_led_esp8266/utils/venezuela.dart';
+import 'package:wifi_led_esp8266/widgets/custom_back_button.dart';
 import 'package:wifi_led_esp8266/widgets/form_dropdown_with_text.dart';
 import 'package:wifi_led_esp8266/widgets/form_input.dart';
 import 'package:wifi_led_esp8266/widgets/future_loading_indicator.dart';
@@ -54,16 +54,17 @@ class _SignUpPageState extends State<SignUpPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Consts.lightSystem.shade300,
+      // resizeToAvoidBottomInset: false,
+
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: const CustomBackButton(),
         elevation: 0,
-        backgroundColor: Consts.accent.shade400,
-        centerTitle: true,
+        // centerTitle: true,
         title: Text(
-          'Nuevo usuario',
+          'Crear una cuenta',
           style: textTheme.headline5?.copyWith(
-            color: Consts.neutral.shade100,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -79,60 +80,56 @@ class _SignUpPageState extends State<SignUpPage> {
             }
           },
           builder: (context, state) {
-            return Container(
-              margin: EdgeInsets.only(bottom: bottomInsets),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Consts.defaultPadding * 1.5,
-                ),
-                child: Center(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Form(
-                      key: _signUpFormKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // const SizedBox(height: Consts.defaultPadding * 2),
-                          // Icon(
-                          //   Icons.ac_unit_outlined,
-                          //   size: 150,
-                          //   color: Consts.accent,
-                          // ),
-                          const SizedBox(height: Consts.defaultPadding * 2),
-                          emailInput(),
-                          const SizedBox(height: Consts.defaultPadding),
-                          nameInput(),
-                          const SizedBox(height: Consts.defaultPadding),
-                          phoneNumberInput(),
-                          const SizedBox(height: Consts.defaultPadding),
-                          passwordInput(),
-                          const SizedBox(height: Consts.defaultPadding),
-                          confirmPasswordInput(),
-                          const SizedBox(height: Consts.defaultPadding),
-                          ElevatedButton(
-                            onPressed: _onPressedSignUp(context),
-                            child: Text(
-                              'REGISTRARSE',
-                              style: textTheme.bodyLarge?.copyWith(
-                                color: Consts.neutral.shade100,
-                                fontWeight: FontWeight.w700,
-                              ),
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Consts.defaultPadding * 1.5,
+              ),
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Form(
+                    key: _signUpFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // const SizedBox(height: Consts.defaultPadding * 2),
+                        // Icon(
+                        //   Icons.ac_unit_outlined,
+                        //   size: 150,
+                        //   color: Consts.accent,
+                        // ),
+                        const SizedBox(height: Consts.defaultPadding),
+                        emailInput(),
+                        const SizedBox(height: Consts.defaultPadding),
+                        nameInput(),
+                        const SizedBox(height: Consts.defaultPadding),
+                        phoneNumberInput(),
+                        const SizedBox(height: Consts.defaultPadding),
+                        passwordInput(),
+                        const SizedBox(height: Consts.defaultPadding),
+                        confirmPasswordInput(),
+                        const SizedBox(height: Consts.defaultPadding),
+                        ElevatedButton(
+                          onPressed: _onPressedSignUp(context),
+                          child: Text(
+                            'REGISTRARSE',
+                            style: textTheme.bodyLarge?.copyWith(
+                              color: Consts.neutral.shade100,
+                              fontWeight: FontWeight.w700,
                             ),
-                            style: Theme.of(context)
-                                .elevatedButtonTheme
-                                .style!
-                                .copyWith(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Consts.accent),
-                                ),
                           ),
-                          const SizedBox(height: Consts.defaultPadding),
-                          const BackToSignInButton(),
-                          const SizedBox(height: Consts.defaultPadding * 4),
-                        ],
-                      ),
+                          style: Theme.of(context)
+                              .elevatedButtonTheme
+                              .style!
+                              .copyWith(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Consts.accent),
+                              ),
+                        ),
+                        const SizedBox(height: Consts.defaultPadding),
+                        const BackToSignInButton(),
+                      ],
                     ),
                   ),
                 ),

@@ -56,7 +56,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                     AnimatedPositioned(
-                      top: state == AuthState.SIGNIN
+                      top: state == AuthState.signIn
                           ? size.height
                           : size.height * 0.1,
                       height: size.height * 0.9,
@@ -88,9 +88,9 @@ class _AuthPageState extends State<AuthPage> {
 
   void onAuthStateChanged(AuthState state) {
     // print(state);
-    if (state == AuthState.SIGNIN) {
+    if (state == AuthState.signIn) {
       _cardContent = const SizedBox.shrink();
-    } else if (state == AuthState.SIGNUP) {
+    } else if (state == AuthState.signUp) {
       _cardContent = const SignUpPage();
     } else if (state == AuthState.RECOVER) {
       // _cardContent = RecoverPasswordWidget();

@@ -17,24 +17,18 @@ class Consts {
 /* -------------------------------------------------------------------------- */
 
 /* ---------------------------- Theme parameters ---------------------------- */
-  static const int _kPrimaryPrim = 0xFF164296;
-  static const MaterialColor accent = MaterialColor(_kPrimaryPrim, {
-    100: Color(0xFF5F7BB1),
-    200: Color(_kPrimaryPrim),
-    300: Color(0xFF232E74),
-    400: Color(0xFF171E4C),
-    700: Color(0xFF171E4C),
-  });
+  // static const int _kPrimaryPrim = 0xFF164296;
+  static const MaterialColor accent = Colors.blue;
+  // MaterialColor(_kPrimaryPrim, {
+  //   100: Color(0xFF5F7BB1),
+  //   200: Color(_kPrimaryPrim),
+  //   300: Color(0xFF232E74),
+  //   400: Color(0xFF171E4C),
+  //   700: Color(0xFF171E4C),
+  // });
 
-  static const int _kAccentPrim = 0xFF07AEC7;
-  static const MaterialColor primary = MaterialColor(_kAccentPrim, {
-    50: Color(0xFFE5FBFF),
-    100: Color(0xFF7CDEEE),
-    200: Color(0xFF00C5E4),
-    300: Color(_kAccentPrim),
-    400: Color(0xFF006271),
-    700: Color(0xFF006271),
-  });
+  // static const int _kAccentPrim = 0xFF07AEC7;
+  static const MaterialColor primary = Colors.blue;
 
   static const int _kNeutralPrim = 0xFFF7F8F9;
   static const MaterialColor neutral = MaterialColor(_kNeutralPrim, {
@@ -63,7 +57,7 @@ class Consts {
   });
 
   static const int _kErrorPrim = 0xFFE5483D;
-  static const MaterialColor error = const MaterialColor(_kErrorPrim, {
+  static const MaterialColor error = MaterialColor(_kErrorPrim, {
     100: Color(0xFFF8E0DF),
     200: Color(0xFFEA756D),
     300: Color(_kErrorPrim),

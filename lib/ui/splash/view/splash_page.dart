@@ -5,6 +5,7 @@ import 'package:wifi_led_esp8266/ui/auth/auth.dart';
 import 'package:wifi_led_esp8266/ui/auth/view/sign_in_page.dart';
 import 'package:wifi_led_esp8266/ui/auth/view/sign_up_page.dart';
 import 'package:wifi_led_esp8266/ui/home/home.dart';
+import 'package:wifi_led_esp8266/ui/login/login.dart';
 
 import '../cubit/splash_cubit.dart';
 
@@ -22,11 +23,7 @@ class SplashPage extends StatelessWidget {
           /// Listening if the cubit emits a new state that will determinate
           /// if the user exists or not
           if (state == SplashState.none) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => const SignInPage(),
-              ),
-            );
+            Navigator.of(context).pushReplacement(LoginPage.route());
           }
 
           if (state == SplashState.existingUser) {

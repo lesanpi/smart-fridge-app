@@ -33,6 +33,7 @@ class CustomTheme {
 
   static ThemeData mainTheme = ThemeData(
     // primarySwatch: Consts.primary,
+
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Consts.primary,
       accentColor: Consts.accent,
@@ -40,7 +41,10 @@ class CustomTheme {
       errorColor: Consts.error,
       cardColor: Consts.background.shade100,
     ),
-    scaffoldBackgroundColor: Consts.bg100,
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+    ),
     textTheme: GoogleFonts.poppinsTextTheme()
         .copyWith(bodyLarge: GoogleFonts.poppins(fontWeight: FontWeight.w600))
         .apply(bodyColor: Consts.fontDark),

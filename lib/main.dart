@@ -20,10 +20,10 @@ void main() async {
 
 void setSystemUI() {
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
+    const SystemUiOverlayStyle(
       // systemNavigationBarColor: Colors.white,
       // systemNavigationBarColor: Consts.darkSystem.shade300,
-      systemNavigationBarColor: Consts.lightSystem.shade300,
+      systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
       // systemNavigationBarIconBrightness: Brightness.light,
       statusBarColor: Colors.transparent,

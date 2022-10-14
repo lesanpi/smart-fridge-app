@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/ui/auth/cubit/auth_cubit.dart';
@@ -33,15 +34,12 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Consts.lightSystem.shade300,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Consts.accent.shade400,
-        centerTitle: true,
         title: Text(
           'Iniciar sesión',
           style: textTheme.headline5?.copyWith(
-            color: Consts.neutral.shade100,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -50,7 +48,6 @@ class _SignInPageState extends State<SignInPage> {
         child: BlocConsumer<SignInCubit, SignInState>(
           listener: (context, state) {
             if (state == SignInState.existingUser) {
-              print('correct auth');
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
@@ -71,11 +68,7 @@ class _SignInPageState extends State<SignInPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.ac_unit_outlined,
-                          size: 150,
-                          color: Consts.accent,
-                        ),
+                        Image.asset('assets/images/signin.jpg'),
                         const SizedBox(height: Consts.defaultPadding * 2),
                         emailInput(),
                         const SizedBox(height: Consts.defaultPadding),
@@ -156,45 +149,52 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  FormInput emailInput() {
-    return FormInput(
-      title: 'Correo electrónico',
-      controller: emailController,
-      titleColor: Consts.neutral.shade700,
-      decoration: InputDecoration(
-        // prefixIcon: Icon(Icons.mail_outline),
-        hintText: 'Ingrese su correo electrónico',
-        errorStyle: textTheme.bodyMedium?.copyWith(
-          color: Consts.primary.shade400,
+  Widget emailInput() {
+    return AutofillGroup(
+      child: TextFormField(
+        controller: emailController,
+        decoration: InputDecoration(
+          // prefixIcon: Icon(Icons.mail_outline),
+          hintText: 'Ingrese su correo electrónico',
+          errorStyle: textTheme.bodyMedium?.copyWith(
+            color: Consts.primary.shade400,
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Consts.accent),
+            borderRadius: BorderRadius.circular(Consts.borderRadius),
+          ),
+          // hoverColor: Colors.yellow,
+          // focusColor: Colors.yellow,
         ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Consts.accent),
-          borderRadius: BorderRadius.circular(Consts.borderRadius),
-        ),
-        // hoverColor: Colors.yellow,
-        // focusColor: Colors.yellow,
+        autofillHints: const [AutofillHints.email],
+        inputFormatters: [FilteringTextInputFormatter.deny(' ')],
+        keyboardType: TextInputType.emailAddress,
+        // validator: Validators.validateEmail,
+        onChanged: (_) => setState(() => {}),
       ),
-      keyboardType: TextInputType.emailAddress,
-      // validator: Validators.validateEmail,
-      onChanged: (_) => setState(() => {}),
     );
+    // return ;
   }
 
-  FormInput passwordInput() {
-    return FormInput(
-      title: 'Contraseña',
-      controller: passwordController,
-      titleColor: Consts.neutral.shade700,
-      obscureText: true,
-      decoration: InputDecoration(
-        // prefixIcon: Icon(Icons.lock_outline),
-        hintText: 'Ingrese contraseña',
-        errorStyle: textTheme.bodyMedium?.copyWith(
-          color: Consts.primary.shade400,
+  Widget passwordInput() {
+    return AutofillGroup(
+      child: TextFormField(
+        autofillHints: const [
+          AutofillHints.password,
+        ],
+        controller: passwordController,
+        obscureText: true,
+        decoration: InputDecoration(
+          // prefixIcon: Icon(Icons.lock_outline),
+          hintText: 'Ingrese contraseña',
+          errorStyle: textTheme.bodyMedium?.copyWith(
+            color: Consts.primary.shade400,
+          ),
         ),
+
+        // validator: Validators.validatePassword,
+        onChanged: (_) => setState(() => {}),
       ),
-      // validator: Validators.validatePassword,
-      onChanged: (_) => setState(() => {}),
     );
   }
 }

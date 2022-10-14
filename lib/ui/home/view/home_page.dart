@@ -8,6 +8,7 @@ import 'package:wifi_led_esp8266/ui/cloud/view/cloud_page.dart';
 import 'package:wifi_led_esp8266/ui/home/cubit/sign_out_cubit.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/menu_item.dart';
 import 'package:wifi_led_esp8266/ui/local/view/local_page.dart';
+import 'package:wifi_led_esp8266/ui/login/login.dart';
 import 'package:wifi_led_esp8266/ui/setup/setup.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => SignOutCubit(context.read()),
       child: Scaffold(
-        backgroundColor: Consts.lightSystem.shade300,
+        // backgroundColor: Consts.lightSystem.shade300,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
           elevation: 5,
@@ -169,10 +170,7 @@ class SignOutButton extends StatelessWidget {
     return BlocListener<SignOutCubit, void>(
       listener: (context, state) async {
         await Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const AuthPage()),
-            ModalRoute.withName('/'));
+            context, LoginPage.route(), ModalRoute.withName('/'));
       },
       child: OutlinedMenuItem(
         onPressed: () => context.read<SignOutCubit>().signOut(),
