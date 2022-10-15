@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/data/use_cases/auth_use_case.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
@@ -32,6 +31,7 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
     print('inicializando conection');
     if (state != null) {
       _connectionInfoStream =
+          // ignore: unnecessary_cast
           _localRepository.connectionInfoStream.listen((connectionInfo) {
         if (connectionInfo != null) {
           // print(connectionInfo.id);

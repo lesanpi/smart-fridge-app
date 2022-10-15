@@ -44,7 +44,6 @@ class SignUpState extends Equatable {
         name,
         password,
         confirmPassword,
-        errorMessage,
       ];
 
   /// Creates a copy of the current SignUpState with property changes

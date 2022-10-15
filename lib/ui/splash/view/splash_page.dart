@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/auth/auth.dart';
-import 'package:wifi_led_esp8266/ui/auth/view/sign_in_page.dart';
-import 'package:wifi_led_esp8266/ui/auth/view/sign_up_page.dart';
-import 'package:wifi_led_esp8266/ui/home/home.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
+import 'package:wifi_led_esp8266/ui/navigation/navigation.dart';
 
 import '../cubit/splash_cubit.dart';
 
@@ -27,11 +23,7 @@ class SplashPage extends StatelessWidget {
           }
 
           if (state == SplashState.existingUser) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => const HomePage(),
-              ),
-            );
+            Navigator.of(context).pushReplacement(NavigationPage.route());
           }
         },
         child: Scaffold(

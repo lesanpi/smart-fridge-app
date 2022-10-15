@@ -11,7 +11,7 @@ class ExitButton extends StatelessWidget {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        primary: Consts.error,
+        foregroundColor: Consts.error,
         side: const BorderSide(
           color: Consts.error,
           width: 1.0,

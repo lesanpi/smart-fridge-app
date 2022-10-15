@@ -13,7 +13,7 @@ class CloudDisconnectButton extends StatelessWidget {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        primary: Consts.error,
+        foregroundColor: Consts.error,
         side: const BorderSide(
           color: Consts.error,
           width: 1.0,
@@ -28,7 +28,7 @@ class CloudDisconnectButton extends StatelessWidget {
           onTap!();
         }
       },
-      child: const Text("DESCONECTARSE"),
+      child: const Center(child: Text("DESCONECTARSE")),
     );
   }
 }

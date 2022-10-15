@@ -88,13 +88,13 @@ class Consts {
   });
 
 // Text colors
-  static const Color textBl = const Color(0xFF333333);
-  static const Color textWh = const Color(0xFFFEFEFE);
+  static const Color textBl = Color(0xFF333333);
+  static const Color textWh = Color(0xFFFEFEFE);
 
 // Background colors
-  static const Color bg100 = const Color(0xFFFFFEFE);
-  static const Color bg200 = const Color(0xFFFAFBFE);
-  static const Color bg300 = const Color(0xFF222222);
+  static const Color bg100 = Color(0xFFFFFEFE);
+  static const Color bg200 = Color(0xFFFAFBFE);
+  static const Color bg300 = Color(0xFF222222);
 
   // static Color greyShadow = const Color(0xFFA3A5AB);
 

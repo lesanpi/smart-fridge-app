@@ -16,53 +16,52 @@ class ElevatedMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
-    final elevatedButtonTheme = Theme.of(context).elevatedButtonTheme.style;
 
     return Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(Consts.defaultBorderRadius * 5),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: elevatedButtonTheme?.copyWith(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(Consts.defaultBorderRadius * 5),
-              ),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Consts.primary.shade100,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(Consts.borderRadius * 2),
             ),
-            backgroundColor: MaterialStateProperty.all(Consts.accent)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: Consts.defaultPadding / 2,
-            // horizontal: Consts.defaultPadding / 2,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              icon,
-              Text(
-                title,
-                style: textTheme.headline5?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  // fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              if (description.isNotEmpty)
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: Consts.defaultPadding / 2,
+              // horizontal: Consts.defaultPadding / 2,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon,
                 Text(
-                  description,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
+                  title,
+                  style: textTheme.headline5?.copyWith(
+                    color: Consts.fontDark,
                     fontWeight: FontWeight.w600,
+                    // fontSize: 20,
                   ),
                   textAlign: TextAlign.center,
                 ),
-            ],
+                if (description.isNotEmpty)
+                  Text(
+                    description,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: Consts.fontDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -88,47 +87,51 @@ class OutlinedMenuItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final outlinedButtonTheme = Theme.of(context).outlinedButtonTheme.style;
 
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: outlinedButtonTheme?.copyWith(
-        // backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Consts.defaultBorderRadius * 5),
-          ),
-        ),
-        overlayColor:
-            MaterialStateProperty.all(Consts.primary.withOpacity(0.1)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: Consts.defaultPadding / 2,
-          // horizontal: Consts.defaultPadding / 2,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            Text(
-              title,
-              style: textTheme.headline5?.copyWith(
-                color: Consts.primary,
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: outlinedButtonTheme?.copyWith(
+          // backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(Consts.defaultBorderRadius * 5),
             ),
-            if (description.isNotEmpty)
+          ),
+          overlayColor:
+              MaterialStateProperty.all(Consts.primary.withOpacity(0.1)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: Consts.defaultPadding / 2,
+            // horizontal: Consts.defaultPadding / 2,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon,
               Text(
-                description,
-                style: textTheme.bodyMedium?.copyWith(
+                title,
+                style: textTheme.headline5?.copyWith(
                   color: Consts.primary,
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,
               ),
-          ],
+              if (description.isNotEmpty)
+                Text(
+                  description,
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: Consts.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
+import 'package:wifi_led_esp8266/ui/navigation/navigation.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
 
 import '../../home/view/home_page.dart';
@@ -67,7 +68,7 @@ class LoginView extends StatelessWidget {
         if (state.status.isSubmissionSuccess) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            NavigationPage.route(),
           );
         }
       },

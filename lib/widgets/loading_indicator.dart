@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 
 /// Custom loading indicator container for futures.

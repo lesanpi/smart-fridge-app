@@ -32,13 +32,13 @@ class CloudPage extends StatelessWidget {
                 ..add(CloudConnectionInit()),
         ),
       ],
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
+      child: const Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
           child: CloudAppBar(),
         ),
-        backgroundColor: Consts.lightSystem.shade300,
-        body: const SafeArea(
+        // backgroundColor: Consts.lightSystem.shade300,
+        body: SafeArea(
           child: CloudView(),
         ),
       ),

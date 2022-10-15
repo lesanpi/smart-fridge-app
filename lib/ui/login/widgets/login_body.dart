@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/auth/widgets/open_sign_up_form_button.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
 import 'package:wifi_led_esp8266/ui/login/widgets/email_input.dart';
 
