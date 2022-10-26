@@ -51,25 +51,21 @@ class LocalConnectionBloc
 
   Future<void> connect(
       LocalConnectionConnect event, Emitter<LocalConnectionState> emit) async {
-    print('await');
     emit(const LocalConnectionLoading());
 
-    print('intentando conectarme localmente');
     final user = _authUseCase.currentUser;
 
     if (user == null) {
-      print('Usuario nulo');
       return;
     }
 
     if (_connectionInfoStream != null) {
-      print('Conexión activa haciendo return;');
       await _connectionInfoStream!.cancel();
       // return;
     }
 
     bool connected = await _localRepository.connect(user.id, '');
-    print('connected $connected');
+
     if (!connected) {
       emit(const LocalConnectionDisconnected());
       // return;

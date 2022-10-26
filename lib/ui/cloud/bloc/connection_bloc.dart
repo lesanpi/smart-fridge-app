@@ -59,27 +59,22 @@ class CloudConnectionBloc
 
   Future<void> connect(
       CloudConnectionConnect event, Emitter<CloudConnectionState> emit) async {
-    print('await');
     emit(const CloudConnectionLoading());
 
-    print('intentando conectarme remotamente');
     final user = _authUseCase.currentUser;
 
     if (user == null) {
-      print('Usuario nulo');
       return;
     }
 
     if (_fridgesStatesStream != null) {
-      print('Conexión activa haciendo return;');
       await _fridgesStatesStream!.cancel();
       // return;
     }
 
     bool connected = await _cloudRepository.connect();
-    print('connected $connected');
+
     if (!connected) {
-      print('emitiendo disconected');
       emit(const CloudConnectionErrorOnConnection());
       return;
     } else {

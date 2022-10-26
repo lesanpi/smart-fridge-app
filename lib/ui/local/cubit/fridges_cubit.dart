@@ -11,21 +11,16 @@ class FridgesCubit extends Cubit<List<FridgeState>> {
   StreamSubscription<List<FridgeState>>? _fridgesStateStream;
 
   void init() async {
-    print("inicializando fridge list cubit");
     if (_localRepository.connectionInfo == null) return;
 
     // await _fridgesStateStream!.cancel();
     // if (_fridgesStateStream != null) {}
     // if (!_localRepository.connectionInfo!.standalone) return;
 
-    print("Escuchando cambios de estado");
     _fridgesStateStream ??= _localRepository.fridgesStateStream.listen(
       (fridgesState) {
-        // print('nuevos cambios');
-        print(fridgesState.map((e) => e.toJson()).toList());
-        // print('emitiendo');
         emit(fridgesState);
-        // print('listo la emision');
+
         emit(fridgesState.map((e) => e).toList());
       },
     );

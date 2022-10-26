@@ -21,7 +21,7 @@ class AuthUseCase {
   /// Get the user from the backen using the [_token]
   /// and updates the [_authRepository.currentUser]
   Future<AuthUser?> getCurrentUser() async {
-    /// TODO: get current user
+    // TODO: get current user
     _authUser = await _authRepository.getCurrentUser(_token).then((authUser) {
       _persistentStorageRepository.updateUserData(authUser);
       return authUser;

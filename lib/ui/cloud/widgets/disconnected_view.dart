@@ -11,21 +11,18 @@ class DisconnectedView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: Consts.defaultPadding * 3,
+        horizontal: Consts.defaultPadding,
       ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.wifi_off_rounded,
-              size: 100,
-              color: Consts.primary,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
+            Image.asset('assets/images/empty.jpg'),
+            // const SizedBox(height: Consts.defaultPadding),
             Text(
               "Desconectado",
-              style: textTheme.headline5?.copyWith(),
+              style: textTheme.headline5?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),

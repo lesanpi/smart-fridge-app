@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:mqtt_client/mqtt_client.dart';
@@ -74,17 +75,13 @@ class CloudRepository {
     await Future.delayed(const Duration(seconds: 1));
 
     await init(server: server);
-    print('Inicializado');
+
     try {
-      print('conectando');
       final MqttClientConnectionStatus? connectionStatus =
           await client.connect(id, password);
 
-      print('Connection status: $connectionStatus');
-
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
-        print('Estoy conectado');
         initSubscription();
         conected = true;
         return true;
@@ -96,11 +93,9 @@ class CloudRepository {
     } on SocketException catch (e) {
       client.disconnect();
       conected = false;
-      print(e);
 
       return false;
     } on Exception catch (e) {
-      print(e);
       client.disconnect();
       conected = false;
 
@@ -109,11 +104,7 @@ class CloudRepository {
   }
 
   void initSubscription() {
-    print('Suscrbiendome');
-
     if (_authRepository.currentUser == null) {
-      print(_authRepository.currentUser);
-      print('El usuario es nulo');
       return;
     }
     final fridges = _authRepository.currentUser!.fridges;
@@ -122,7 +113,6 @@ class CloudRepository {
 
     client.subscribe('state/6312c34b49d3ac2f30375872', MqttQos.exactlyOnce);
     fridges.forEach((element) {
-      print(element);
       client.subscribe('state/$element', MqttQos.exactlyOnce);
     });
     client.updates!
@@ -131,9 +121,7 @@ class CloudRepository {
       final topic = message[0].topic;
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-      // print("[MESSAGE]" + recMess.toString());
-      print("[TOPIC]" + message[0].topic);
-      print("[INTERNET] Payload: $payload");
+
       Map<String, dynamic> jsonDecoded;
       try {
         jsonDecoded = json.decode(payload);
@@ -145,8 +133,6 @@ class CloudRepository {
 
       /// The information of the connection was updated
       final List<String> topicSplitted = topic.split('/');
-
-      // print("[INTERNET] $jsonDecoded");
 
       /// A state was updated
       if (topicSplitted[0] == "state") {
@@ -169,7 +155,6 @@ class CloudRepository {
       _fridgeSelectedStreamController.add(fridgeSelected);
     }
     if (_indexOfFridge == -1) {
-      print('Agrego nuevo estado a la lista');
       // fridgesState.add(_newFridgeState);
 
       if (_authRepository.currentUser!.fridges
@@ -177,11 +162,9 @@ class CloudRepository {
         fridgesState.add(_newFridgeState);
       }
     } else {
-      // print('Sustituyo estado existente');
-      // print(_newFridgeState.temperature);
       fridgesState[_indexOfFridge] = _newFridgeState;
     }
-    // print('Finalmente' +
+
     // fridgesState.map((e) => e.toJson()).toList().toString());
 
     _fridgesStateStreamController.add(fridgesState);
@@ -200,7 +183,6 @@ class CloudRepository {
   void selectFridge(FridgeState _fridgeSelected) {
     fridgeSelected = _fridgeSelected;
     _fridgeSelectedStreamController.add(fridgeSelected);
-    print('Fridge selected ${fridgeSelected}');
   }
 
   void unselectFridge() {
@@ -292,6 +274,9 @@ class CloudRepository {
       'action': 'setMinTemperature',
       'minTemperature': minTemperature,
     });
+
+    log('setMinTemperature value: $minTemperature, id: $fridgeId',
+        name: 'CloudRepository.setMinTemperature');
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
@@ -321,7 +306,7 @@ class CloudRepository {
       'ssid': ssid,
       'password': password,
     });
-    print(data);
+
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
@@ -337,7 +322,6 @@ class CloudRepository {
       'ssid': ssid,
       'password': password,
     });
-    print(data);
 
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

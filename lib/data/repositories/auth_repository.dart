@@ -23,11 +23,10 @@ class AuthRepository {
       final Map<String, String> headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${token}',
+        'Authorization': 'Bearer $token',
       };
       final response = await http.post(url, body: jsonData, headers: headers);
 
-      print(response.body);
       currentUser = authUserFromJson(response.body);
       return currentUser;
     }
@@ -50,9 +49,8 @@ class AuthRepository {
 
     final body = jsonDecode(response.body);
     final statusCode = response.statusCode;
-    print(body);
+
     if (statusCode != 200) {
-      print('error sign in not 200 status');
       throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
     }
 
@@ -71,7 +69,6 @@ class AuthRepository {
     String? error;
     // TODO: sign up
 
-    print('sign up repository');
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
     final url = Uri.parse(Consts.httpLink + '/api/users');
@@ -82,24 +79,17 @@ class AuthRepository {
       'password': password,
       'fcmToken': fcmToken
     });
-    print('await response');
 
     final response = await http.post(
       url,
       body: jsonData,
       headers: Consts.headers,
     );
-    print('response $response');
 
     final body = jsonDecode(response.body);
     final statusCode = response.statusCode;
 
-    print('status');
-    print(statusCode);
-    print(body);
-
     if (statusCode != 200) {
-      print('error repository not statusCode 200');
       throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
     }
   }

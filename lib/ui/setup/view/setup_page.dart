@@ -37,10 +37,10 @@ class SetupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Consts.lightSystem.shade300,
+      // backgroundColor: Consts.lightSystem.shade300,
       appBar: const PreferredSize(
         child: SetupAppBar(),
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(70),
       ),
       body: SafeArea(
         child: BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
@@ -141,15 +141,13 @@ class NoDeviceFound extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.disabled_visible_rounded,
-              size: 100,
-              color: Consts.primary,
-            ),
+            Image.asset('assets/images/disconnected.jpg'),
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(
               "No se encontró una conexión",
-              style: textTheme.headline5,
+              style: textTheme.headline5?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
@@ -709,16 +707,12 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
   Function()? finalize(
       BuildContext context, ControllerConfiguration deviceConfiguration) {
     if (!deviceConfiguration.startOnCoordinatorMode) {
-      print('no empezar en modo coordinado');
-      print(_formKeyFridge.currentState);
-      print(_formKeyInternet.currentState);
       if (_formKeyFridge.currentState == null ||
           _formKeyInternet.currentState == null) return null;
 
       if (!_formKeyFridge.currentState!.validate() ||
           !_formKeyInternet.currentState!.validate()) return null;
     } else {
-      print('empezar en coordinado');
       if (_formKeyFridge.currentState == null ||
           _formKeyCoordinator.currentState == null ||
           _formKeyInternet.currentState == null) return null;
@@ -780,7 +774,6 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
       child:
           BlocConsumer<CoordinatorConfigurationCubit, CoordinatorConfiguration>(
         listener: (context, deviceConfiguration) {
-          print('cambio');
           // ssidController.text = deviceConfiguration.ssid;
           // ssidCoordinatorController.text = deviceConfiguration.ssidCoordinator;
           // ssidInternetController.text = deviceConfiguration.ssidInternet;
@@ -1046,7 +1039,6 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
 
   Function()? finalize(
       BuildContext context, CoordinatorConfiguration coordinatorConfiguration) {
-    print('empezar en coordinado');
     if (_formKeyCoordinator.currentState == null ||
         _formKeyInternet.currentState == null) return null;
 

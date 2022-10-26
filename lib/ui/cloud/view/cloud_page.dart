@@ -121,7 +121,10 @@ class CloudView extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: Consts.defaultPadding),
+              padding: EdgeInsets.symmetric(
+                vertical: Consts.defaultPadding,
+                horizontal: Consts.defaultPadding,
+              ),
               child: CloudDisconnectButton(),
             ),
           ],

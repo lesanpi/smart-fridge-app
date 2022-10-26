@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:wifi_led_esp8266/models/fridge_info.dart';
-
 AuthUser authUserFromJson(String str) => AuthUser.fromJson(json.decode(str));
 AuthUser authUserFromJsonStorage(String str) =>
     AuthUser.fromStorage(json.decode(str));

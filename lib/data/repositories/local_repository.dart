@@ -6,8 +6,6 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
-import 'package:wifi_led_esp8266/models/controller_configuration.dart';
-import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/device_configuration.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:network_info_plus/network_info_plus.dart';
@@ -84,12 +82,10 @@ class LocalRepository {
     if (connectionInfo != null) return true;
 
     await init(server: server);
-    print('Inicializado');
+
     try {
       final MqttClientConnectionStatus? connectionStatus =
           await client.connect(id, password);
-
-      print('Connection status: $connectionStatus');
 
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
@@ -130,12 +126,10 @@ class LocalRepository {
       final payload =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      print(payload);
       Map<String, dynamic>? jsonDecoded;
       try {
         jsonDecoded = json.decode(payload);
       } catch (e) {
-        print(e);
         return;
       }
 
@@ -155,10 +149,8 @@ class LocalRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String id) {
-    print(json);
     if (json.isEmpty) return;
     final FridgeState _newFridgeState = FridgeState.fromJson(json);
-    // print(_newFridgeState.temperature);
 
     if (connectionInfo == null) return;
 
@@ -188,16 +180,12 @@ class LocalRepository {
         _fridgeSelectedStreamController.add(fridgeSelected);
       }
 
-      // print(_indexOfFridge);
       if (_indexOfFridge == -1) {
-        // print('Agrego nuevo estado a la lista');
         fridgesState.add(_newFridgeState);
       } else {
-        // print('Sustituyo estado existente');
-        // print(_newFridgeState.temperature);
         fridgesState[_indexOfFridge] = _newFridgeState;
       }
-      // print('Finalmente' +
+
       // fridgesState.map((e) => e.toJson()).toList().toString());
 
       _fridgesStateStreamController.add(fridgesState);
@@ -206,7 +194,6 @@ class LocalRepository {
   }
 
   void onInformationUpdate(Map<String, dynamic> json) {
-    // print("ssid ${json["ssid"]} ${json["id"]}");
     connectionInfo = ConnectionInfo.fromJson(json);
     _connectionInfoStreamController.add(connectionInfo);
   }
@@ -350,7 +337,7 @@ class LocalRepository {
       'ssid': ssid,
       'password': password,
     });
-    print(data);
+
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
@@ -366,7 +353,6 @@ class LocalRepository {
       'ssid': ssid,
       'password': password,
     });
-    print(data);
 
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);

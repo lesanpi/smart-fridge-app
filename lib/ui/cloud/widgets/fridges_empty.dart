@@ -12,21 +12,19 @@ class FridgesEmpty extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: Consts.defaultPadding * 3,
+        horizontal: Consts.defaultPadding,
       ),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.line_style_outlined,
-              size: 100,
-              color: Consts.primary,
-            ),
-            const SizedBox(height: Consts.defaultPadding),
+            Image.asset('assets/images/empty.jpg'),
+            // const SizedBox(height: Consts.defaultPadding),
             Text(
               "No hay neveras conectadas",
-              style: textTheme.headline5,
+              style: textTheme.headline5?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),

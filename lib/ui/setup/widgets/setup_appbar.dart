@@ -4,6 +4,7 @@ import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
+import 'package:wifi_led_esp8266/widgets/custom_back_button.dart';
 
 class SetupAppBar extends StatelessWidget {
   const SetupAppBar({Key? key}) : super(key: key);
@@ -21,9 +22,10 @@ class SetupAppBar extends StatelessWidget {
 
       return AppBar(
         elevation: 0,
-        backgroundColor: Consts.lightSystem.shade300,
+        // backgroundColor: Consts.lightSystem.shade300,
         // backgroundColor: Consts.neutral.shade300,
-        leading: BackButton(color: Consts.neutral.shade700),
+        leading: const CustomBackButton(),
+        // toolbarHeight: Consts.defaultPadding * ,
         centerTitle: true,
         title: Text(
           isCoordinator

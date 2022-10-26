@@ -28,13 +28,11 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
   StreamSubscription<ConnectionInfo?>? _connectionInfoStream;
 
   void init() {
-    print('inicializando conection');
     if (state != null) {
       _connectionInfoStream =
           // ignore: unnecessary_cast
           _localRepository.connectionInfoStream.listen((connectionInfo) {
         if (connectionInfo != null) {
-          // print(connectionInfo.id);
           emit(LocalConnectionState(connectionInfo: connectionInfo));
         } else {
           emit(const LocalConnectionState());
@@ -44,26 +42,22 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
   }
 
   Future<void> connect(String password) async {
-    print('await');
     emit(LocalConnectionState(
         connectionInfo: state.connectionInfo, isLoading: true));
 
-    print('intentando conectarme localmente');
     final user = _authUseCase.currentUser;
 
     if (user == null) {
-      print('Usuario nulo');
       return;
     }
 
     if (_connectionInfoStream != null) {
-      print('Conexión activa haciendo return;');
       await _connectionInfoStream!.cancel();
       // return;
     }
 
     bool connected = await _localRepository.connect(user.id, password);
-    print('connected $connected');
+
     if (!connected) {
       emit(LocalConnectionState(connectionInfo: state.connectionInfo));
       // return;
@@ -78,7 +72,6 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
     _connectionInfoStream =
         _localRepository.connectionInfoStream.listen((connectionInfo) {
       if (connectionInfo != null) {
-        // print(connectionInfo.id);
         emit(LocalConnectionState(connectionInfo: connectionInfo));
       } else {
         emit(const LocalConnectionState());

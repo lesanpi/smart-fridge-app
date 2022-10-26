@@ -25,31 +25,35 @@ class WifiInternetView extends StatelessWidget {
               final initialWifiInternet =
                   WifiInternet.fromFridgeState(fridgeState);
 
-              print('initial from fridgeState $initialWifiInternet');
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Consts.defaultPadding),
-                child: Column(
-                  children: [
-                    // Center(
-                    //   child: ElevatedButton(
-                    //     onPressed: wifiInternetState == initialWifiInternet
-                    //         ? null
-                    //         : () {
-                    //             context
-                    //                 .read<WifiInternetCubit>()
-                    //                 .set(fridgeState!);
-                    //           },
-                    //     child: const Text("Deshacer cambios"),
-                    //   ),
-                    // ),
-                    const SizedBox(height: Consts.defaultPadding),
-                    WifiInternetController(
-                      wifiInternet: wifiInternetState,
-                      wifiInternetInitial: initialWifiInternet,
-                    )
-                  ],
-                ),
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.wifi,
+                        color: Consts.primary.shade600,
+                      ),
+                      const SizedBox(
+                        width: Consts.defaultPadding / 2,
+                      ),
+                      Expanded(
+                        child: Text(
+                          "WiFi",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 26,
+                            color: Consts.primary.shade600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Consts.defaultPadding),
+                  WifiInternetController(
+                    wifiInternet: wifiInternetState,
+                    wifiInternetInitial: initialWifiInternet,
+                  )
+                ],
               );
             },
           );
@@ -82,74 +86,71 @@ class _WifiInternetControllerState extends State<WifiInternetController> {
   Widget build(BuildContext context) {
     return BlocBuilder<WifiInternetCubit, WifiInternet>(
       builder: (context, wifiInternet) {
-        return Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: Consts.defaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Nombre del WiFi con Internet',
-                style: TextStyle(
-                  color: Consts.primary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.0,
-                ),
-                textAlign: TextAlign.left,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Nombre del WiFi con Internet',
+              style: TextStyle(
+                color: Consts.primary,
+                fontWeight: FontWeight.w600,
+                fontSize: 14.0,
               ),
-              const SizedBox(height: Consts.defaultPadding / 2),
-              TextField(
-                controller: ssidInternetController,
-                decoration: const InputDecoration(
-                  fillColor: Colors.white,
-                  // border: OutlineInputBorder(),
-                  hintText: 'Nombre del WiFi con Internet',
-                ),
-                onChanged: context.read<WifiInternetCubit>().onChangedSsid,
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            TextField(
+              controller: ssidInternetController,
+              decoration: const InputDecoration(
+                fillColor: Colors.white,
+                // border: OutlineInputBorder(),
+                hintText: 'Nombre del WiFi con Internet',
               ),
-              const SizedBox(height: Consts.defaultPadding / 2),
-              const Text(
-                'Contraseña del WiFi con Internet',
-                style: TextStyle(
-                  color: Consts.primary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14.0,
-                ),
-                textAlign: TextAlign.left,
+              onChanged: context.read<WifiInternetCubit>().onChangedSsid,
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            const Text(
+              'Contraseña del WiFi con Internet',
+              style: TextStyle(
+                color: Consts.primary,
+                fontWeight: FontWeight.w600,
+                fontSize: 14.0,
               ),
-              const SizedBox(height: Consts.defaultPadding / 2),
-              TextField(
-                controller: passwordInternetController,
-                decoration: const InputDecoration(
-                  fillColor: Colors.white,
-                  // border: OutlineInputBorder(),
+              textAlign: TextAlign.left,
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            TextField(
+              controller: passwordInternetController,
+              decoration: const InputDecoration(
+                fillColor: Colors.white,
+                // border: OutlineInputBorder(),
 
-                  hintText: 'Contraseña del WiFi (Internet)',
-                ),
-                obscureText: true,
-                onChanged: context.read<WifiInternetCubit>().onChangedPassword,
+                hintText: 'Contraseña del WiFi (Internet)',
               ),
-              const SizedBox(height: Consts.defaultPadding),
-              Center(
-                child: ElevatedButton(
-                  onPressed: widget.wifiInternet == widget.wifiInternetInitial
-                      ? null
-                      : () => onDialogMessage(
-                            context: context,
-                            title: '¡Advertencia!',
-                            message:
-                                'Realizar este cambio lo desconectara de la red Wifi con internet, lo que puede inhabilitar las comunicaciones por internet por unos instantes',
-                            warning: true,
-                            warningButtonText: 'EJECUTAR',
-                            warningCallback: () => context
-                                .read<FridgeStateCubit>()
-                                .setInternet(wifiInternet),
-                          ),
-                  child: const Text("Cambiar Wifi Internet"),
-                ),
+              obscureText: true,
+              onChanged: context.read<WifiInternetCubit>().onChangedPassword,
+            ),
+            const SizedBox(height: Consts.defaultPadding),
+            Center(
+              child: ElevatedButton(
+                onPressed: widget.wifiInternet == widget.wifiInternetInitial &&
+                        passwordInternetController.text.isEmpty
+                    ? null
+                    : () => onDialogMessage(
+                          context: context,
+                          title: '¡Advertencia!',
+                          message:
+                              'Realizar este cambio lo desconectara de la red Wifi con internet, lo que puede inhabilitar las comunicaciones por internet por unos instantes',
+                          warning: true,
+                          warningButtonText: 'EJECUTAR',
+                          warningCallback: () => context
+                              .read<FridgeStateCubit>()
+                              .setInternet(wifiInternet),
+                        ),
+                child: const Center(child: Text("Cambiar Wifi Internet")),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );

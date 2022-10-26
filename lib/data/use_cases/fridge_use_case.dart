@@ -23,12 +23,10 @@ class FridgeUseCase {
     };
     final response = await http.get(url, headers: headers);
 
-    print(response.body);
     if (response.statusCode != 200) {
       throw Exception('Error occurred');
     }
     Iterable responseDecoded = json.decode(response.body);
-    print(responseDecoded);
 
     // final userId = responseDecoded['user'];
     // final id = responseDecoded['id'];
@@ -37,11 +35,10 @@ class FridgeUseCase {
     final stats = List<TemperatureStat>.from(responseDecoded.map((element) {
       final stat = TemperatureStat.fromMap(element);
       return stat;
-      // print(stat.temp);
     }));
     // final stats = List<TemperatureStat>.from(
     //     responseDecoded.map((stat) => TemperatureStat.fromJson(stat)));
-    // print(stats);
+
     return stats;
   }
 
@@ -57,7 +54,7 @@ class FridgeUseCase {
 
     try {
       final response = await http.delete(url, headers: headers);
-      print(response.body);
+
       await _authUseCase.getCurrentUser();
       return response.statusCode == 200;
     } catch (e) {

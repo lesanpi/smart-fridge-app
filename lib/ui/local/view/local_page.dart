@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/models/connection_info.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
@@ -31,13 +30,13 @@ class LocalPage extends StatelessWidget {
         //   create: (context) => FridgesCubit(context.read())..init(),
         // ),
       ],
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
+      child: const Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70),
           child: LocalAppBar(),
         ),
-        backgroundColor: Consts.lightSystem.shade300,
-        body: const SafeArea(
+        // backgroundColor: Consts.lightSystem.shade300,
+        body: SafeArea(
           child: LocalView(),
         ),
       ),
@@ -62,8 +61,6 @@ class LocalView extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        print(state);
-
         if (state is LocalConnectionLoading) {
           return const Center(
             child: LoadingMessage(),

@@ -15,8 +15,8 @@ class Thermostat extends StatelessWidget {
     final containerSize = size.width * 2 / 3;
 
     return PhysicalModel(
-      elevation: 10,
-      color: Colors.black12,
+      elevation: 20,
+      color: Colors.white,
       shape: BoxShape.circle,
       child: Container(
         width: containerSize,
@@ -31,19 +31,22 @@ class Thermostat extends StatelessWidget {
           //   )
           // ],
           gradient: LinearGradient(colors: [
-            Consts.primary,
-            Consts.primary.shade100,
-            Consts.primary.shade400,
-            Consts.primary.shade400,
-            Consts.primary,
-            Consts.primary.shade200,
+            Consts.primary.withOpacity(1),
+            Colors.blueAccent.shade100.withOpacity(1),
+            Colors.lightBlueAccent.shade100.withOpacity(1),
+            // Colors.pinkAccent.shade100.withOpacity(1),
+            // Colors.purpleAccent.shade200.withOpacity(1),
+            Colors.lightBlue.shade400.withOpacity(1),
+            Colors.blueAccent.shade400.withOpacity(1),
+            Colors.lightBlue.shade400.withOpacity(1),
+            Consts.primary.withOpacity(1),
           ]),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(25),
           child: Container(
-            decoration: BoxDecoration(
-              color: Consts.lightSystem.shade300.withOpacity(0.95),
+            decoration: const BoxDecoration(
+              color: Colors.white,
               shape: BoxShape.circle,
             ),
             child: Center(
