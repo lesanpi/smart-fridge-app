@@ -110,7 +110,7 @@ class LocalRepository {
       }
       client.disconnect();
       return false;
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       client.disconnect();
       return false;
     }

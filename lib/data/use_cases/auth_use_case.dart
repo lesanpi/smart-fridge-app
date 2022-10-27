@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/models/auth_user.dart';
 
@@ -14,7 +16,7 @@ class AuthUseCase {
   /// Validates if the current user is not null
   Future<bool> validateLogin() async {
     final user = await getCurrentUser();
-    // print("user ${user?.email}");
+    // log("user ${user?.email}");
     return user != null;
   }
 
@@ -26,14 +28,14 @@ class AuthUseCase {
       _persistentStorageRepository.updateUserData(authUser);
       return authUser;
     }).onError((error, stackTrace) async {
-      print('trayendo desde shared preferences por error');
+      log('trayendo desde shared preferences por error');
 
       final AuthUser? authUser =
           await _persistentStorageRepository.getCurrentUserData();
       _authRepository.currentUser = authUser;
       return authUser;
     }).timeout(const Duration(seconds: 15), onTimeout: () async {
-      print('[Timeout] trayendo desde shared preferences');
+      log('[Timeout] trayendo desde shared preferences');
       final AuthUser? authUser =
           await _persistentStorageRepository.getCurrentUserData();
       _authRepository.currentUser = authUser;
@@ -48,7 +50,7 @@ class AuthUseCase {
   /// save the new [_token] in persistent storage
   Future<AuthUser?> signIn(
       {required String email, required String password}) async {
-    print('sign in use case');
+    log('sign in use case');
 
     _token = await _authRepository.signInWithEmailAndPassword(
         email: email, password: password);

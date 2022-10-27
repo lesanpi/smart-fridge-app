@@ -28,7 +28,7 @@ Future<T?> futureLoadingIndicator<T>(
           error: error,
           stackTrace: stackTrace,
         );
-      }).timeout(timeoutAt ?? Duration(seconds: 15), onTimeout: () {
+      }).timeout(timeoutAt ?? const Duration(seconds: 15), onTimeout: () {
         // If the future times out, dismiss the loading dialog
         // and show the error dialog with a Request Timeout message.
         Navigator.pop(context);
@@ -61,22 +61,22 @@ Future _onErrorDialog({
   Object? error,
   StackTrace? stackTrace,
 }) {
-  print(error);
-  print(stackTrace);
+  // print(error);
+  // print(stackTrace);
   return showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Error'),
+        title: const Text('Error'),
         content: Text(errorMessage ?? 'Ocurrió un error'),
         actions: [
           TextButton(
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
             onPressed: () => Navigator.pop(context),
           ),
           (onTryAgainFuture != null)
               ? TextButton(
-                  child: Text('Reintentar'),
+                  child: const Text('Reintentar'),
                   onPressed: () {
                     Navigator.pop(context);
                     futureLoadingIndicator(context, onTryAgainFuture);
@@ -105,7 +105,7 @@ Future onDialogMessage({
           // width: size.width * 0.8,
           width: 350,
           // height: 425,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
               horizontal: Consts.defaultPadding, vertical: 30),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -114,7 +114,7 @@ Future onDialogMessage({
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.25),
-                  offset: Offset(0.0, 2.0),
+                  offset: const Offset(0.0, 2.0),
                   blurRadius: 5,
                   spreadRadius: 1,
                 )

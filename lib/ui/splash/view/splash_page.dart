@@ -27,7 +27,7 @@ class SplashPage extends StatelessWidget {
           }
         },
         child: Scaffold(
-          backgroundColor: Consts.lightSystem.shade300,
+          // backgroundColor: Consts.lightSystem.shade300,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

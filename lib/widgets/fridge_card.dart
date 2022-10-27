@@ -92,7 +92,7 @@ class FridgeCard extends StatelessWidget {
                     children: [
                       // Spacer(),
                       Text(
-                        "${fridge.temperature.round()}°C",
+                        "${!(fridge.temperature > 100 || fridge.temperature < 100) ? '--' : fridge.temperature.round()}°C",
                         overflow: TextOverflow.fade,
                         maxLines: 1,
                         softWrap: false,

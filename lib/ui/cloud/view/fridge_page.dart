@@ -52,35 +52,44 @@ class FridgePage extends StatelessWidget {
                       //   style: textTheme.headline6,
                       // ),
                       // const SizedBox(height: Consts.defaultPadding * 1),
-                      Stack(
-                        children: [
-                          Positioned.fill(
-                            left: Consts.defaultPadding / 4,
-                            right: Consts.defaultPadding / 4,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(Consts.borderRadius * 15)),
-                                color: Colors.blue.withOpacity(0.1),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              left: Consts.defaultPadding / 4,
+                              right: Consts.defaultPadding / 4,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                          Consts.borderRadius * 15)),
+                                  color: Colors.blue.withOpacity(0.1),
+                                ),
                               ),
                             ),
-                          ),
-                          Column(
-                            children: [
-                              const SizedBox(height: Consts.defaultPadding * 2),
-                              Thermostat(
-                                temperature: fridge.temperature,
-                                alert: !(fridge.temperature >=
-                                        fridge.minTemperature &&
-                                    fridge.temperature <=
-                                        fridge.maxTemperature),
-                              ),
-                              const SizedBox(height: Consts.defaultPadding),
-                              NameController(initialName: fridge.name),
-                              const SizedBox(height: Consts.defaultPadding * 2),
-                            ],
-                          ),
-                        ],
+                            Column(
+                              children: [
+                                const SizedBox(
+                                    height: Consts.defaultPadding * 2),
+                                Expanded(
+                                  child: Thermostat(
+                                    temperature: fridge.temperature,
+                                    alert: !(fridge.temperature >=
+                                            fridge.minTemperature &&
+                                        fridge.temperature <=
+                                            fridge.maxTemperature),
+                                  ),
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding * 2),
+                                NameController(initialName: fridge.name),
+                                const SizedBox(
+                                    height: Consts.defaultPadding * 2),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: Consts.defaultPadding * 2),
                       OutputCard(
