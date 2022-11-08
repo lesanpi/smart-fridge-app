@@ -30,6 +30,13 @@ class WifiInternetView extends StatelessWidget {
                     horizontal: Consts.defaultPadding),
                 child: Column(
                   children: [
+                    const Text(
+                      "Internet",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                      ),
+                    ),
                     // Center(
                     //   child: ElevatedButton(
                     //     onPressed: wifiInternetState == initialWifiInternet

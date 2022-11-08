@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' show log;
 import 'dart:io';
 
 import 'package:mqtt_client/mqtt_client.dart';
@@ -77,6 +78,8 @@ class LocalRepository {
         client.connectionStatus?.state == MqttConnectionState.connecting) {
       client.disconnect();
     }
+
+    log('📶 Starting MQTT connection, with server $server');
     await Future.delayed(const Duration(seconds: 1));
 
     if (connectionInfo != null) return true;
@@ -100,6 +103,7 @@ class LocalRepository {
           server == Consts.mqttDefaultCoordinatorIp) {
         final String? wifiIp = await NetworkInfo().getWifiIP();
         if (wifiIp != null) {
+          log('❌ MQTT connection failed with server $server');
           final splittedIp = wifiIp.split('.');
           splittedIp.removeLast();
           final serverIp = splittedIp.join('.') + '.200';
@@ -110,7 +114,9 @@ class LocalRepository {
       }
       client.disconnect();
       return false;
-    } on Exception catch (_) {
+    } on Exception catch (e) {
+      log('❌ MQTT connection failed', error: e);
+
       client.disconnect();
       return false;
     }

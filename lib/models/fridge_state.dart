@@ -3,7 +3,6 @@
 //     final fridgeState = fridgeStateFromJson(jsonString);
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 FridgeState fridgeStateFromJson(String str) =>
@@ -27,6 +26,7 @@ class FridgeState extends Equatable {
     required this.ssidCoordinator,
     required this.ssidInternet,
     required this.isConnectedToWifi,
+    required this.batteryOn,
   });
 
   String id;
@@ -43,6 +43,7 @@ class FridgeState extends Equatable {
   String ssidCoordinator;
   String ssidInternet;
   bool isConnectedToWifi;
+  bool batteryOn;
 
   factory FridgeState.fromJson(Map<String, dynamic> json) => FridgeState(
         id: json["id"],
@@ -61,6 +62,7 @@ class FridgeState extends Equatable {
         ssidCoordinator: json["ssidCoordinator"],
         ssidInternet: json["ssidInternet"],
         isConnectedToWifi: json["isConnectedToWifi"],
+        batteryOn: (json["battery"] as bool?) ?? true,
       );
 
   Map<String, dynamic> toJson() => {
@@ -95,5 +97,6 @@ class FridgeState extends Equatable {
         ssidCoordinator,
         ssidInternet,
         isConnectedToWifi,
+        batteryOn,
       ];
 }
