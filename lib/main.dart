@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/push_notifications_service.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
@@ -33,8 +37,23 @@ void setSystemUI() {
   );
 }
 
-class SmartFridgeApp extends StatelessWidget {
+class SmartFridgeApp extends StatefulWidget {
   const SmartFridgeApp({Key? key}) : super(key: key);
+
+  @override
+  State<SmartFridgeApp> createState() => _SmartFridgeAppState();
+}
+
+class _SmartFridgeAppState extends State<SmartFridgeApp> {
+  final GlobalKey<ScaffoldMessengerState> messengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  late final textTheme = Theme.of(context).textTheme;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +88,7 @@ class SmartFridgeApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: CustomTheme.mainTheme,
         home: const SplashPage(),
+        scaffoldMessengerKey: messengerKey,
       ),
     );
   }

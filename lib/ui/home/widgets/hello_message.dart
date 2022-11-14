@@ -97,10 +97,13 @@ class HelloMessage extends StatelessWidget {
                       ),
                     ),
                   const SizedBox(height: Consts.defaultPadding / 2),
-                  const Text(
-                    '👋',
-                    style: TextStyle(
-                      fontSize: 50,
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      '👋',
+                      style: TextStyle(
+                        fontSize: 50,
+                      ),
                     ),
                   ),
                 ],

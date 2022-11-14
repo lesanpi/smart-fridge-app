@@ -17,9 +17,10 @@ class Thermostat extends StatelessWidget {
       aspectRatio: 1,
       child: Stack(
         children: [
+          // ignore: prefer_const_constructors
           Positioned.fill(
-            child: CircularProgressIndicator(
-              value: temperature,
+            child: const CircularProgressIndicator(
+              value: 1,
               strokeWidth: 20,
             ),
           ),

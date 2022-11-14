@@ -16,8 +16,9 @@ class FridgeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double w = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
-    final alert = (fridge.temperature >= fridge.minTemperature &&
-        fridge.temperature <= fridge.maxTemperature);
+    final alert = !(fridge.temperature >= fridge.minTemperature &&
+            fridge.temperature <= fridge.maxTemperature) ||
+        fridge.batteryOn;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Material(
@@ -35,7 +36,7 @@ class FridgeCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             decoration: BoxDecoration(
               // color: Colors.white,
-              color: !alert ? Consts.error.withOpacity(0.1) : null,
+              color: alert ? Consts.error.withOpacity(0.1) : null,
               borderRadius: const BorderRadius.all(Radius.circular(
                 Consts.defaultBorderRadius * 3,
               )), // 70
@@ -72,12 +73,28 @@ class FridgeCard extends StatelessWidget {
                             color: Consts.neutral.shade600,
                           ),
                         ),
+                        const SizedBox(height: Consts.defaultPadding / 4),
                         Text(
                           fridge.standalone
                               ? "Modo independiente"
                               : "Modo coordinado",
-                          style: textTheme.bodySmall?.copyWith(
+                          style: textTheme.bodyMedium?.copyWith(
                             color: Consts.fontDark,
+                            fontWeight: FontWeight.w600,
+                            height: 0.8,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        const SizedBox(height: Consts.defaultPadding / 2),
+                        Text(
+                          fridge.batteryOn
+                              ? "¡Sin electricidad!"
+                              : "Electricidad OK",
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: fridge.batteryOn
+                                ? Consts.error.shade300
+                                : Consts.fontDark,
                             fontWeight: FontWeight.w600,
                             height: 0.8,
                           ),
@@ -97,7 +114,7 @@ class FridgeCard extends StatelessWidget {
                         maxLines: 1,
                         softWrap: false,
                         style: textTheme.headline6?.copyWith(
-                          color: alert
+                          color: !alert
                               ? Consts.neutral.shade800
                               : Consts.error.shade400,
                           fontWeight: FontWeight.w600,

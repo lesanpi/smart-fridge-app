@@ -46,12 +46,15 @@ class StandaloneView extends StatelessWidget {
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        left: Consts.defaultPadding / 4,
-                        right: Consts.defaultPadding / 4,
+                        left: Consts.defaultPadding / 8,
+                        right: Consts.defaultPadding / 8,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: const BorderRadius.all(
-                                Radius.circular(Consts.borderRadius * 15)),
+                              Radius.circular(
+                                Consts.borderRadius * 3,
+                              ),
+                            ),
                             color: Colors.blue.withOpacity(0.1),
                           ),
                         ),
@@ -77,7 +80,7 @@ class StandaloneView extends StatelessWidget {
                 ),
 
                 // Ready ✅
-                const SizedBox(height: Consts.defaultPadding * 2),
+                const SizedBox(height: Consts.defaultPadding * 1),
                 OutputCard(
                   title: 'Compresor',
                   onText: 'Encendido',
@@ -91,7 +94,17 @@ class StandaloneView extends StatelessWidget {
                 const SizedBox(height: Consts.defaultPadding),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Expanded(
+                      child: CheckCard(
+                        messageFalse: 'Bateria de respaldo en uso',
+                        messageTrue: 'Sin fallas eléctricas. Todo OK',
+                        value: fridge.batteryOn,
+                        text: 'Electricidad',
+                      ),
+                    ),
+                    const SizedBox(width: Consts.defaultPadding / 2),
                     Expanded(
                       child: ToggleCard(
                         onChanged: (value) {
@@ -101,10 +114,10 @@ class StandaloneView extends StatelessWidget {
                         text: 'Luz',
                       ),
                     ),
-                    const Spacer(),
-                    const SizedBox(
-                      width: Consts.defaultPadding,
-                    ),
+                    // const Spacer(),
+                    // const SizedBox(
+                    //   width: Consts.defaultPadding,
+                    // ),
                   ],
                 ),
 

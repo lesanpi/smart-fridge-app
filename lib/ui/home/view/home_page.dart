@@ -1,13 +1,43 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/data/repositories/push_notifications_service.dart';
 import 'package:wifi_led_esp8266/ui/cloud/view/cloud_page.dart';
 import 'package:wifi_led_esp8266/ui/home/cubit/sign_out_cubit.dart';
+import 'package:wifi_led_esp8266/ui/home/widgets/notification_snackbar.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/widgets.dart';
 import 'package:wifi_led_esp8266/ui/local/view/local_page.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final textTheme = Theme.of(context).textTheme;
+  late final size = MediaQuery.of(context).size;
+
+  @override
+  void initState() {
+    super.initState();
+    PushNotificationService.notificationMessagesStream.listen((event) {
+      log('Notification received ${event.body}');
+
+      ScaffoldMessenger.of(context)
+        ..clearSnackBars()
+        ..showSnackBar(
+          NotificationSnackBar(
+            textTheme: textTheme,
+            title: event.title,
+            body: event.body,
+          ),
+        );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,33 +59,6 @@ class HomePage extends StatelessWidget {
           leadingWidth: 0,
           leading: const SizedBox(width: Consts.defaultPadding / 2),
         ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        // floatingActionButton: FloatingActionButton.extended(
-        //   elevation: 5,
-        //   onPressed: () {
-        // Navigator.of(context).push(
-        //       PageRouteBuilder(
-        //         pageBuilder: (_, __, ___) => const SetupPage(),
-        //         transitionDuration: const Duration(milliseconds: 500),
-        //         transitionsBuilder:
-        //             (context, animation, secondaryAnimation, child) {
-        //           const begin = Offset(1.0, 0.0);
-        //           const end = Offset.zero;
-        //           final tween = Tween(begin: begin, end: end);
-        //           final offsetAnimation = animation.drive(tween);
-        //           return SlideTransition(
-        //             position: offsetAnimation,
-        //             child: child,
-        //           );
-        //         },
-        //       ),
-        //     );
-        //   },
-        //   icon: const Icon(
-        //     Icons.add,
-        //   ),
-        //   label: const Text(""),
-        // ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(

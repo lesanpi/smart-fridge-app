@@ -18,6 +18,8 @@ class TemperatureParameterView extends StatelessWidget {
               context.read<FridgeStateCubit>().state)),
       child: BlocBuilder<FridgeStateCubit, FridgeState?>(
           builder: (context, fridgeState) {
+        if (fridgeState == null) return const SizedBox.shrink();
+
         return BlocConsumer<TemperatureParameterCubit, TemperatureParameter>(
           listener: (context, temperatureParameter) {
             final initialTemperatureParameter =
@@ -55,7 +57,7 @@ class TemperatureParameterView extends StatelessWidget {
                             : () {
                                 context
                                     .read<TemperatureParameterCubit>()
-                                    .set(fridgeState!);
+                                    .set(fridgeState);
                               },
                     child: const Center(child: Text("Deshacer cambios")),
                   ),
