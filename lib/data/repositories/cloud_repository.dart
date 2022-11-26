@@ -7,6 +7,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/auth_repository.dart';
+import 'package:wifi_led_esp8266/models/device_message.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 
 class CloudRepository {
@@ -19,6 +20,18 @@ class CloudRepository {
   Stream<List<FridgeState>> get fridgesStateStream =>
       _fridgesStateStreamController.stream;
   List<FridgeState> fridgesState = [];
+
+  /// Device message
+  final StreamController<DeviceMessage> _deviceMessageStreamController =
+      StreamController.broadcast();
+  Stream<DeviceMessage> get deviceMessageStream =>
+      _deviceMessageStreamController.stream;
+
+  /// Device error message
+  final StreamController<DeviceMessage> _deviceErrorMessageStreamController =
+      StreamController.broadcast();
+  Stream<DeviceMessage> get deviceErrorMessageStream =>
+      _deviceErrorMessageStreamController.stream;
 
   // Fridge selected.
   final StreamController<FridgeState?> _fridgeSelectedStreamController =
@@ -111,9 +124,11 @@ class CloudRepository {
     // client.subscribe('state/#', MqttQos.exactlyOnce);
     // client.subscribe('state/62f90f52d8f2c401b58817e3', MqttQos.exactlyOnce);
 
-    client.subscribe('state/6312c34b49d3ac2f30375872', MqttQos.exactlyOnce);
+    // client.subscribe('state/6312c34b49d3ac2f30375872', MqttQos.exactlyOnce);
     fridges.forEach((element) {
       client.subscribe('state/$element', MqttQos.exactlyOnce);
+      client.subscribe('message/$element', MqttQos.exactlyOnce);
+      client.subscribe('error/$element', MqttQos.exactlyOnce);
     });
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
@@ -140,6 +155,22 @@ class CloudRepository {
         try {
           onStateUpdate(jsonDecoded, id);
         } catch (e) {}
+      }
+
+      if (topicSplitted[0] == "error") {
+        /// Error message
+        try {
+          log('Device error message received');
+          final deviceMessage = DeviceMessage.fromMap(jsonDecoded, true);
+          _deviceErrorMessageStreamController.add(deviceMessage);
+        } catch (_) {}
+      }
+
+      if (topicSplitted[0] == "message") {
+        /// Message
+        final deviceMessage = DeviceMessage.fromMap(jsonDecoded, false);
+        log('Device message received $deviceMessage');
+        _deviceMessageStreamController.add(deviceMessage);
       }
     });
   }

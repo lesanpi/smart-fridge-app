@@ -9,7 +9,56 @@ class NotificationSnackBar extends SnackBar {
     super.key,
   }) : super(
           backgroundColor: Consts.error.shade100,
-          duration: const Duration(seconds: 8),
+          duration: const Duration(seconds: 5),
+          padding: const EdgeInsets.all(Consts.defaultPadding),
+          behavior: SnackBarBehavior.floating,
+          content: IntrinsicWidth(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: Consts.fontDark,
+                    height: 1,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+                const SizedBox(height: Consts.defaultPadding / 4),
+                Text(
+                  body,
+                  style: textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: Consts.fontDark,
+                    fontSize: 18,
+                    height: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+
+  final TextTheme textTheme;
+  final String title;
+  final String body;
+}
+
+class MessageSnackbar extends SnackBar {
+  MessageSnackbar({
+    required this.textTheme,
+    required this.title,
+    required this.body,
+    super.key,
+  }) : super(
+          backgroundColor: Consts.primary.shade100,
+          duration: const Duration(seconds: 5),
+          padding: const EdgeInsets.all(Consts.defaultPadding),
+          behavior: SnackBarBehavior.floating,
           content: IntrinsicWidth(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

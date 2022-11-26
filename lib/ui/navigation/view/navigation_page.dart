@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wifi_led_esp8266/ui/cloud/bloc/cloud_message_bloc/cloud_messages_bloc.dart';
+import 'package:wifi_led_esp8266/ui/home/widgets/notification_snackbar.dart';
 import 'package:wifi_led_esp8266/ui/navigation/navigation.dart';
 
 /// {@template navigation_page}
@@ -15,8 +17,16 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavigationCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NavigationCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CloudMessagesBloc(context.read()),
+          lazy: false,
+        ),
+      ],
       child: const Scaffold(
         body: NavigationView(),
       ),
@@ -33,6 +43,41 @@ class NavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const NavigationBody();
+    final textTheme = Theme.of(context).textTheme;
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CloudMessagesBloc, CloudMessagesState>(
+          listenWhen: (previous, current) =>
+              previous != current && current.deviceMessage != null,
+          listener: (context, state) {
+            ScaffoldMessenger.of(context)
+              ..clearSnackBars()
+              ..showSnackBar(
+                MessageSnackbar(
+                  textTheme: textTheme,
+                  title: state.deviceMessage!.title,
+                  body: state.deviceMessage!.message,
+                ),
+              );
+          },
+        ),
+        BlocListener<CloudMessagesBloc, CloudMessagesState>(
+          listenWhen: (previous, current) =>
+              previous != current && current.errorMessage != null,
+          listener: (context, state) {
+            ScaffoldMessenger.of(context)
+              ..clearSnackBars()
+              ..showSnackBar(
+                NotificationSnackBar(
+                  textTheme: textTheme,
+                  title: state.errorMessage!.title,
+                  body: state.errorMessage!.message,
+                ),
+              );
+          },
+        ),
+      ],
+      child: const NavigationBody(),
+    );
   }
 }
