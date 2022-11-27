@@ -10,15 +10,21 @@ part 'cloud_messages_event.dart';
 part 'cloud_messages_state.dart';
 
 class CloudMessagesBloc extends Bloc<CloudMessagesEvent, CloudMessagesState> {
-  CloudMessagesBloc(this._cloudRepository) : super(const CloudMessagesState()) {
+  CloudMessagesBloc(
+    this._cloudRepository,
+    this._localRepository,
+  ) : super(const CloudMessagesState()) {
     on<CloudErrorMessageReceived>(_onErrorMessageReceived);
     on<CloudMessageReceived>(_onMessageReceived);
     on<CloudMessageInitialized>(_onInitialize);
     add(const CloudMessageInitialized());
   }
   final CloudRepository _cloudRepository;
+  final LocalRepository _localRepository;
   StreamSubscription<DeviceMessage>? _deviceErrorMessageStream;
+  StreamSubscription<DeviceMessage>? _deviceErrorLocalMessageStream;
   StreamSubscription<DeviceMessage>? _deviceMessageStream;
+  StreamSubscription<DeviceMessage>? _deviceLocalMessageStream;
 
   void _onInitialize(
     CloudMessageInitialized event,
@@ -29,8 +35,18 @@ class CloudMessagesBloc extends Bloc<CloudMessagesEvent, CloudMessagesState> {
       add(CloudMessageReceived(event));
     });
 
+    _deviceLocalMessageStream ??=
+        _localRepository.deviceMessageStream.listen((event) {
+      add(CloudMessageReceived(event));
+    });
+
     _deviceErrorMessageStream ??=
         _cloudRepository.deviceErrorMessageStream.listen((event) {
+      add(CloudErrorMessageReceived(event));
+    });
+
+    _deviceErrorLocalMessageStream ??=
+        _localRepository.deviceErrorMessageStream.listen((event) {
       add(CloudErrorMessageReceived(event));
     });
   }

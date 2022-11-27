@@ -23,7 +23,10 @@ class NavigationPage extends StatelessWidget {
           create: (context) => NavigationCubit(),
         ),
         BlocProvider(
-          create: (context) => CloudMessagesBloc(context.read()),
+          create: (context) => CloudMessagesBloc(
+            context.read(),
+            context.read(),
+          ),
           lazy: false,
         ),
       ],
