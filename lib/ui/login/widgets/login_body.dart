@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
+import 'package:wifi_led_esp8266/ui/forget_password/forget_password.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
 import 'package:wifi_led_esp8266/ui/login/widgets/email_input.dart';
 
@@ -43,7 +44,9 @@ class LoginBody extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, ForgetPasswordPage.route());
+                  },
                   child: Text(
                     '¿Olvidaste tu contraseña?',
                     style: textTheme.bodyMedium?.copyWith(

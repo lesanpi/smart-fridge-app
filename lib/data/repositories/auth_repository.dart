@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/exceptions/auth_exception.dart';
@@ -92,6 +93,86 @@ class AuthRepository {
     if (statusCode != 200) {
       throw AuthException(error: AuthErrorCode.notAuth, message: body["error"]);
     }
+  }
+
+  Future<bool> sendVerifyCode({
+    required String email,
+  }) async {
+    final url = Uri.parse(Consts.httpLink + '/api/password/reset');
+    final jsonData = jsonEncode({
+      'email': email,
+    });
+
+    final response = await http.post(
+      url,
+      body: jsonData,
+      headers: Consts.headers,
+    );
+    log(response.body, name: 'AuthRepository.sendVerifyCode');
+
+    final body = jsonDecode(response.body);
+    final statusCode = response.statusCode;
+
+    if (statusCode != 200) {
+      throw Exception('An error occurred');
+    }
+    return body['success'] as bool;
+  }
+
+  Future<bool> verifyCode({
+    required String email,
+    required String code,
+  }) async {
+    log(
+      'Verifing code: $code, with email $email',
+      name: 'AuthRepository.verifyCode',
+    );
+    final url = Uri.parse(Consts.httpLink + '/api/password/validate');
+    final jsonData = jsonEncode({
+      'email': email,
+      'token': code,
+    });
+
+    final response = await http.post(
+      url,
+      body: jsonData,
+      headers: Consts.headers,
+    );
+    log(response.body, name: 'AuthRepository.verifyCode');
+
+    final body = jsonDecode(response.body);
+    final statusCode = response.statusCode;
+
+    if (statusCode != 200) {
+      throw Exception('An error occurred');
+    }
+    return body['success'] as bool;
+  }
+
+  Future<bool> changePassword({
+    required String password,
+    required String code,
+  }) async {
+    final url = Uri.parse(Consts.httpLink + '/api/password/change');
+    final jsonData = jsonEncode({
+      'password': password,
+      'token': code,
+    });
+
+    final response = await http.post(
+      url,
+      body: jsonData,
+      headers: Consts.headers,
+    );
+
+    log(response.body, name: 'AuthRepository.changePassword');
+    final body = jsonDecode(response.body);
+    final statusCode = response.statusCode;
+
+    if (statusCode != 200) {
+      throw Exception('An error occurred');
+    }
+    return body['success'] as bool;
   }
 
   /// Set the [currentUser] to null

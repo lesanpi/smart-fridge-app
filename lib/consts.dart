@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Consts {
 /* ------------------------- Application parameters ------------------------- */
   // static const httpLink = "http://192.168.18.3:3001";
-  static const httpLink = "https://zona-refri-api.herokuapp.com";
+  static const httpLink = "https://zona-refri.onrender.com";
   // static const httpLink = "http://192.168.1.102:3001";
   static const mqttCloudUrl =
       "b18bfec2abdc420f99565f02ebd1fa05.s2.eu.hivemq.cloud";

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
-import 'package:wifi_led_esp8266/ui/cloud/cloud.dart';
 import 'package:wifi_led_esp8266/ui/cloud/widgets/disconnect_button.dart';
-import 'package:wifi_led_esp8266/ui/local/widgets/disconnect_button.dart';
 
 class FridgesEmpty extends StatelessWidget {
   const FridgesEmpty({Key? key}) : super(key: key);
