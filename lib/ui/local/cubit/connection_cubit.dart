@@ -56,7 +56,8 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
       // return;
     }
 
-    bool connected = await _localRepository.connect(user.id, password);
+    bool connected =
+        await _localRepository.connect(user.id, _authUseCase.token);
 
     if (!connected) {
       emit(LocalConnectionState(connectionInfo: state.connectionInfo));

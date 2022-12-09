@@ -13,6 +13,8 @@ class AuthUseCase {
 
   AuthUser? get currentUser => _authUser;
 
+  String get token => _token ?? '';
+
   /// Validates if the current user is not null
   Future<bool> validateLogin() async {
     final user = await getCurrentUser();

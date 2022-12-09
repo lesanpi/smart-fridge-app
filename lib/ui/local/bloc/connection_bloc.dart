@@ -64,7 +64,8 @@ class LocalConnectionBloc
       // return;
     }
 
-    bool connected = await _localRepository.connect(user.id, '');
+    bool connected =
+        await _localRepository.connect(user.id, _authUseCase.token);
 
     if (!connected) {
       emit(const LocalConnectionDisconnected());

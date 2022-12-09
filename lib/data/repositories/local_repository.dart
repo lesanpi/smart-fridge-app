@@ -47,9 +47,10 @@ class LocalRepository {
   // MQTT Client
   MqttServerClient client = MqttServerClient.withPort('192.168.0.1', '', 1883);
 
-  Future<void> init({String server = '192.168.0.1'}) async {
+  Future<void> init(
+      {String server = '192.168.0.1', String identifier = ''}) async {
     // client = MqttServerClient(server, '');
-    client = MqttServerClient.withPort(server, '', 1883);
+    client = MqttServerClient.withPort(server, identifier, 1883);
 
     /// Set the correct MQTT protocol for mosquito
     client.setProtocolV311();
@@ -64,7 +65,7 @@ class LocalRepository {
     /// client identifier, any supplied username/password and clean session,
     /// an example of a specific one below.
     final connMess = MqttConnectMessage()
-        .withClientIdentifier('Mqtt_MyClientUniqueIdWildcard')
+        .withClientIdentifier(identifier)
         .withWillTopic(
             'willtopic') // If you set this you must set a will message
         .withWillMessage('My Will message')
@@ -93,15 +94,19 @@ class LocalRepository {
     }
 
     log('📶 Starting MQTT connection, with server $server');
+    log('Id: $id Password $password');
     await Future.delayed(const Duration(seconds: 1));
 
     if (connectionInfo != null) return true;
 
-    await init(server: server);
+    await init(
+      server: server,
+      identifier: id,
+    );
 
     try {
       final MqttClientConnectionStatus? connectionStatus =
-          await client.connect(id, password);
+          await client.connect(id, '');
 
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
