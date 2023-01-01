@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/coordinator_configuration.dart';
 import 'package:wifi_led_esp8266/models/controller_configuration.dart';
-import 'package:wifi_led_esp8266/models/models.dart';
 import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/local/local.dart';
@@ -682,7 +681,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                   const SizedBox(height: Consts.defaultPadding),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Consts.primary.shade300,
+                      backgroundColor: Consts.primary.shade300,
                       shape: CustomTheme.buttonShape,
                       minimumSize: const Size.fromHeight(40), // NEW
                     ),
@@ -736,8 +735,6 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
         if (value) {
           Navigator.maybePop(context);
         }
-
-        // TODO(lesanpi): error message dialog
       });
     };
   }
@@ -1015,7 +1012,7 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                   const SizedBox(height: Consts.defaultPadding),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Consts.primary.shade600,
+                      backgroundColor: Consts.primary.shade600,
                       shape: CustomTheme.buttonShape,
                       minimumSize: const Size.fromHeight(40), // NEW
                     ),

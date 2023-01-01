@@ -1,6 +1,3 @@
-import 'package:meta/meta.dart';
-import 'dart:convert';
-
 class ConnectionInfo {
   ConnectionInfo({
     required this.standalone,

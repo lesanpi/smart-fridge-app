@@ -92,7 +92,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       await _authRepository.signUp(
         email: state.email.value,
         password: state.password.value,
-        // TODO: phone
         phone: '04149137341',
         name: state.name.value,
       );

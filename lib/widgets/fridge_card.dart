@@ -14,7 +14,7 @@ class FridgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double w = MediaQuery.of(context).size.width;
+    // final double w = MediaQuery.of(context).size.width;
     final textTheme = Theme.of(context).textTheme;
     final alert = !(fridge.temperature >= fridge.minTemperature &&
             fridge.temperature <= fridge.maxTemperature) ||

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/cloud_repository.dart';
-import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/cloud/bloc/connection_bloc.dart';
 import 'package:wifi_led_esp8266/ui/cloud/view/fridge_page.dart';
 import 'package:wifi_led_esp8266/ui/cloud/widgets/disconnect_button.dart';
@@ -55,7 +54,6 @@ class CloudView extends StatelessWidget {
     return BlocConsumer<CloudConnectionBloc, CloudConnectionState>(
       listener: (context, state) {},
       builder: (context, state) {
-        print(state);
         // print('fridgelist');
         // print(fridgeList.map((e) => e.toJson()).toList());
         if (state is CloudConnectionDisconnected ||

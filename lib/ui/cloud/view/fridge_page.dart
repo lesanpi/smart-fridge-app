@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/temperature_stat.dart';
 import 'package:wifi_led_esp8266/ui/cloud/bloc/temperature_stats_bloc/temperature_stats_bloc.dart';
@@ -15,7 +12,6 @@ import 'package:wifi_led_esp8266/widgets/toggle_card.dart';
 import '../cloud.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class FridgePage extends StatelessWidget {
   const FridgePage({Key? key}) : super(key: key);

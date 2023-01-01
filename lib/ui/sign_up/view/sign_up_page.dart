@@ -84,7 +84,6 @@ class SignUpView extends StatelessWidget {
         }
 
         if (state.status.isSubmissionSuccess) {
-          // TODO: message
           Navigator.pop(context);
         }
       },

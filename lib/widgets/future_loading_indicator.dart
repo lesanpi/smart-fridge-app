@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/widgets/loading_indicator.dart';
 
@@ -16,6 +15,7 @@ Future<T?> futureLoadingIndicator<T>(
       future.then<T?>((result) {
         // If the future completes successfully, dismiss the dialog.
         Navigator.pop(context, result);
+        return null;
       }, onError: (error, stackTrace) {
         // If the future completes with an error, dismiss the loading dialog
         // and show the error dialog.
@@ -37,6 +37,7 @@ Future<T?> futureLoadingIndicator<T>(
           errorMessage: 'Error de conexión. Vuelva a intentar',
           onTryAgainFuture: future,
         );
+        return null;
       });
       return const LoadingIndicator();
     },

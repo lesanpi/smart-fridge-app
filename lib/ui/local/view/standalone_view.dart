@@ -14,7 +14,7 @@ class StandaloneView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
 
     return BlocConsumer<FridgeStateCubit, FridgeState?>(
       listener: (context, fridge) {},
@@ -170,7 +170,7 @@ class _NameControllerState extends State<NameController> {
       TextEditingController(text: widget.initialName);
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
     return BlocBuilder<FridgeStateCubit, FridgeState?>(
       builder: (context, state) {

@@ -4,11 +4,11 @@ import 'package:wifi_led_esp8266/consts.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
-  static TextStyle _workSans = const TextStyle(fontFamily: 'Work Sans Regular');
-  static TextStyle _workSansBold =
-      const TextStyle(fontFamily: 'Work Sans Bold');
-  static TextStyle _workSansMedium =
-      const TextStyle(fontFamily: 'Work Sans Medium');
+  static const TextStyle _workSans = TextStyle(fontFamily: 'Work Sans Regular');
+  static const TextStyle _workSansBold =
+      TextStyle(fontFamily: 'Work Sans Bold');
+  static const TextStyle _workSansMedium =
+      TextStyle(fontFamily: 'Work Sans Medium');
 
   static RoundedRectangleBorder buttonShape = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(Consts.defaultBorderRadius),
@@ -87,13 +87,13 @@ class CustomTheme {
       ),
       focusColor: Consts.accent,
     ),
-    primaryIconTheme: IconThemeData(color: Consts.textWh),
+    primaryIconTheme: const IconThemeData(color: Consts.textWh),
     textSelectionTheme: const TextSelectionThemeData(
       selectionColor: Consts.accent,
       selectionHandleColor: Consts.accent,
       cursorColor: Colors.black,
     ),
-    cupertinoOverrideTheme: CupertinoThemeData(
+    cupertinoOverrideTheme: const CupertinoThemeData(
       primaryColor: Consts.accent,
     ),
     // outlinedButtonTheme: OutlinedButtonThemeData(
@@ -127,11 +127,11 @@ class CustomTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        onPrimary: Consts.fontWhite,
+        foregroundColor: Consts.fontWhite,
+        backgroundColor: Consts.accent,
         textStyle: GoogleFonts.inter(
           fontWeight: FontWeight.w600,
         ),
-        primary: Consts.accent,
         padding: const EdgeInsets.symmetric(
           vertical: 13,
           horizontal: Consts.defaultPadding,
@@ -185,7 +185,7 @@ class CustomTheme {
           (states) => Consts.primary.shade400),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Consts.defaultBorderRadius),
-        side: BorderSide(),
+        side: const BorderSide(),
       ),
     ),
   );

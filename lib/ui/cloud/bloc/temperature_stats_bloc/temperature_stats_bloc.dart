@@ -22,7 +22,6 @@ class TemperatureStatsBloc
       final stats = await _fridgeUseCase.getFridgeTemperatures(_fridgeId);
       emit(TemperatureStatsLoaded(stats));
     } catch (e) {
-      print(e);
       emit(TemperatureStatsFailed());
     }
   }

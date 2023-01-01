@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 import 'package:wifi_led_esp8266/models/device_configuration.dart';
 // import 'package:wifi_led_esp8266/models/fridge_state.dart';
 

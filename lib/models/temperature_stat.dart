@@ -2,7 +2,6 @@
 //
 //     final temperature = temperatureFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class TemperatureStat {

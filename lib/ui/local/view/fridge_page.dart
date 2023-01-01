@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
-import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/restore_fridge_button.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/wifi_internet_view.dart';
 import '../local.dart';
@@ -32,8 +31,6 @@ class FridgePage extends StatelessWidget {
               if (fridge == null) {
                 return const NoDataView();
               }
-
-              print(fridge.temperature);
 
               return Center(
                 child: SingleChildScrollView(

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/theme.dart';
 import 'package:wifi_led_esp8266/ui/local/bloc/connection_bloc.dart';
-import 'package:wifi_led_esp8266/ui/local/cubit/connection_cubit.dart';
 
 class DisconnectButton extends StatelessWidget {
   const DisconnectButton({Key? key, this.onTap}) : super(key: key);
@@ -13,7 +12,7 @@ class DisconnectButton extends StatelessWidget {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        primary: Consts.error,
+        foregroundColor: Consts.error,
         side: const BorderSide(
           color: Consts.error,
           width: 1.0,

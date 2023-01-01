@@ -3,7 +3,7 @@ class Validators {
   /// Checks if the input is a valid email address.
   static final emailValidator = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  static final String emailErrorMessage = "Correo electrónico inválido";
+  static const String emailErrorMessage = "Correo electrónico inválido";
 
   /// Checks if the input is a valid name.
   static final RegExp nameValidator = RegExp(r'^[a-zA-Z ]+$');
@@ -96,5 +96,5 @@ class Validators {
     return null;
   }
 
-  static final String phoneErrorMessage = "Número de telefono inválido";
+  static const String phoneErrorMessage = "Número de telefono inválido";
 }

@@ -14,7 +14,7 @@ class RestoreFridgeButton extends StatelessWidget {
     // final outlinedButtonStyle = Theme.of(context).outlinedButtonTheme.style;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: Consts.error.shade400,
+        backgroundColor: Consts.error.shade400,
         // side: BorderSide(
         //   color: Consts.error.shade400,
         //   width: 1.0,

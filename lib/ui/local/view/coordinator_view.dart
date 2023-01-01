@@ -7,7 +7,6 @@ import 'package:wifi_led_esp8266/ui/local/local.dart';
 import 'package:wifi_led_esp8266/ui/local/view/fridge_page.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/fridges_empty.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
-import '../local.dart';
 
 class CoordinatorView extends StatelessWidget {
   const CoordinatorView({Key? key}) : super(key: key);

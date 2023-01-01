@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/push_notifications_service.dart';
-import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
 import 'package:wifi_led_esp8266/ui/cloud/view/cloud_page.dart';
 import 'package:wifi_led_esp8266/ui/home/cubit/sign_out_cubit.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/notification_snackbar.dart';
@@ -89,6 +88,13 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 const SizedBox(height: Consts.defaultPadding),
+                // ElevatedButton(
+                //     style:
+                //         ElevatedButton.styleFrom(backgroundColor: Consts.error,),
+                //     onPressed: () {},
+                //     child: const Center(
+                //       child: Text('Cerrar sesion'),
+                //     )),
                 Row(
                   children: const [
                     Expanded(child: SignOutButton()),

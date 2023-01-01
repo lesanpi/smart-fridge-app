@@ -103,12 +103,12 @@ class CloudRepository {
       client.disconnect();
       conected = false;
       return false;
-    } on SocketException catch (e) {
+    } on SocketException {
       client.disconnect();
       conected = false;
 
       return false;
-    } on Exception catch (e) {
+    } on Exception {
       client.disconnect();
       conected = false;
 
@@ -125,11 +125,11 @@ class CloudRepository {
     // client.subscribe('state/62f90f52d8f2c401b58817e3', MqttQos.exactlyOnce);
 
     // client.subscribe('state/6312c34b49d3ac2f30375872', MqttQos.exactlyOnce);
-    fridges.forEach((element) {
+    for (var element in fridges) {
       client.subscribe('state/$element', MqttQos.exactlyOnce);
       client.subscribe('message/$element', MqttQos.exactlyOnce);
       client.subscribe('error/$element', MqttQos.exactlyOnce);
-    });
+    }
     client.updates!
         .listen((List<MqttReceivedMessage<MqttMessage?>>? message) async {
       final recMess = message![0].payload as MqttPublishMessage;
@@ -144,7 +144,7 @@ class CloudRepository {
         return;
       }
 
-      if (jsonDecoded == null) return;
+      // if (jsonDecoded == null) return;
 
       /// The information of the connection was updated
       final List<String> topicSplitted = topic.split('/');
@@ -154,7 +154,7 @@ class CloudRepository {
         final id = topicSplitted[1];
         try {
           onStateUpdate(jsonDecoded, id);
-        } catch (e) {}
+        } catch (_) {}
       }
 
       if (topicSplitted[0] == "error") {

@@ -25,7 +25,6 @@ class AuthUseCase {
   /// Get the user from the backen using the [_token]
   /// and updates the [_authRepository.currentUser]
   Future<AuthUser?> getCurrentUser() async {
-    // TODO: get current user
     _authUser = await _authRepository.getCurrentUser(_token).then((authUser) {
       _persistentStorageRepository.updateUserData(authUser);
       return authUser;
@@ -66,7 +65,6 @@ class AuthUseCase {
   /// Deletes the [_token] in the persistent storage
   /// and set user to null in the [_authRepository]
   Future<void> signOut() async {
-    // TODO: sign out from auth repository
     _token = null;
     _persistentStorageRepository.updateToken(null);
     _persistentStorageRepository.updateUserData(null);

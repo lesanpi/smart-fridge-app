@@ -45,7 +45,6 @@ class SignUpBody extends StatelessWidget {
               SignUpNameInput(
                   focusNode: nameFocusNode, nextFocusNode: passwordFocusNode),
               const SizedBox(height: Consts.defaultPadding / 2),
-              // TODO: phone input
               SignUpPasswordInput(
                 focusNode: passwordFocusNode,
                 nextFocusNode: confirmPasswordFocusNode,

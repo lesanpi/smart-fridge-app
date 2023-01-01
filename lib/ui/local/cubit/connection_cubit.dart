@@ -28,17 +28,15 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
   StreamSubscription<ConnectionInfo?>? _connectionInfoStream;
 
   void init() {
-    if (state != null) {
-      _connectionInfoStream =
-          // ignore: unnecessary_cast
-          _localRepository.connectionInfoStream.listen((connectionInfo) {
-        if (connectionInfo != null) {
-          emit(LocalConnectionState(connectionInfo: connectionInfo));
-        } else {
-          emit(const LocalConnectionState());
-        }
-      }) as StreamSubscription<ConnectionInfo?>?;
-    }
+    _connectionInfoStream =
+        // ignore: unnecessary_cast
+        _localRepository.connectionInfoStream.listen((connectionInfo) {
+      if (connectionInfo != null) {
+        emit(LocalConnectionState(connectionInfo: connectionInfo));
+      } else {
+        emit(const LocalConnectionState());
+      }
+    }) as StreamSubscription<ConnectionInfo?>?;
   }
 
   Future<void> connect(String password) async {
@@ -77,7 +75,7 @@ class ConnectionCubit extends Cubit<LocalConnectionState> {
       } else {
         emit(const LocalConnectionState());
       }
-    }) as StreamSubscription<ConnectionInfo?>?;
+    });
   }
 
   Future<void> disconnect() async {

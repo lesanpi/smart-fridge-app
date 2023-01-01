@@ -55,7 +55,7 @@ class ToggleCard extends StatelessWidget {
                           color: Colors.black.withOpacity(0.8),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         text,
                         style: TextStyle(
@@ -70,7 +70,7 @@ class ToggleCard extends StatelessWidget {
                 Column(
                   children: [
                     Switch(value: value, onChanged: onChanged),
-                    Spacer(),
+                    const Spacer(),
                   ],
                 ),
               ],
@@ -153,7 +153,7 @@ class CheckCard extends StatelessWidget {
                   ),
                 ),
                 Column(
-                  children: [],
+                  children: const [],
                 ),
               ],
             ),

@@ -68,7 +68,6 @@ class AuthRepository {
     required String name,
   }) async {
     String? error;
-    // TODO: sign up
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
 

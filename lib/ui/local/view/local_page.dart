@@ -49,7 +49,7 @@ class LocalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return BlocConsumer<LocalConnectionBloc, LocalConnectionState>(
       listener: (context, state) {
         if (state.connectionInfo == null) return;

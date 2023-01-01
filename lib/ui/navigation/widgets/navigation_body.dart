@@ -28,7 +28,7 @@ class NavigationBody extends StatelessWidget {
                 index: state,
               ),
             ),
-            const CustomNavigationBar(),
+            // const CustomNavigationBar(),
           ],
         );
       },
