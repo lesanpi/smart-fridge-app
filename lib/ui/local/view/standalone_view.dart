@@ -92,6 +92,10 @@ class StandaloneView extends StatelessWidget {
 
                 // Ready ✅
                 const SizedBox(height: Consts.defaultPadding),
+
+                const FridgeExternalTemperature(),
+                const SizedBox(height: Consts.defaultPadding),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,6 +140,67 @@ class StandaloneView extends StatelessWidget {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+}
+
+class FridgeExternalTemperature extends StatelessWidget {
+  const FridgeExternalTemperature({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, fridge) {
+        if (fridge == null) return const SizedBox.shrink();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Temperatura Externa',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            Container(
+              width: double.infinity,
+              height: 100,
+              padding: const EdgeInsets.all(Consts.defaultPadding),
+              // elevation: 3,
+              decoration: BoxDecoration(
+                color: Consts.primary.shade800.withOpacity(0.1),
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(Consts.borderRadius * 3)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Temperatura Externa',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black.withOpacity(0.9),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${fridge.externalTemperature.toStringAsFixed(0)} °C',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         );
       },
     );

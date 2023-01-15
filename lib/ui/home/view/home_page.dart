@@ -9,6 +9,7 @@ import 'package:wifi_led_esp8266/ui/home/widgets/notification_snackbar.dart';
 import 'package:wifi_led_esp8266/ui/home/widgets/widgets.dart';
 import 'package:wifi_led_esp8266/ui/local/view/local_page.dart';
 import 'package:wifi_led_esp8266/ui/login/login.dart';
+import 'package:wifi_led_esp8266/ui/setup/setup.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -96,10 +97,40 @@ class _HomePageState extends State<HomePage> {
                 //       child: Text('Cerrar sesion'),
                 //     )),
                 Row(
-                  children: const [
-                    Expanded(child: SignOutButton()),
-                    SizedBox(width: Consts.defaultPadding),
-                    Spacer(),
+                  children: [
+                    const Expanded(child: SignOutButton()),
+                    const SizedBox(width: Consts.defaultPadding),
+                    Expanded(
+                      child: ElevatedMenuItem(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => const SetupPage(),
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
+                                final tween = Tween(begin: begin, end: end);
+                                final offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        title: "Nuevo",
+                        description: "equipo",
+                        icon: const Icon(
+                          Icons.new_label_rounded,
+                          size: 60,
+                          color: Consts.fontDark,
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: Consts.defaultPadding / 2),
