@@ -22,6 +22,7 @@ class FridgeState extends Equatable {
     required this.desiredTemperature,
     required this.maxTemperature,
     required this.minTemperature,
+    required this.batteryPorcentage,
     required this.standalone,
     required this.ssid,
     required this.ssidCoordinator,
@@ -39,6 +40,7 @@ class FridgeState extends Equatable {
   int desiredTemperature;
   int maxTemperature;
   int minTemperature;
+  int batteryPorcentage;
   double externalTemperature;
   bool standalone;
   String ssid;
@@ -62,6 +64,7 @@ class FridgeState extends Equatable {
             : json["externalTemperature"] as double,
         maxTemperature: json["maxTemperature"],
         minTemperature: json["minTemperature"],
+        batteryPorcentage: json["batteryPorcentage"] as int,
         standalone: json["standalone"],
         ssid: json["ssid"],
         ssidCoordinator: json["ssidCoordinator"],
@@ -77,6 +80,7 @@ class FridgeState extends Equatable {
         "light": light,
         "compressor": compressor,
         "door": door,
+        "batteryPorcentage": batteryPorcentage,
         "desiredTemperature": desiredTemperature,
         "maxTemperature": maxTemperature,
         "minTemperature": minTemperature,

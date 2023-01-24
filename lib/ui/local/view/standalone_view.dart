@@ -89,6 +89,8 @@ class StandaloneView extends StatelessWidget {
                   color: Colors.lightBlue.shade200.withOpacity(0.3),
                   icon: Icons.ac_unit,
                 ),
+                const FridgeBattery(),
+                const SizedBox(height: Consts.defaultPadding),
 
                 // Ready ✅
                 const SizedBox(height: Consts.defaultPadding),
@@ -140,6 +142,74 @@ class StandaloneView extends StatelessWidget {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+}
+
+class FridgeBattery extends StatelessWidget {
+  const FridgeBattery({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, fridge) {
+        if (fridge == null) return const SizedBox.shrink();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Batería de respaldo',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            Container(
+              width: double.infinity,
+              height: 100,
+              padding: const EdgeInsets.all(Consts.defaultPadding),
+              // elevation: 3,
+              decoration: BoxDecoration(
+                color: Consts.primary.shade800.withOpacity(0.5),
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(Consts.borderRadius * 3)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        const Icon(Icons.battery_charging_full),
+                        Text(
+                          'Nivel de carga',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black.withOpacity(0.9),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '${fridge.batteryPorcentage.toStringAsFixed(0)}%',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black.withOpacity(0.9),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         );
       },
     );
