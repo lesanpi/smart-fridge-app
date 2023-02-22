@@ -22,7 +22,7 @@ class CloudDisconnectButton extends StatelessWidget {
       ),
       onPressed: () async {
         context.read<CloudConnectionBloc>().add(CloudConnectionDisconnect());
-        Navigator.pop(context);
+        // Navigator.pop(context);
 
         if (onTap != null) {
           onTap!();

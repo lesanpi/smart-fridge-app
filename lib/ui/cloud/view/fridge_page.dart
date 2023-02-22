@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -497,7 +499,7 @@ class FridgeStats extends StatelessWidget {
                 // const SizedBox(height: Consts.defaultPadding),
                 Text(
                   "Sin datos de temperatura",
-                  style: textTheme.headline5?.copyWith(
+                  style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
@@ -515,20 +517,15 @@ class FridgeStats extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
                     Radius.circular(18),
                   ),
-                  color: Colors.blue.withOpacity(0.2),
+                  // color: Colors.blue.withOpacity(0.2),
                   // border: Border.all(color: Consts.fontDark),
                 ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                  child: LineChart(
-                    mainData(state.stats),
-                  ),
+                child: LineChart(
+                  mainData(state.stats),
                 ),
               ),
             ),
@@ -616,10 +613,10 @@ class FridgeStats extends StatelessWidget {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: false,
-            interval: 1,
+            showTitles: true,
+            interval: 2,
             // getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 45,
           ),
         ),
       ),
@@ -628,8 +625,9 @@ class FridgeStats extends StatelessWidget {
           ),
       minX: 0,
       maxX: stats.length.toDouble(),
-      minY: 0,
-      maxY: 50,
+      minY: stats.map((e) => e.temp).toList().reduce(min).toInt() - 1,
+      maxY: stats.map((e) => e.temp).toList().reduce(max).toInt() + 1,
+      // maxY: 50,
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
           tooltipBgColor: Colors.blueAccent,

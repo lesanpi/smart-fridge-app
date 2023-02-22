@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  network_info_plus_windows
+  network_info_plus
   smart_auth
 )
 
