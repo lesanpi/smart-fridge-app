@@ -93,6 +93,10 @@ class MinTemperatureController extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: Consts.defaultPadding / 2),
+              const Text(
+                '¿A que valor de temperatura mínima te gustaria recibir una alerta?',
+              ),
+              const SizedBox(height: Consts.defaultPadding / 2),
               SleekCircularSlider(
                 appearance: CircularSliderAppearance(
                   customColors: CustomSliderColors(
@@ -163,6 +167,10 @@ class MaxTemperatureController extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
+              ),
+              const SizedBox(height: Consts.defaultPadding / 2),
+              const Text(
+                '¿A que valor de temperatura máxima te gustaria recibir una alerta?',
               ),
               const SizedBox(height: Consts.defaultPadding / 2),
               SleekCircularSlider(
@@ -251,6 +259,9 @@ class DesiredTemperatureController extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: Consts.defaultPadding / 2),
+              const Text(
+                  'Indica el valor referencial de la temperatura que debería estar el equipo normalmente.'),
               const SizedBox(height: Consts.defaultPadding / 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

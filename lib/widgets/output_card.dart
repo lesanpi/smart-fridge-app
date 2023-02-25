@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import '../consts.dart';
 
 class OutputCard extends StatelessWidget {
-  const OutputCard(
-      {super.key,
-      required this.title,
-      required this.onText,
-      required this.offText,
-      required this.output,
-      required this.color,
-      required this.icon});
+  const OutputCard({
+    super.key,
+    required this.title,
+    required this.onText,
+    required this.offText,
+    required this.output,
+    required this.color,
+    required this.icon,
+    this.tooltipText,
+  });
   final String title;
   final String onText;
   final String offText;
+  final String? tooltipText;
   final bool output;
   final Color color;
   final IconData icon;
@@ -23,13 +26,27 @@ class OutputCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.black.withOpacity(0.8),
-          ),
+        Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            if (tooltipText != null)
+              IconButton(
+                splashRadius: 10,
+                tooltip: tooltipText,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.info,
+                  color: Consts.fontDark,
+                ),
+              )
+          ],
         ),
         const SizedBox(height: Consts.defaultPadding / 2),
         Container(

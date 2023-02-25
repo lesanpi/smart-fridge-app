@@ -7,24 +7,40 @@ class ToggleCard extends StatelessWidget {
     required this.onChanged,
     required this.value,
     required this.text,
+    this.tooltipText,
   });
 
   final Function(bool) onChanged;
   final bool value;
   final String text;
+  final String? tooltipText;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.black.withOpacity(0.8),
-          ),
+        Row(
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            if (tooltipText != null)
+              IconButton(
+                splashRadius: 10,
+                tooltip: tooltipText,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.info,
+                  color: Consts.fontDark,
+                ),
+              )
+          ],
         ),
         const SizedBox(height: Consts.defaultPadding / 2),
         Container(
@@ -89,24 +105,41 @@ class CheckCard extends StatelessWidget {
     required this.text,
     required this.messageTrue,
     required this.messageFalse,
+    this.tooltipText,
   });
 
   final bool value;
   final String text;
   final String messageTrue;
   final String messageFalse;
+  final String? tooltipText;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.black.withOpacity(0.8),
-          ),
+        Row(
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black.withOpacity(0.8),
+              ),
+            ),
+            if (tooltipText != null)
+              IconButton(
+                splashRadius: 10,
+                tooltip: tooltipText,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.info,
+                  color: Consts.fontDark,
+                ),
+              )
+          ],
         ),
         const SizedBox(height: Consts.defaultPadding / 2),
         Container(

@@ -35,13 +35,23 @@ class FridgeCompressorTimeBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: Consts.defaultPadding),
+              Row(
+                children: const [
+                  Icon(Icons.timelapse_sharp),
+                  SizedBox(width: Consts.defaultPadding / 2),
+                  Text(
+                    "Intervalo del compresor",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
               const Text(
-                "Intervalo del compresor",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.left,
+                'El compresor necesita reposar apagado un intervalo de tiempo antes de encenderse nuevamente. ¡Pero tu lo puedes configurar! ¿Cuantos minutos deseas?',
+                textAlign: TextAlign.justify,
               ),
               const SizedBox(height: Consts.defaultPadding),
               Center(

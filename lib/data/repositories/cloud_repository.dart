@@ -203,7 +203,6 @@ class CloudRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String topicId) {
-    log('json $json');
     final FridgeState newFridgeState = FridgeState.fromJson(json);
 
     final id = newFridgeState.id;

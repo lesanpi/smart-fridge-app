@@ -50,7 +50,7 @@ class FridgePage extends StatelessWidget {
                 child: Center(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: Consts.defaultPadding),
+                        horizontal: Consts.defaultPadding * 0.6),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +65,19 @@ class FridgePage extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.45,
                           child: const FridgeThermostat(),
                         ),
-
+                        const SizedBox(height: Consts.defaultPadding * 2),
+                        Row(children: const [
+                          Expanded(
+                              child: Text(
+                            "Temperatura vs Tiempo",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 26,
+                              color: Consts.fontDark,
+                            ),
+                          )),
+                        ]),
+                        FridgeStats(fridgeId: fridge.id),
                         const SizedBox(height: Consts.defaultPadding * 1),
                         const FridgeCompressor(),
                         const SizedBox(height: Consts.defaultPadding),
@@ -78,21 +90,9 @@ class FridgePage extends StatelessWidget {
 
                         const TemperatureParameterView(),
                         const TimeCompressorView(),
-                        const SizedBox(height: Consts.defaultPadding * 2),
+                        const SizedBox(height: Consts.defaultPadding * 1),
                         const WifiInternetView(),
-                        const SizedBox(height: Consts.defaultPadding * 2),
-                        Row(children: [
-                          Expanded(
-                              child: Text(
-                            "Temperatura vs Tiempo",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 26,
-                              color: Consts.primary.shade600,
-                            ),
-                          ))
-                        ]),
-                        FridgeStats(fridgeId: fridge.id),
+
                         const SizedBox(height: Consts.defaultPadding * 2),
                         const RestoreFridgeButton(),
                         const SizedBox(height: Consts.defaultPadding * 3),
@@ -129,6 +129,9 @@ class FridgeExternalTemperature extends StatelessWidget {
                 color: Colors.black.withOpacity(0.8),
               ),
             ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            const Text(
+                'Indica el valor de la temperatura ambiente del lugar donde se encuentra el dispositivo.'),
             const SizedBox(height: Consts.defaultPadding / 2),
             Container(
               width: double.infinity,
@@ -191,6 +194,7 @@ class FridgeLightElectricity extends StatelessWidget {
                 messageTrue: 'Sin fallas eléctricas. Todo OK',
                 value: fridge.batteryOn,
                 text: 'Electricidad',
+                tooltipText: 'Indica si hay una falla eléctrica o no.',
               ),
             ),
             const SizedBox(width: Consts.defaultPadding / 2),
@@ -201,6 +205,7 @@ class FridgeLightElectricity extends StatelessWidget {
                 },
                 value: fridge.light,
                 text: 'Luz',
+                tooltipText: 'Indica si la luz del equipo esta encendida.',
               ),
             ),
 
@@ -227,6 +232,7 @@ class FridgeCompressor extends StatelessWidget {
           title: 'Compresor',
           onText: 'Encendido',
           offText: 'Apagado',
+          tooltipText: 'Indica si el compresor esta encendido o no',
           output: fridge.compressor,
           color: Colors.lightBlue.shade200.withOpacity(0.3),
           icon: Icons.ac_unit,
@@ -250,13 +256,26 @@ class FridgeBattery extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Batería de respaldo',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.black.withOpacity(0.8),
-              ),
+            Row(
+              children: [
+                Text(
+                  'Batería de respaldo',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                IconButton(
+                  splashRadius: 10,
+                  tooltip: 'Porcentaje de carga de la batería',
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.info,
+                    color: Consts.fontDark,
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Container(
@@ -381,6 +400,7 @@ class FridgeAppBar extends StatelessWidget {
               onPressed: () {
                 context.read<FridgeStateCubit>().toggleMuted();
               },
+              tooltip: 'Apagar o encender las alarmas sonoras',
               icon: !(fridge?.muted ?? false)
                   ? const Icon(
                       Icons.mic,
@@ -609,6 +629,7 @@ class FridgeStats extends StatelessWidget {
       titlesData: FlTitlesData(
         show: true,
         rightTitles: AxisTitles(
+          axisNameSize: 0,
           sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: AxisTitles(
@@ -620,12 +641,11 @@ class FridgeStats extends StatelessWidget {
             reservedSize: 30,
             interval: 1,
             // getTitlesWidget: (value, meta) {
-            //   return
-            //   // final index = int.parse(value.toString());
-            //   // final tempData = stats[index];
+            //   final index = int.parse(value.toString());
+            //   final tempData = stats[index];
             //   // return Text(meta.)
             //   // return Text(value.toString());
-            //   // return Text('${tempData.temp}');
+            //   return Text('${tempData.temp} °C');
             // },
           ),
         ),
@@ -633,7 +653,18 @@ class FridgeStats extends StatelessWidget {
           sideTitles: SideTitles(
             showTitles: true,
             interval: 2,
-            // getTitlesWidget: leftTitleWidgets,
+            getTitlesWidget: (value, meta) {
+              // final index = int.parse(value.toString());
+              // final tempData = stats[index];
+              // return Text(meta.)
+              return Text(
+                '${value.toInt()} °C',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              );
+              // return Text('${tempData.temp} °C');
+            },
             reservedSize: 45,
           ),
         ),

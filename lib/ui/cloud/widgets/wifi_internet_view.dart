@@ -36,17 +36,21 @@ class WifiInternetView extends StatelessWidget {
                       const SizedBox(
                         width: Consts.defaultPadding / 2,
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Text(
                           "WiFi",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 26,
-                            color: Consts.primary.shade600,
+                            color: Consts.fontDark,
                           ),
                         ),
                       ),
                     ],
+                  ),
+                  const Text(
+                    '¡Comunica con tu equipo desde cualquier lugar! Para eso tienes que indicarle cual es la red WiFi con conexión a internet.',
+                    textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: Consts.defaultPadding),
                   WifiInternetController(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:wifi_led_esp8266/data/use_cases/fridge_use_case.dart';
@@ -14,7 +15,7 @@ class TemperatureStatsBloc
     on<TemperatureStatsGet>(onGetTemperature);
     on<TemperatureStatsRefresh>(onRefreshTemperature);
     _tickerSubscription =
-        Stream.periodic(const Duration(minutes: 1)).listen((event) {
+        Stream.periodic(const Duration(seconds: 60)).listen((event) {
       add(TemperatureStatsRefresh());
     });
   }
@@ -41,7 +42,10 @@ class TemperatureStatsBloc
     Emitter<TemperatureStatsState> emit,
   ) async {
     try {
+      log('🔄 Trying to refresh on background', name: 'TemperatureStats');
+
       final stats = await _fridgeUseCase.getFridgeTemperatures(_fridgeId);
+      log('🔄 Stats refreshed on background', name: 'TemperatureStats');
       emit(TemperatureStatsLoaded(stats));
     } catch (_) {}
   }
