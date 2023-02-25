@@ -87,8 +87,9 @@ class FridgeCompressorTimeBody extends StatelessWidget {
                       onPressed: minutes == fridgeState?.compresorMinutesToWait
                           ? null
                           : () => context
-                              .read<FridgeStateCubit>()
-                              .setMinutesToWait(minutes),
+                              .read<CompressorTimeCubit>()
+                              .onChangedMinutes(
+                                  fridgeState!.compresorMinutesToWait),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         disabledBackgroundColor: Colors.transparent,
