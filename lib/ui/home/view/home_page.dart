@@ -124,11 +124,15 @@ class _HomePageState extends State<HomePage> {
                         },
                         title: "Nuevo",
                         description: "equipo",
-                        icon: const Icon(
-                          Icons.new_label_rounded,
-                          size: 60,
-                          color: Consts.fontDark,
+                        icon: const Text(
+                          '➕',
+                          style: TextStyle(fontSize: 40),
                         ),
+                        // icon: const Icon(
+                        //   Icons.new_label_rounded,
+                        //   size: 60,
+                        //   color: Consts.fontDark,
+                        // ),
                       ),
                     )
                   ],
@@ -170,11 +174,15 @@ class InternetFridgesButton extends StatelessWidget {
       },
       title: "Neveras",
       description: "(Internet)",
-      icon: const Icon(
-        Icons.wifi,
-        size: 60,
-        color: Consts.fontDark,
+      icon: const Text(
+        '🧊',
+        style: TextStyle(fontSize: 40),
       ),
+      // icon: const Icon(
+      //   Icons.wifi,
+      //   size: 60,
+      //   color: Consts.fontDark,
+      // ),
     );
   }
 }
@@ -206,11 +214,15 @@ class LocalFridgesButton extends StatelessWidget {
       },
       title: "Neveras",
       description: "(Wifi Local)",
-      icon: const Icon(
-        Icons.home_filled,
-        size: 60,
-        color: Consts.primary,
+      icon: const Text(
+        '🏠',
+        style: TextStyle(fontSize: 40),
       ),
+      // icon: const Icon(
+      //   Icons.home_filled,
+      //   size: 60,
+      //   color: Consts.primary,
+      // ),
     );
   }
 }
@@ -231,11 +243,15 @@ class SignOutButton extends StatelessWidget {
           onPressed: () => context.read<SignOutCubit>().signOut(),
           title: "Cerrar",
           description: "sesión",
-          icon: const Icon(
-            Icons.logout,
-            size: 60,
-            color: Consts.primary,
+          icon: const Text(
+            '🚪',
+            style: TextStyle(fontSize: 40),
           ),
+          // icon: const Icon(
+          //   Icons.logout,
+          //   size: 60,
+          //   color: Consts.primary,
+          // ),
         ),
       ),
     );
@@ -251,12 +267,16 @@ class EditProfileButton extends StatelessWidget {
       onPressed: () => {},
       title: "Editar",
       description: "perfil",
-      icon: const Icon(
-        Icons.person,
-        size: 60,
-        color: Consts.fontDark,
-        // color: Consts.accent,
+      icon: const Text(
+        '🧑‍💻',
+        style: TextStyle(fontSize: 40),
       ),
+      // icon: const Icon(
+      //   Icons.person,
+      //   size: 60,
+      //   color: Consts.fontDark,
+      //   // color: Consts.accent,
+      // ),
     );
   }
 }
