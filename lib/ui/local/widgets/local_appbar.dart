@@ -18,8 +18,8 @@ class LocalAppBar extends StatelessWidget {
         builder: (context, connectionInfo) {
           return Text(
             connectionInfo.connectionInfo != null
-                ? "Conectado"
-                : "Desconectado",
+                ? "✅ Conectado"
+                : "🔌 Desconectado",
             style: TextStyle(
               color: Consts.neutral.shade700,
               fontWeight: FontWeight.bold,

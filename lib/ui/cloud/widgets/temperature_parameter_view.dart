@@ -81,63 +81,69 @@ class MinTemperatureController extends StatelessWidget {
       return BlocBuilder<TemperatureParameterCubit, TemperatureParameter>(
         builder: (context, temperatureParameter) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: Consts.defaultPadding),
               const Text(
-                "Temp. mínima",
+                "📉 Temp.\n mínima",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
                 ),
+                // textAlign: TextAlign.start,
               ),
               const SizedBox(height: Consts.defaultPadding / 2),
               const Text(
                 '¿A que valor de temperatura mínima te gustaria recibir una alerta?',
               ),
               const SizedBox(height: Consts.defaultPadding / 2),
-              SleekCircularSlider(
-                appearance: CircularSliderAppearance(
-                  customColors: CustomSliderColors(
-                    progressBarColor: Colors.blue.shade200,
-                    shadowColor: Colors.blue.shade200,
-                    trackColor: Colors.blue.shade200,
-                  ),
-                  customWidths: CustomSliderWidths(progressBarWidth: 10),
-                ),
-                innerWidget: (percentage) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${percentage.toInt()} °C',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                        const Text('Temp.'),
-                      ],
+              Center(
+                child: SleekCircularSlider(
+                  appearance: CircularSliderAppearance(
+                    customColors: CustomSliderColors(
+                      progressBarColor: Colors.blue.shade200,
+                      shadowColor: Colors.blue.shade200,
+                      trackColor: Colors.blue.shade200,
                     ),
-                  );
-                },
-                onChange: (value) => context
-                    .read<TemperatureParameterCubit>()
-                    .onChangedMinTemperature(value.toInt()),
-                min: -20,
-                max: temperatureParameter.maxTemperature - 1,
-                initialValue: temperatureParameter.minTemperature.toDouble(),
+                    customWidths: CustomSliderWidths(progressBarWidth: 10),
+                  ),
+                  innerWidget: (percentage) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${percentage.toInt()} °C',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const Text('Temp.'),
+                        ],
+                      ),
+                    );
+                  },
+                  onChange: (value) => context
+                      .read<TemperatureParameterCubit>()
+                      .onChangedMinTemperature(value.toInt()),
+                  min: -20,
+                  max: temperatureParameter.maxTemperature - 1,
+                  initialValue: temperatureParameter.minTemperature.toDouble(),
+                ),
               ),
-              ElevatedButton(
-                onPressed: temperatureParameter.minTemperature ==
-                        fridgeState?.minTemperature
-                    ? null
-                    : () => context
-                        .read<FridgeStateCubit>()
-                        .setMinTemperature(temperatureParameter.minTemperature),
-                child: const Text("Guardar"),
+              Center(
+                child: ElevatedButton(
+                  onPressed: temperatureParameter.minTemperature ==
+                          fridgeState?.minTemperature
+                      ? null
+                      : () => context
+                          .read<FridgeStateCubit>()
+                          .setMinTemperature(
+                              temperatureParameter.minTemperature),
+                  child: const Text("Guardar"),
+                ),
               ),
             ],
           );
@@ -157,12 +163,12 @@ class MaxTemperatureController extends StatelessWidget {
       return BlocBuilder<TemperatureParameterCubit, TemperatureParameter>(
         builder: (context, temperatureParameter) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: Consts.defaultPadding),
               const Text(
-                "Temp. máxima",
+                "📈 Temp. máxima",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 20,
@@ -173,47 +179,52 @@ class MaxTemperatureController extends StatelessWidget {
                 '¿A que valor de temperatura máxima te gustaria recibir una alerta?',
               ),
               const SizedBox(height: Consts.defaultPadding / 2),
-              SleekCircularSlider(
-                appearance: CircularSliderAppearance(
-                  customColors: CustomSliderColors(
-                    progressBarColor: Colors.blue.shade200,
-                    shadowColor: Colors.blue.shade200,
-                    trackColor: Colors.blue.shade200,
-                  ),
-                  customWidths: CustomSliderWidths(progressBarWidth: 10),
-                ),
-                innerWidget: (percentage) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${percentage.toInt()} °C',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
-                        const Text('Temp.'),
-                      ],
+              Center(
+                child: SleekCircularSlider(
+                  appearance: CircularSliderAppearance(
+                    customColors: CustomSliderColors(
+                      progressBarColor: Colors.blue.shade200,
+                      shadowColor: Colors.blue.shade200,
+                      trackColor: Colors.blue.shade200,
                     ),
-                  );
-                },
-                onChange: (value) => context
-                    .read<TemperatureParameterCubit>()
-                    .onChangedMaxTemperature(value.toInt()),
-                min: temperatureParameter.minTemperature + 1,
-                max: 30,
-                initialValue: temperatureParameter.maxTemperature.toDouble(),
+                    customWidths: CustomSliderWidths(progressBarWidth: 10),
+                  ),
+                  innerWidget: (percentage) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${percentage.toInt()} °C',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const Text('Temp.'),
+                        ],
+                      ),
+                    );
+                  },
+                  onChange: (value) => context
+                      .read<TemperatureParameterCubit>()
+                      .onChangedMaxTemperature(value.toInt()),
+                  min: temperatureParameter.minTemperature + 1,
+                  max: 30,
+                  initialValue: temperatureParameter.maxTemperature.toDouble(),
+                ),
               ),
-              ElevatedButton(
-                onPressed: temperatureParameter.maxTemperature ==
-                        fridgeState?.maxTemperature
-                    ? null
-                    : () => context
-                        .read<FridgeStateCubit>()
-                        .setMaxTemperature(temperatureParameter.maxTemperature),
-                child: const Text("Guardar"),
+              Center(
+                child: ElevatedButton(
+                  onPressed: temperatureParameter.maxTemperature ==
+                          fridgeState?.maxTemperature
+                      ? null
+                      : () => context
+                          .read<FridgeStateCubit>()
+                          .setMaxTemperature(
+                              temperatureParameter.maxTemperature),
+                  child: const Text("Guardar"),
+                ),
               ),
             ],
           );

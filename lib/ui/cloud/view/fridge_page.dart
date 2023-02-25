@@ -69,7 +69,7 @@ class FridgePage extends StatelessWidget {
                         Row(children: const [
                           Expanded(
                               child: Text(
-                            "Temperatura vs Tiempo",
+                            "📊 Temperatura vs Tiempo",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 26,
@@ -122,7 +122,7 @@ class FridgeExternalTemperature extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Temperatura Externa',
+              '🌡️ Temperatura Externa',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -229,7 +229,7 @@ class FridgeCompressor extends StatelessWidget {
         if (fridge == null) return const SizedBox.shrink();
 
         return OutputCard(
-          title: 'Compresor',
+          title: '🧊 Compresor',
           onText: 'Encendido',
           offText: 'Apagado',
           tooltipText: 'Indica si el compresor esta encendido o no',
@@ -259,7 +259,7 @@ class FridgeBattery extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Batería de respaldo',
+                  '🔋 Batería de respaldo',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -293,6 +293,10 @@ class FridgeBattery extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
+                        // const Text(
+                        //   '🔋',
+                        //   style: TextStyle(fontSize: 30),
+                        // ),
                         const Icon(Icons.battery_charging_full),
                         Text(
                           'Nivel de carga',

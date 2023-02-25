@@ -37,10 +37,10 @@ class FridgeCompressorTimeBody extends StatelessWidget {
               const SizedBox(height: Consts.defaultPadding),
               Row(
                 children: const [
-                  Icon(Icons.timelapse_sharp),
-                  SizedBox(width: Consts.defaultPadding / 2),
+                  // Icon(Icons.timelapse_sharp),
+                  // SizedBox(width: Consts.defaultPadding / 2),
                   Text(
-                    "Intervalo del compresor",
+                    "⌛️ Intervalo del compresor",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 20,

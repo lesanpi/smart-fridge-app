@@ -21,8 +21,8 @@ class DisconnectedView extends StatelessWidget {
             Image.asset('assets/images/empty.jpg'),
             // const SizedBox(height: Consts.defaultPadding),
             Text(
-              "Desconectado",
-              style: textTheme.headline5?.copyWith(
+              "🔌 Desconectado",
+              style: textTheme.headlineSmall?.copyWith(
                 // fontSize: 30,
                 fontWeight: FontWeight.w600,
                 // color: Colors.black38,
