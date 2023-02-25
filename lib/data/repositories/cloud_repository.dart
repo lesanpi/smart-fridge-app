@@ -301,7 +301,7 @@ class CloudRepository {
     payloadBuilder.addString(data);
     client.publishMessage(
       'action/$fridgeId',
-      MqttQos.atLeastOnce,
+      MqttQos.exactlyOnce,
       payloadBuilder.payload!,
     );
 

@@ -248,12 +248,20 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
-                            child: Text(
-                              "Controlador de Nevera",
-                              style: textTheme.headlineSmall,
+                          const Text(
+                            '🧊 ¡Bienvenido!',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 40,
                             ),
                           ),
+
+                          const Text(
+                            'Configura tu nuevo dispositivo con los parametros iniciales de tu preferencia',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: Consts.defaultPadding / 2),
+
                           // Center(
                           //   child: Text(
                           //     context
@@ -265,12 +273,11 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           //   ),
                           // ),
                           /// Desired Temperature
-                          const SizedBox(height: Consts.defaultPadding / 2),
                           const Text(
-                            "Temperatura ideal",
+                            "🥶 Temperatura deseada",
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                           const SizedBox(height: Consts.defaultPadding / 2),
@@ -302,10 +309,10 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           /// Min Temperature
                           const SizedBox(height: Consts.defaultPadding),
                           const Text(
-                            "Temperatura mínima",
+                            "📉 Temperatura mínima",
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                           const SizedBox(height: Consts.defaultPadding / 2),
@@ -313,7 +320,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                deviceConfiguration.minTemperature.toString(),
+                                '${deviceConfiguration.minTemperature} °C',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 20,
@@ -336,10 +343,10 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           /// Max Temperature
                           const SizedBox(height: Consts.defaultPadding / 2),
                           const Text(
-                            "Temperatura máxima",
+                            "📈 Temperatura máxima",
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                           const SizedBox(height: Consts.defaultPadding / 2),
@@ -347,7 +354,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                deviceConfiguration.maxTemperature.toString(),
+                                '${deviceConfiguration.maxTemperature} °C',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 20,
@@ -369,10 +376,10 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
 
                           /// Time for compressor on/off
                           const Text(
-                            "Intervalo de encendido del compresor",
+                            "⌛️ Intervalo de encendido del compresor",
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                           const SizedBox(height: Consts.defaultPadding / 2),
@@ -402,7 +409,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           ),
 
                           /// Start on which communication mode
-                          const SizedBox(height: Consts.defaultPadding / 2),
+                          // const SizedBox(height: Consts.defaultPadding / 2),
                           // Row(
                           //   children: [
                           //     const Text(
@@ -434,19 +441,23 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: Consts.defaultPadding),
-                                const Center(
-                                  child: Text(
-                                    "Datos de la nevera",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                const Text(
+                                  "💾 Datos de la nevera",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 27,
                                   ),
+                                  textAlign: TextAlign.left,
                                 ),
                                 const SizedBox(
                                   height: Consts.defaultPadding / 2,
                                 ),
+                                const Text(
+                                  'Indica los datos de tu equipo: el nombre con el que identificaras el dispositivo y las credenciales de la red WiFi de emergencia. Esta red WiFi se activara ante cualquier falla, ¡Así siempre estaras comunicado!',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(
+                                    height: Consts.defaultPadding / 2),
                                 const Text(
                                   'Nombre del equipo',
                                   style: TextStyle(
@@ -474,7 +485,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .onChangedName(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                   height: Consts.defaultPadding / 2,
@@ -505,7 +517,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .onChangedSsid(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                     height: Consts.defaultPadding / 2),
@@ -536,7 +549,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .onChangedPassword(value);
                                   },
                                   validator: Validators.validatePassword,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                               ],
                             ),
@@ -587,7 +601,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                           .onChangedSsidCoordinator(value);
                                     },
                                     validator: Validators.validateEmpty,
-                                    autovalidateMode: AutovalidateMode.always,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                   ),
                                   const SizedBox(
                                       height: Consts.defaultPadding / 2),
@@ -619,7 +634,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                           .onChangedPasswordCordinator(value);
                                     },
                                     validator: Validators.validatePassword,
-                                    autovalidateMode: AutovalidateMode.always,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                   ),
                                 ],
                               ),
@@ -630,15 +646,17 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: Consts.defaultPadding),
-                                const Center(
-                                  child: Text(
-                                    "WiFi de Internet",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                const Text(
+                                  "🌍 WiFi de Internet",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 27,
                                   ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const Text(
+                                  '¡Comunicate con tu equipo desde cualquier lugar! Para eso tienes que indicarle cual es la red WiFi con conexión a internet.',
+                                  textAlign: TextAlign.justify,
                                 ),
                                 const SizedBox(
                                     height: Consts.defaultPadding / 2),
@@ -668,7 +686,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .onChangedSsidInternet(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                     height: Consts.defaultPadding / 2),
@@ -699,7 +718,8 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .onChangedPasswordInternet(value);
                                   },
                                   validator: Validators.validatePassword,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                               ],
                             ),
@@ -876,7 +896,8 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                                         .onChangedName(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                   height: Consts.defaultPadding / 2,
@@ -918,7 +939,8 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                                         .onChangedSsid(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                     height: Consts.defaultPadding / 2),
@@ -950,7 +972,8 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                                         .onChangedPassword(value);
                                   },
                                   validator: Validators.validatePassword,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                               ],
                             ),
@@ -999,7 +1022,8 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                                         .onChangedSsidInternet(value);
                                   },
                                   validator: Validators.validateEmpty,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                                 const SizedBox(
                                     height: Consts.defaultPadding / 2),
@@ -1030,7 +1054,8 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                                         .onChangedPasswordInternet(value);
                                   },
                                   validator: Validators.validatePassword,
-                                  autovalidateMode: AutovalidateMode.always,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                 ),
                               ],
                             ),

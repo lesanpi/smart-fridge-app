@@ -49,7 +49,7 @@ class WifiInternetView extends StatelessWidget {
                     ],
                   ),
                   const Text(
-                    '¡Comunica con tu equipo desde cualquier lugar! Para eso tienes que indicarle cual es la red WiFi con conexión a internet.',
+                    '¡Comunicate con tu equipo desde cualquier lugar! Para eso tienes que indicarle cual es la red WiFi con conexión a internet.',
                     textAlign: TextAlign.justify,
                   ),
                   const SizedBox(height: Consts.defaultPadding),
