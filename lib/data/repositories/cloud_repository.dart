@@ -176,24 +176,24 @@ class CloudRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String topicId) {
-    final FridgeState _newFridgeState = FridgeState.fromJson(json);
+    final FridgeState newFridgeState = FridgeState.fromJson(json);
 
-    final id = _newFridgeState.id;
-    final int _indexOfFridge =
+    final id = newFridgeState.id;
+    final int indexOfFridge =
         fridgesState.indexWhere((state) => state.id == id);
-    if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
-      fridgeSelected = _newFridgeState;
+    if (fridgeSelected != null && newFridgeState.id == fridgeSelected?.id) {
+      fridgeSelected = newFridgeState;
       _fridgeSelectedStreamController.add(fridgeSelected);
     }
-    if (_indexOfFridge == -1) {
+    if (indexOfFridge == -1) {
       // fridgesState.add(_newFridgeState);
 
       if (_authRepository.currentUser!.fridges
           .any((element) => id == element)) {
-        fridgesState.add(_newFridgeState);
+        fridgesState.add(newFridgeState);
       }
     } else {
-      fridgesState[_indexOfFridge] = _newFridgeState;
+      fridgesState[indexOfFridge] = newFridgeState;
     }
 
     // fridgesState.map((e) => e.toJson()).toList().toString());
@@ -211,8 +211,8 @@ class CloudRepository {
         .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
 
-  void selectFridge(FridgeState _fridgeSelected) {
-    fridgeSelected = _fridgeSelected;
+  void selectFridge(FridgeState fridgeSelected) {
+    fridgeSelected = fridgeSelected;
     _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
@@ -229,7 +229,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -242,7 +242,20 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void muteAlerts(String fridgeId) {
+    final data = jsonEncode({
+      'action': 'muteAlerts',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -255,7 +268,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -280,7 +293,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -294,7 +307,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -311,7 +324,21 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setCompressorMinutes(String fridgeId, int minutes) {
+    final data = jsonEncode({
+      'action': 'changeMinutesToWait',
+      'minutes': minutes,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -325,7 +352,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -341,7 +368,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -357,7 +384,7 @@ class CloudRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );

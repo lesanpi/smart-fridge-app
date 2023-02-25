@@ -124,7 +124,7 @@ class LocalRepository {
           log('❌ MQTT connection failed with server $server');
           final splittedIp = wifiIp.split('.');
           splittedIp.removeLast();
-          final serverIp = splittedIp.join('.') + '.200';
+          final serverIp = '${splittedIp.join('.')}.200';
           return await connect(id, password, server: serverIp);
         }
 
@@ -194,21 +194,21 @@ class LocalRepository {
 
   void onStateUpdate(Map<String, dynamic> json, String id) {
     if (json.isEmpty) return;
-    final FridgeState _newFridgeState = FridgeState.fromJson(json);
+    final FridgeState newFridgeState = FridgeState.fromJson(json);
 
     if (connectionInfo == null) return;
 
     if (connectionInfo!.standalone && id == connectionInfo!.id) {
-      fridgeSelected = _newFridgeState;
+      fridgeSelected = newFridgeState;
       _fridgeSelectedStreamController.add(fridgeSelected);
 
-      final int _indexOfFridge =
+      final int indexOfFridge =
           fridgesState.indexWhere((state) => state.id == id);
 
-      if (_indexOfFridge == -1) {
-        fridgesState.add(_newFridgeState);
+      if (indexOfFridge == -1) {
+        fridgesState.add(newFridgeState);
       } else {
-        fridgesState[_indexOfFridge] = _newFridgeState;
+        fridgesState[indexOfFridge] = newFridgeState;
       }
 
       _fridgesStateStreamController.add(fridgesState);
@@ -216,18 +216,18 @@ class LocalRepository {
     }
 
     if (!connectionInfo!.standalone) {
-      final int _indexOfFridge =
+      final int indexOfFridge =
           fridgesState.indexWhere((state) => state.id == id);
 
-      if (fridgeSelected != null && _newFridgeState.id == fridgeSelected?.id) {
-        fridgeSelected = _newFridgeState;
+      if (fridgeSelected != null && newFridgeState.id == fridgeSelected?.id) {
+        fridgeSelected = newFridgeState;
         _fridgeSelectedStreamController.add(fridgeSelected);
       }
 
-      if (_indexOfFridge == -1) {
-        fridgesState.add(_newFridgeState);
+      if (indexOfFridge == -1) {
+        fridgesState.add(newFridgeState);
       } else {
-        fridgesState[_indexOfFridge] = _newFridgeState;
+        fridgesState[indexOfFridge] = newFridgeState;
       }
 
       // fridgesState.map((e) => e.toJson()).toList().toString());
@@ -251,8 +251,8 @@ class LocalRepository {
         .firstWhere((fridgeState) => fridgeState?.id == id, orElse: () => null);
   }
 
-  void selectFridge(FridgeState _fridgeSelected) {
-    fridgeSelected = _fridgeSelected;
+  void selectFridge(FridgeState fridgeSelected) {
+    fridgeSelected = fridgeSelected;
     _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
@@ -269,7 +269,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -282,7 +282,20 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void muteAlerts(String fridgeId) {
+    final data = jsonEncode({
+      'action': 'muteAlerts',
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -297,7 +310,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -327,7 +340,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -341,7 +354,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -355,7 +368,21 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
+      MqttQos.atLeastOnce,
+      payloadBuilder.payload!,
+    );
+  }
+
+  void setCompressorMinutes(String fridgeId, int minutes) {
+    final data = jsonEncode({
+      'action': 'changeMinutesToWait',
+      'minutes': minutes,
+    });
+    final payloadBuilder = MqttClientPayloadBuilder();
+    payloadBuilder.addString(data);
+    client.publishMessage(
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -369,7 +396,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -385,7 +412,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -401,7 +428,7 @@ class LocalRepository {
     final payloadBuilder = MqttClientPayloadBuilder();
     payloadBuilder.addString(data);
     client.publishMessage(
-      'action/' + fridgeId,
+      'action/$fridgeId',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -424,7 +451,7 @@ class LocalRepository {
     payloadBuilder.addString(data);
 
     client.publishMessage(
-      'action/' + connectionInfo!.id,
+      'action/${connectionInfo!.id}',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
@@ -448,7 +475,7 @@ class LocalRepository {
     payloadBuilder.addString(data);
 
     client.publishMessage(
-      'action/' + connectionInfo!.id,
+      'action/${connectionInfo!.id}',
       MqttQos.atLeastOnce,
       payloadBuilder.payload!,
     );
