@@ -280,6 +280,9 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               fontSize: 20,
                             ),
                           ),
+                          const Text(
+                              'Indica el valor referencial de la temperatura que debería estar el equipo normalmente.'),
+
                           const SizedBox(height: Consts.defaultPadding / 2),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -315,6 +318,9 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               fontSize: 20,
                             ),
                           ),
+                          const Text(
+                            '¿A que valor de temperatura mínima te gustaria recibir una alerta?',
+                          ),
                           const SizedBox(height: Consts.defaultPadding / 2),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -349,6 +355,9 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               fontSize: 20,
                             ),
                           ),
+                          const Text(
+                            '¿A que valor de temperatura máxima te gustaria recibir una alerta?',
+                          ),
                           const SizedBox(height: Consts.defaultPadding / 2),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -381,6 +390,10 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                             ),
+                          ),
+                          const Text(
+                            'El compresor necesita reposar apagado un intervalo de tiempo antes de encenderse nuevamente. ¡Pero tu lo puedes configurar! ¿Cuantos minutos deseas?',
+                            textAlign: TextAlign.justify,
                           ),
                           const SizedBox(height: Consts.defaultPadding / 2),
                           Row(
