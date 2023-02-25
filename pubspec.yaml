@@ -50,6 +50,7 @@ dependencies:
   fl_chart: ^0.60.0
   intl: ^0.17.0
   pinput: ^2.2.16
+  flutter_animate: ^4.1.0
   
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
@@ -38,8 +37,8 @@ class SetupView extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Consts.lightSystem.shade300,
       appBar: const PreferredSize(
-        child: SetupAppBar(),
         preferredSize: Size.fromHeight(70),
+        child: SetupAppBar(),
       ),
       body: SafeArea(
         child: BlocBuilder<LocalConnectionBloc, LocalConnectionState>(
@@ -101,7 +100,7 @@ class NoConfigurationMode extends StatelessWidget {
             const SizedBox(height: Consts.defaultPadding),
             Text(
               "Atención!",
-              style: textTheme.headline5,
+              style: textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
@@ -144,7 +143,7 @@ class NoDeviceFound extends StatelessWidget {
             const SizedBox(height: Consts.defaultPadding / 2),
             Text(
               "No se encontró una conexión",
-              style: textTheme.headline5?.copyWith(
+              style: textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
               textAlign: TextAlign.center,
@@ -180,7 +179,7 @@ class NoDeviceFound extends StatelessWidget {
                     },
                     child: Text(
                       "Regresar",
-                      style: textTheme.button?.copyWith(
+                      style: textTheme.labelLarge?.copyWith(
                         color: Consts.primary,
                         fontWeight: FontWeight.w600,
                       ),
@@ -241,8 +240,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: Consts.defaultPadding,
-                vertical: Consts.defaultPadding,
-              ),
+              ).copyWith(bottom: Consts.defaultPadding),
               child: Column(
                 children: [
                   Expanded(
@@ -253,7 +251,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                           Center(
                             child: Text(
                               "Controlador de Nevera",
-                              style: textTheme.headline5,
+                              style: textTheme.headlineSmall,
                             ),
                           ),
                           // Center(
@@ -280,8 +278,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                deviceConfiguration.desiredTemperature
-                                    .toString(),
+                                '${deviceConfiguration.desiredTemperature} °C',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 20,
@@ -370,31 +367,65 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                             ],
                           ),
 
-                          /// Start on which communication mode
-                          const SizedBox(height: Consts.defaultPadding),
+                          /// Time for compressor on/off
+                          const Text(
+                            "Intervalo de encendido del compresor",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: Consts.defaultPadding / 2),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Modo coordinado",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
+                              Text(
+                                '${deviceConfiguration.compresorMinutesToWait} min',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20,
                                 ),
                               ),
-                              const Spacer(),
-                              CupertinoSwitch(
-                                value:
-                                    deviceConfiguration.startOnCoordinatorMode,
-                                activeColor: Consts.primary,
-                                onChanged: (value) {
-                                  setState(() {});
-                                  context
+                              Expanded(
+                                child: Slider(
+                                  min: 1,
+                                  max: 20,
+                                  value: deviceConfiguration
+                                      .compresorMinutesToWait
+                                      .toDouble(),
+                                  onChanged: (value) => context
                                       .read<DeviceConfigurationCubit>()
-                                      .onChangeCommunicationModeStart(value);
-                                },
-                              )
+                                      .onChangedMinutes(value.toInt()),
+                                ),
+                              ),
                             ],
                           ),
+
+                          /// Start on which communication mode
+                          const SizedBox(height: Consts.defaultPadding / 2),
+                          // Row(
+                          //   children: [
+                          //     const Text(
+                          //       "Modo coordinado",
+                          //       style: TextStyle(
+                          //         fontWeight: FontWeight.w500,
+                          //         fontSize: 18,
+                          //       ),
+                          //     ),
+                          //     const Spacer(),
+                          //     CupertinoSwitch(
+                          //       value:
+                          //           deviceConfiguration.startOnCoordinatorMode,
+                          //       activeColor: Consts.primary,
+                          //       onChanged: (value) {
+                          //         setState(() {});
+                          //         context
+                          //             .read<DeviceConfigurationCubit>()
+                          //             .onChangeCommunicationModeStart(value);
+                          //       },
+                          //     )
+                          //   ],
+                          // ),
 
                           /// Fridge Wifi
                           Form(
@@ -688,7 +719,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                     onPressed: finalize(context, deviceConfiguration),
                     child: Text(
                       "FINALIZAR",
-                      style: textTheme.button?.copyWith(
+                      style: textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -797,7 +828,7 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                           Center(
                             child: Text(
                               "Coordinador de comunicaciones",
-                              style: textTheme.headline2,
+                              style: textTheme.displayMedium,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -1019,7 +1050,7 @@ class _SetupDeviceCoordinatorState extends State<SetupDeviceCoordinator> {
                     onPressed: finalize(context, deviceConfiguration),
                     child: Text(
                       "FINALIZAR",
-                      style: textTheme.button?.copyWith(
+                      style: textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),

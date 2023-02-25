@@ -256,9 +256,9 @@ class DesiredTemperatureController extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 40,
+                    width: 65,
                     child: Text(
-                      temperatureParameter.desiredTemperature.toString(),
+                      '${temperatureParameter.desiredTemperature} °C',
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 20,

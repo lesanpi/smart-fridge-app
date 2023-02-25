@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/data/repositories/repositories.dart';
@@ -16,6 +17,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
   StreamSubscription<FridgeState?>? _fridgeStateStream;
 
   void init() {
+    log(
+      'Fridge selected $state',
+      name: 'FridgeStateCubit.init',
+    );
+    log('Fridge selected ${_cloudRepository.fridgeSelected}',
+        name: 'FridgeStateCubit.init');
     _fridgeStateStream ??= _cloudRepository.fridgeSelectedStream.listen(
       (fridgeState) {
         emit(fridgeState);
@@ -69,6 +76,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
   void setMaxTemperature(int temperature) {
     if (state != null) {
       _cloudRepository.setMaxTemperature(state!.id, temperature);
+    }
+  }
+
+  void setMinutesToWait(int minutes) {
+    if (state != null) {
+      _cloudRepository.setCompressorMinutes(state!.id, minutes);
     }
   }
 

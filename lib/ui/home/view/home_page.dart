@@ -47,13 +47,13 @@ class _HomePageState extends State<HomePage> {
     return BlocProvider(
       create: (context) => SignOutCubit(context.read()),
       child: Scaffold(
-        // backgroundColor: Consts.lightSystem.shade300,
+        // backgroundColor: Consts.darkSystem.shade300,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
           title: Text(
             'Mi menú',
-            style: textTheme.headline5?.copyWith(
+            style: textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: Consts.defaultPadding),
                 Text(
                   'Mi menú',
-                  style: textTheme.headline5?.copyWith(
+                  style: textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),

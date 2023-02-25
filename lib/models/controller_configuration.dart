@@ -16,12 +16,14 @@ class ControllerConfiguration extends DeviceConfiguration {
     required this.passwordCoordinator,
     required this.passwordInternet,
     required this.startOnCoordinatorMode,
+    required this.compresorMinutesToWait,
   });
 
   final String name;
   final int desiredTemperature;
   final int minTemperature;
   final int maxTemperature;
+  final int compresorMinutesToWait;
   final String ssid;
   final String ssidCoordinator;
   final String ssidInternet;
@@ -35,6 +37,7 @@ class ControllerConfiguration extends DeviceConfiguration {
     int? desiredTemperature,
     int? minTemperature,
     int? maxTemperature,
+    int? compresorMinutesToWait,
     bool? startOnCoordinatorMode,
     String? ssid,
     String? ssidCoordinator,
@@ -48,6 +51,8 @@ class ControllerConfiguration extends DeviceConfiguration {
         name: name ?? this.name,
         minTemperature: minTemperature ?? this.minTemperature,
         maxTemperature: maxTemperature ?? this.maxTemperature,
+        compresorMinutesToWait:
+            compresorMinutesToWait ?? this.compresorMinutesToWait,
         ssid: ssid ?? this.ssid,
         ssidCoordinator: ssidCoordinator ?? this.ssidCoordinator,
         ssidInternet: ssidInternet ?? this.ssidInternet,
@@ -64,6 +69,7 @@ class ControllerConfiguration extends DeviceConfiguration {
         minTemperature: -20,
         maxTemperature: 30,
         startOnCoordinatorMode: false,
+        compresorMinutesToWait: 7,
         ssid: "",
         ssidCoordinator: "",
         ssidInternet: "",
@@ -84,7 +90,8 @@ class ControllerConfiguration extends DeviceConfiguration {
         password,
         passwordCoordinator,
         passwordInternet,
-        startOnCoordinatorMode
+        startOnCoordinatorMode,
+        compresorMinutesToWait,
       ];
 
   factory ControllerConfiguration.fromJson(String str) =>
@@ -98,6 +105,7 @@ class ControllerConfiguration extends DeviceConfiguration {
         desiredTemperature: json["desiredTemperature"],
         minTemperature: json["minTemperature"],
         maxTemperature: json["maxTemperature"],
+        compresorMinutesToWait: json["compresorMinutesToWait"],
         ssid: json["ssid"],
         ssidCoordinator: json["ssidCoordinator"],
         ssidInternet: json["ssidInternet"],
@@ -113,6 +121,7 @@ class ControllerConfiguration extends DeviceConfiguration {
         "desiredTemperature": desiredTemperature,
         "minTemperature": minTemperature,
         "maxTemperature": maxTemperature,
+        "minutes": compresorMinutesToWait,
         "ssid": ssid,
         "ssidCoordinator": ssidCoordinator,
         "ssidInternet": ssidInternet,

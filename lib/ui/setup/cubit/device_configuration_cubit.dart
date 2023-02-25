@@ -12,8 +12,8 @@ class DeviceConfigurationCubit extends Cubit<ControllerConfiguration> {
   }
 
   void onChangedPasswordInternet(String value) {
-    final _newState = state.copyWith(passwordInternet: value);
-    emit(_newState);
+    final newState = state.copyWith(passwordInternet: value);
+    emit(newState);
   }
 
   void onChangedDesiredTemperature(int desiredTemperature) =>
@@ -24,6 +24,9 @@ class DeviceConfigurationCubit extends Cubit<ControllerConfiguration> {
 
   void onChangedMaxTemperature(int maxTemperature) =>
       emit(state.copyWith(maxTemperature: maxTemperature));
+
+  void onChangedMinutes(int minutes) =>
+      emit(state.copyWith(compresorMinutesToWait: minutes));
 
   void onChangeCommunicationModeStart(bool value) {
     if (value) {

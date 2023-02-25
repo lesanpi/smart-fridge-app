@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:wifi_led_esp8266/consts.dart';
@@ -62,14 +63,14 @@ class HelloMessage extends StatelessWidget {
                 children: [
                   Text(
                     "Bienvenido,",
-                    style: textTheme.headline5?.copyWith(
+                    style: textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w200,
                       color: Consts.fontDark,
                     ),
                   ),
                   Text(
                     authUser != null ? authUser.name : "",
-                    style: textTheme.headline4?.copyWith(
+                    style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                       height: 1,
@@ -88,7 +89,7 @@ class HelloMessage extends StatelessWidget {
                       ),
                       child: Text(
                         authUser.email,
-                        style: textTheme.headline6?.copyWith(
+                        style: textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           // backgroundColor: Consts.primary,
@@ -104,7 +105,17 @@ class HelloMessage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 50,
                       ),
-                    ),
+                    )
+                        .animate(
+                          onComplete: (controller) => controller.repeat(),
+                        )
+                        .shake(
+                          hz: 1,
+                          delay: 500.ms,
+                          duration: 1.seconds,
+                          curve: Curves.ease,
+                          rotation: 0.5,
+                        ),
                   ),
                 ],
               ),

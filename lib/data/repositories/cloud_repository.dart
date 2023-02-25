@@ -95,6 +95,8 @@ class CloudRepository {
 
       /// Check we are connected
       if (client.connectionStatus!.state == MqttConnectionState.connected) {
+        log('✅ Cloud connected', name: 'CloudRepository.connect');
+
         initSubscription();
         conected = true;
         return true;
@@ -121,6 +123,11 @@ class CloudRepository {
       return;
     }
     final fridges = _authRepository.currentUser!.fridges;
+
+    log(
+      '🔥 Init subscription for ${fridges.length} fridges',
+      name: 'CloudRepository.initSubscription',
+    );
     // client.subscribe('state/#', MqttQos.exactlyOnce);
     // client.subscribe('state/62f90f52d8f2c401b58817e3', MqttQos.exactlyOnce);
 
@@ -152,12 +159,27 @@ class CloudRepository {
       /// A state was updated
       if (topicSplitted[0] == "state") {
         final id = topicSplitted[1];
+        log(
+          '🧊 Update state received from device [$id]',
+          name: 'CloudRepository.state',
+        );
         try {
           onStateUpdate(jsonDecoded, id);
-        } catch (_) {}
+        } catch (e) {
+          log(
+            '❌ Error updating state [$id]',
+            name: 'CloudRepository.state',
+            error: e,
+          );
+        }
       }
 
       if (topicSplitted[0] == "error") {
+        log(
+          '❌ Error received from device [$topic]',
+          name: 'CloudRepository.error',
+        );
+
         /// Error message
         try {
           log('Device error message received');
@@ -167,6 +189,11 @@ class CloudRepository {
       }
 
       if (topicSplitted[0] == "message") {
+        log(
+          '📦 Message received from device [$topic]',
+          name: 'CloudRepository.message',
+        );
+
         /// Message
         final deviceMessage = DeviceMessage.fromMap(jsonDecoded, false);
         log('Device message received $deviceMessage');
@@ -176,6 +203,7 @@ class CloudRepository {
   }
 
   void onStateUpdate(Map<String, dynamic> json, String topicId) {
+    log('json $json');
     final FridgeState newFridgeState = FridgeState.fromJson(json);
 
     final id = newFridgeState.id;
@@ -212,7 +240,12 @@ class CloudRepository {
   }
 
   void selectFridge(FridgeState fridgeSelected) {
-    fridgeSelected = fridgeSelected;
+    log(
+      '✅ Selecting fridge $FridgeState',
+      name: 'CloudRepository.selectFridge',
+    );
+
+    this.fridgeSelected = fridgeSelected;
     _fridgeSelectedStreamController.add(fridgeSelected);
   }
 
