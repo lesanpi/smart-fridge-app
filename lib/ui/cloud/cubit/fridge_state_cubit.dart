@@ -64,6 +64,12 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     }
   }
 
+  void toggleMuted() {
+    if (state != null) {
+      _cloudRepository.muteAlerts(state!.id);
+    }
+  }
+
   void restoreFactory() async {
     // TODO: Return Message
     final id = state?.id;

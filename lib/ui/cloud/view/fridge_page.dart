@@ -376,6 +376,22 @@ class FridgeAppBar extends StatelessWidget {
             ),
           ),
           leading: const CustomBackButton(),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<FridgeStateCubit>().toggleMuted();
+              },
+              icon: !(fridge?.muted ?? false)
+                  ? const Icon(
+                      Icons.mic,
+                      color: Consts.primary,
+                    )
+                  : const Icon(
+                      Icons.mic_off,
+                      color: Consts.error,
+                    ),
+            )
+          ],
         );
       },
     );
