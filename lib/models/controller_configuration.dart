@@ -123,10 +123,10 @@ class ControllerConfiguration extends DeviceConfiguration {
         "maxTemperature": maxTemperature,
         "minutes": compresorMinutesToWait,
         "ssid": ssid,
-        "ssidCoordinator": ssidCoordinator,
+        // "ssidCoordinator": ssidCoordinator,
         "ssidInternet": ssidInternet,
         "password": password,
-        "passwordCoordinator": passwordCoordinator,
+        // "passwordCoordinator": passwordCoordinator,
         "passwordInternet": passwordInternet,
         "startOnCoordinatorMode": startOnCoordinatorMode,
       };
