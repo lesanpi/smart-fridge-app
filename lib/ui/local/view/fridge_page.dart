@@ -4,6 +4,7 @@ import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/data/repositories/local_repository.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/restore_fridge_button.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/wifi_internet_view.dart';
+import 'package:wifi_led_esp8266/widgets/output_card.dart';
 import '../local.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/widgets/widgets.dart';
@@ -42,7 +43,7 @@ class FridgePage extends StatelessWidget {
                       NameController(initialName: fridge.name),
                       Text(
                         '#${fridge.id}',
-                        style: textTheme.headline6,
+                        style: textTheme.titleLarge,
                       ),
                       const SizedBox(height: Consts.defaultPadding * 1),
                       Thermostat(
@@ -51,7 +52,8 @@ class FridgePage extends StatelessWidget {
                         alert: !(fridge.temperature >= fridge.minTemperature &&
                             fridge.temperature <= fridge.maxTemperature),
                       ),
-                      const SizedBox(height: Consts.defaultPadding * 2),
+                      const SizedBox(height: Consts.defaultPadding * 1),
+                      const FridgeCompressor(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -124,6 +126,31 @@ class FridgeAppBar extends StatelessWidget {
               Navigator.maybePop(context);
             },
           ),
+        );
+      },
+    );
+  }
+}
+
+class FridgeCompressor extends StatelessWidget {
+  const FridgeCompressor({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, fridge) {
+        if (fridge == null) return const SizedBox.shrink();
+
+        return OutputCard(
+          title: '🧊 Compresor',
+          onText: 'Encendido',
+          offText: 'Apagado',
+          tooltipText: 'Indica si el compresor esta encendido o no',
+          output: fridge.compressor,
+          color: Colors.lightBlue.shade200.withOpacity(0.3),
+          icon: Icons.ac_unit,
         );
       },
     );

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wifi_led_esp8266/consts.dart';
 import 'package:wifi_led_esp8266/models/fridge_state.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/restore_fridge_button.dart';
+import 'package:wifi_led_esp8266/ui/local/widgets/timer_compressor_view.dart';
 import 'package:wifi_led_esp8266/ui/local/widgets/wifi_internet_view.dart';
 import 'package:wifi_led_esp8266/widgets/output_card.dart';
 import 'package:wifi_led_esp8266/widgets/toggle_card.dart';
@@ -81,20 +82,10 @@ class StandaloneView extends StatelessWidget {
 
                 // Ready ✅
                 const SizedBox(height: Consts.defaultPadding * 1),
-                OutputCard(
-                  title: 'Compresor',
-                  onText: 'Encendido',
-                  offText: 'Apagado',
-                  output: fridge.compressor,
-                  color: Colors.lightBlue.shade200.withOpacity(0.3),
-                  icon: Icons.ac_unit,
-                ),
+                const FridgeCompressor(),
+                const SizedBox(height: Consts.defaultPadding * 1),
                 const FridgeBattery(),
                 const SizedBox(height: Consts.defaultPadding),
-
-                // Ready ✅
-                const SizedBox(height: Consts.defaultPadding),
-
                 const FridgeExternalTemperature(),
                 const SizedBox(height: Consts.defaultPadding),
 
@@ -128,9 +119,10 @@ class StandaloneView extends StatelessWidget {
                 ),
 
                 const TemperatureParameterView(),
-                const SizedBox(height: Consts.defaultPadding * 2),
+                const TimeCompressorView(),
+                const SizedBox(height: Consts.defaultPadding * 1),
                 const CommunicationModeView(),
-                const SizedBox(height: Consts.defaultPadding * 2),
+                const SizedBox(height: Consts.defaultPadding),
                 const WifiInternetView(),
                 const SizedBox(height: Consts.defaultPadding * 2),
                 const RestoreFridgeButton(),
@@ -162,13 +154,26 @@ class FridgeBattery extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Batería de respaldo',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.black.withOpacity(0.8),
-              ),
+            Row(
+              children: [
+                Text(
+                  '🔋 Batería de respaldo',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.8),
+                  ),
+                ),
+                IconButton(
+                  splashRadius: 10,
+                  tooltip: 'Porcentaje de carga de la batería',
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.info,
+                    color: Consts.fontDark,
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: Consts.defaultPadding / 2),
             Container(
@@ -186,6 +191,10 @@ class FridgeBattery extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
+                        // const Text(
+                        //   '🔋',
+                        //   style: TextStyle(fontSize: 30),
+                        // ),
                         const Icon(Icons.battery_charging_full),
                         Text(
                           'Nivel de carga',
@@ -229,13 +238,16 @@ class FridgeExternalTemperature extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Temperatura Externa',
+              '🌡️ Temperatura Externa',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: Colors.black.withOpacity(0.8),
               ),
             ),
+            const SizedBox(height: Consts.defaultPadding / 2),
+            const Text(
+                'Indica el valor de la temperatura ambiente del lugar donde se encuentra el dispositivo.'),
             const SizedBox(height: Consts.defaultPadding / 2),
             Container(
               width: double.infinity,
@@ -374,6 +386,75 @@ class _NameControllerState extends State<NameController> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+}
+
+class FridgeCompressor extends StatelessWidget {
+  const FridgeCompressor({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, fridge) {
+        if (fridge == null) return const SizedBox.shrink();
+
+        return OutputCard(
+          title: '🧊 Compresor',
+          onText: 'Encendido',
+          offText: 'Apagado',
+          tooltipText: 'Indica si el compresor esta encendido o no',
+          output: fridge.compressor,
+          color: Colors.lightBlue.shade200.withOpacity(0.3),
+          icon: Icons.ac_unit,
+        );
+      },
+    );
+  }
+}
+
+class FridgeLightElectricity extends StatelessWidget {
+  const FridgeLightElectricity({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FridgeStateCubit, FridgeState?>(
+      builder: (context, fridge) {
+        if (fridge == null) return const SizedBox.shrink();
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: CheckCard(
+                messageFalse: 'Bateria de respaldo en uso',
+                messageTrue: 'Sin fallas eléctricas. Todo OK',
+                value: fridge.batteryOn,
+                text: 'Electricidad',
+                tooltipText: 'Indica si hay una falla eléctrica o no.',
+              ),
+            ),
+            const SizedBox(width: Consts.defaultPadding / 2),
+            Expanded(
+              child: ToggleCard(
+                onChanged: (value) {
+                  context.read<FridgeStateCubit>().toggleLight();
+                },
+                value: fridge.light,
+                text: 'Luz',
+                tooltipText: 'Indica si la luz del equipo esta encendida.',
+              ),
+            ),
+
+            // const Spacer(),
+          ],
         );
       },
     );

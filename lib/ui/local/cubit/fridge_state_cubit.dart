@@ -25,6 +25,18 @@ class FridgeStateCubit extends Cubit<FridgeState?> {
     );
   }
 
+  void toggleMuted() {
+    if (state != null) {
+      _localRepository.muteAlerts(state!.id);
+    }
+  }
+
+  void setMinutesToWait(int minutes) {
+    if (state != null) {
+      _localRepository.setCompressorMinutes(state!.id, minutes);
+    }
+  }
+
   Future<void> disconnect() async {
     if (_fridgeStateStream != null) {
       await _fridgeStateStream!.cancel();

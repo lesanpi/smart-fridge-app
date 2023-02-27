@@ -80,7 +80,7 @@ class FridgePage extends StatelessWidget {
                         FridgeStats(fridgeId: fridge.id),
                         const SizedBox(height: Consts.defaultPadding * 1),
                         const FridgeCompressor(),
-                        const SizedBox(height: Consts.defaultPadding),
+                        const SizedBox(height: Consts.defaultPadding * 1),
                         const FridgeBattery(),
                         const SizedBox(height: Consts.defaultPadding),
                         const FridgeExternalTemperature(),

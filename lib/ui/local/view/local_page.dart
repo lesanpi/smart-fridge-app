@@ -121,7 +121,7 @@ class FridgeView extends StatelessWidget {
               children: [
                 Text(
                   fridge.id,
-                  style: textTheme.headline2,
+                  style: textTheme.displayMedium,
                 ),
                 Text(fridge.id),
                 const SizedBox(height: Consts.defaultPadding * 2),
@@ -198,7 +198,7 @@ class ConfigurationModeMessage extends StatelessWidget {
             const SizedBox(height: Consts.defaultPadding),
             Text(
               "Atención!",
-              style: textTheme.headline5,
+              style: textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: Consts.defaultPadding / 2),

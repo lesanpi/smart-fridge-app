@@ -36,7 +36,7 @@ class RestoreFridgeButton extends StatelessWidget {
           warningButtonText: 'CONTINUAR',
         );
       },
-      child: const Text("RESTAURAR DE FÁBRICA"),
+      child: const Center(child: Text("RESTAURAR DE FÁBRICA")),
     );
   }
 }
