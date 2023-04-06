@@ -549,10 +549,10 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                 TextFormField(
                                   controller: passwordController,
                                   decoration: const InputDecoration(
-                                    fillColor: Colors.white,
-                                    // border: OutlineInputBorder(),
-                                    hintText: 'Contraseña del Wifi',
-                                  ),
+                                      fillColor: Colors.white,
+                                      // border: OutlineInputBorder(),
+                                      hintText: 'Contraseña del Wifi',
+                                      errorMaxLines: 4),
                                   obscureText: true,
                                   keyboardType: TextInputType.text,
                                   onChanged: (value) {
@@ -561,7 +561,7 @@ class _SetupDeviceControllerState extends State<SetupDeviceController> {
                                         .read<DeviceConfigurationCubit>()
                                         .onChangedPassword(value);
                                   },
-                                  validator: Validators.validatePassword,
+                                  validator: Validators.validateSecurePassword,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                 ),

@@ -3,7 +3,15 @@ import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wifi_led_esp8266/firebase_options.dart';
+
+const channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.max,
+);
 
 class NotificationMessage {
   const NotificationMessage({required this.title, required this.body});
@@ -14,6 +22,9 @@ class NotificationMessage {
 class PushNotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static String? token;
+  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   static final StreamController<String> _messageStream =
       StreamController.broadcast();
   static Stream<String> get messagesStream => _messageStream.stream;
@@ -43,6 +54,28 @@ class PushNotificationService {
     if (notificationMessage != null) {
       _notificationMessageStream.add(notificationMessage);
     }
+
+    final notification = message.notification;
+    final android = message.notification?.android;
+
+    // If `onMessage` is triggered with a notification, construct our own
+    // local notification to show to users using the created channel.
+    if (notification != null && android != null) {
+      await flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channel.description,
+            icon: android.smallIcon,
+            // other properties...
+          ),
+        ),
+      );
+    }
   }
 
   static Future _onMessageHandler(RemoteMessage message) async {
@@ -53,6 +86,27 @@ class PushNotificationService {
     final notificationMessage = _getNotifcationMessage(message);
     if (notificationMessage != null) {
       _notificationMessageStream.add(notificationMessage);
+    }
+    final notification = message.notification;
+    final android = message.notification?.android;
+
+    // If `onMessage` is triggered with a notification, construct our own
+    // local notification to show to users using the created channel.
+    if (notification != null && android != null) {
+      await flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channel.description,
+            icon: android.smallIcon,
+            // other properties...
+          ),
+        ),
+      );
     }
   }
 
@@ -65,6 +119,28 @@ class PushNotificationService {
     if (notificationMessage != null) {
       _notificationMessageStream.add(notificationMessage);
     }
+
+    final notification = message.notification;
+    final android = message.notification?.android;
+
+    // If `onMessage` is triggered with a notification, construct our own
+    // local notification to show to users using the created channel.
+    if (notification != null && android != null) {
+      await flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channel.description,
+            icon: android.smallIcon,
+            // other properties...
+          ),
+        ),
+      );
+    }
   }
 
   static Future initializeApp() async {
@@ -75,24 +151,38 @@ class PushNotificationService {
 
     token = await FirebaseMessaging.instance.getToken();
 
+// Local Notifications
+    const initializationSettingsAndroid = AndroidInitializationSettings('logo');
+    const initializationSettingsDarwin = IOSInitializationSettings();
+
+    const initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+    );
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
     // Handlers
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
     FirebaseMessaging.onMessage.listen(_onMessageHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
-
-    // Local Notifications
   }
 
   // Apple / Web
   static requestPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true);
+    final messaging = FirebaseMessaging.instance;
+
+    await messaging.requestPermission();
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   static closeStreams() {

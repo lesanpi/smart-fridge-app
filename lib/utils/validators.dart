@@ -88,6 +88,27 @@ class Validators {
     return null;
   }
 
+  /// Validates the password is secure.
+  /// In case of error returns the appropiate error message
+  static String? validateSecurePassword(String? password) {
+    if (password == null) {
+      return null;
+    }
+
+    if (password.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+
+    if (!RegExp(_pattern).hasMatch(password)) {
+      return 'Contraseña inválida. Debe contener al menos 8 caracteres, uno numérico, una letra mayúscula y una minúscula y un carácter especial.';
+    }
+    if (password.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres';
+    }
+
+    return null;
+  }
+
   static String? validateDropdown(String? value) {
     if (value == null || value.isEmpty) {
       return "Seleccione una opción";
@@ -97,4 +118,7 @@ class Validators {
   }
 
   static const String phoneErrorMessage = "Número de telefono inválido";
+
+  static const String _pattern =
+      r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.\-_*])([a-zA-Z0-9@#$%^&+=*.\-_]){8,}$';
 }
